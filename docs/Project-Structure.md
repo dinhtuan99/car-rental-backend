@@ -3,7 +3,7 @@
 ## Mục lục
 1. [Directory Structure](#1-directory-structure)
 2. [Backend Structure (Spring Boot)](#2-backend-structure-spring-boot)
-3. [Frontend Structure (React)](#3-frontend-structure-react)
+3. [Frontend Structure (Next.js)](#3-frontend-structure-nextjs)
 4. [Naming Conventions](#4-naming-conventions)
 5. [Coding Rules](#5-coding-rules)
 
@@ -48,29 +48,52 @@ car-rental-saas/
 │   ├── pom.xml
 │   └── Dockerfile
 │
-├── frontend/                       # React + Vite Application (Customer Website & Admin Dashboard in one build or separate routes)
-│   ├── src/
-│   │   ├── components/             # Reusable Components
-│   │   │   ├── ui/                 # Base UI components
-│   │   │   ├── forms/             # Form components
-│   │   │   └── layout/            # Layout components
-│   │   │       ├── AdminLayout.tsx
-│   │   │       ├── CustomerLayout.tsx
-│   │   │       └── SuperAdminLayout.tsx
-│   │   ├── pages/                 # Page Components
-│   │   │   ├── super-admin/       # SaaS Operations pages
-│   │   │   ├── admin/             # Admin pages
-│   │   │   ├── customer/          # Customer pages (Home, Booking, MyBookings, Profile)
-│   │   │   └── auth/              # Auth pages
-│   │   ├── hooks/                 # Custom Hooks
-│   │   ├── services/              # API Services
-│   │   ├── context/               # React Context
-│   │   ├── utils/                 # Utilities
-│   │   ├── types/                 # TypeScript types
-│   │   └── App.tsx
+├── frontend/                       # Next.js 14 Application (App Router)
+│   ├── app/                        # App Router (file-based routing)
+│   │   ├── (super-admin)/          # Super-admin route group
+│   │   │   ├── layout.tsx
+│   │   │   ├── dashboard/page.tsx
+│   │   │   ├── tenants/page.tsx
+│   │   │   ├── subscriptions/page.tsx
+│   │   │   ├── billing/page.tsx
+│   │   │   └── settings/page.tsx
+│   │   ├── (admin)/                # Admin route group
+│   │   │   ├── layout.tsx
+│   │   │   ├── dashboard/page.tsx
+│   │   │   ├── branches/page.tsx
+│   │   │   ├── vehicles/page.tsx
+│   │   │   ├── bookings/page.tsx
+│   │   │   ├── customers/page.tsx
+│   │   │   ├── reports/page.tsx
+│   │   │   └── settings/page.tsx
+│   │   ├── (customer)/             # Customer route group (public + portal)
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx            # Home (public catalog)
+│   │   │   ├── booking/page.tsx    # Booking form
+│   │   │   ├── my-bookings/page.tsx
+│   │   │   └── profile/page.tsx
+│   │   ├── (auth)/                 # Auth route group
+│   │   │   ├── login/page.tsx
+│   │   │   ├── register/page.tsx
+│   │   │   └── forgot-password/page.tsx
+│   │   ├── api/                    # Route handlers (e.g., auth callback)
+│   │   ├── layout.tsx              # Root layout
+│   │   ├── page.tsx                # Root page (redirects to /login or dashboard)
+│   │   └── globals.css
+│   ├── components/                 # Reusable Components
+│   │   ├── ui/                     # Base UI components
+│   │   ├── forms/                  # Form components
+│   │   └── layout/                 # Layout components
+│   ├── lib/                        # Utilities, services, hooks
+│   │   ├── hooks/                  # Custom Hooks
+│   │   ├── services/               # API Services
+│   │   ├── context/                # React Context (Client Components)
+│   │   ├── utils/                  # Utilities
+│   │   └── types/                  # TypeScript types
 │   ├── public/
+│   ├── next.config.mjs
+│   ├── tailwind.config.ts
 │   ├── package.json
-│   ├── vite.config.ts
 │   └── Dockerfile
 │
 ├── docker-compose.yml              # Docker Compose for local dev
@@ -166,10 +189,65 @@ backend/src/main/java/com/carrental/
 
 ---
 
-## 3. Frontend Structure (React)
+## 3. Frontend Structure (Next.js)
 
 ```
-frontend/src/
+frontend/
+│
+├── app/                            # App Router (file-based routing)
+│   ├── (super-admin)/              # Super-admin route group (no URL segment)
+│   │   ├── layout.tsx              # SuperAdminLayout
+│   │   ├── dashboard/
+│   │   │   └── page.tsx            # /super-admin/dashboard
+│   │   ├── tenants/
+│   │   │   └── page.tsx            # /super-admin/tenants
+│   │   ├── subscriptions/
+│   │   │   └── page.tsx            # /super-admin/subscriptions
+│   │   ├── billing/
+│   │   │   └── page.tsx            # /super-admin/billing
+│   │   └── settings/
+│   │       └── page.tsx            # /super-admin/settings
+│   │
+│   ├── (admin)/                    # Admin route group (no URL segment)
+│   │   ├── layout.tsx              # AdminLayout
+│   │   ├── dashboard/
+│   │   │   └── page.tsx            # /admin/dashboard
+│   │   ├── branches/
+│   │   │   └── page.tsx            # /admin/branches
+│   │   ├── vehicles/
+│   │   │   └── page.tsx            # /admin/vehicles
+│   │   ├── bookings/
+│   │   │   └── page.tsx            # /admin/bookings
+│   │   ├── customers/
+│   │   │   └── page.tsx            # /admin/customers
+│   │   ├── reports/
+│   │   │   └── page.tsx            # /admin/reports
+│   │   └── settings/
+│   │       └── page.tsx            # /admin/settings
+│   │
+│   ├── (customer)/                 # Customer route group (public + portal)
+│   │   ├── layout.tsx              # CustomerLayout
+│   │   ├── page.tsx                # / (Home — public catalog)
+│   │   ├── booking/
+│   │   │   └── page.tsx            # /booking
+│   │   ├── my-bookings/
+│   │   │   └── page.tsx            # /my-bookings
+│   │   └── profile/
+│   │       └── page.tsx            # /profile
+│   │
+│   ├── (auth)/                     # Auth route group
+│   │   ├── login/
+│   │   │   └── page.tsx            # /login
+│   │   ├── register/
+│   │   │   └── page.tsx            # /register
+│   │   └── forgot-password/
+│   │       └── page.tsx            # /forgot-password
+│   │
+│   ├── api/                        # Route handlers (e.g., /api/auth/[...nextauth])
+│   │
+│   ├── layout.tsx                  # Root layout (shared chrome, providers)
+│   ├── page.tsx                    # Root page (redirects based on auth)
+│   └── globals.css                 # Tailwind base styles
 │
 ├── components/                     # Reusable Components
 │   ├── ui/                         # Base UI components
@@ -185,71 +263,42 @@ frontend/src/
 │   │   ├── VehicleForm.tsx
 │   │   └── CustomerForm.tsx
 │   └── layout/                     # Layout components
-│       ├── AdminLayout.tsx
-│       ├── CustomerLayout.tsx
-│       ├── SuperAdminLayout.tsx
 │       ├── Header.tsx
 │       └── Sidebar.tsx
 │
-├── pages/                          # Page Components
-│   ├── super-admin/                # SaaS Operations pages
-│   │   ├── Dashboard.tsx
-│   │   ├── TenantList.tsx
-│   │   ├── SubscriptionConfig.tsx
-│   │   ├── BillingApproval.tsx
-│   │   └── Settings.tsx
-│   ├── admin/                      # Admin pages
-│   │   ├── Dashboard.tsx
-│   │   ├── BranchList.tsx
-│   │   ├── VehicleList.tsx
-│   │   ├── BookingList.tsx
-│   │   ├── CustomerList.tsx
-│   │   ├── ReportList.tsx
-│   │   └── Settings.tsx
-│   ├── customer/                  # Customer pages (Public & Portal)
-│   │   ├── Home.tsx                # Catalog & Search (Public)
-│   │   ├── BookingPage.tsx         # Booking Form (Public/Portal)
-│   │   ├── MyBookings.tsx          # Booking History (Portal)
-│   │   └── Profile.tsx             # Customer Profile (Portal)
-│   └── auth/                      # Auth pages
-│       ├── Login.tsx
-│       ├── Register.tsx
-│       └── ForgotPassword.tsx
+├── lib/                            # Utilities, services, hooks
+│   ├── hooks/                      # Custom Hooks
+│   │   ├── useAuth.ts
+│   │   ├── useTenant.ts
+│   │   ├── useBooking.ts
+│   │   └── useToast.ts
+│   ├── services/                   # API Services
+│   │   ├── api.ts                  # Axios instance
+│   │   ├── authService.ts
+│   │   ├── tenantService.ts
+│   │   ├── branchService.ts
+│   │   ├── vehicleService.ts
+│   │   ├── bookingService.ts
+│   │   └── paymentService.ts
+│   ├── context/                    # React Context (Client Components only)
+│   │   ├── AuthContext.tsx
+│   │   ├── TenantContext.tsx
+│   │   └── ToastContext.tsx
+│   ├── utils/                      # Utilities
+│   │   ├── dateUtils.ts
+│   │   ├── priceUtils.ts
+│   │   └── validationUtils.ts
+│   └── types/                      # TypeScript types
+│       ├── tenant.ts
+│       ├── vehicle.ts
+│       ├── booking.ts
+│       └── api.ts
 │
-├── hooks/                          # Custom Hooks
-│   ├── useAuth.ts
-│   ├── useTenant.ts
-│   ├── useBooking.ts
-│   └── useToast.ts
-│
-├── services/                       # API Services
-│   ├── api.ts                      # Axios instance
-│   ├── authService.ts
-│   ├── tenantService.ts
-│   ├── branchService.ts
-│   ├── vehicleService.ts
-│   ├── bookingService.ts
-│   └── paymentService.ts
-│
-├── context/                        # React Context
-│   ├── AuthContext.tsx
-│   ├── TenantContext.tsx
-│   └── ToastContext.tsx
-│
-├── utils/                          # Utilities
-│   ├── dateUtils.ts
-│   ├── priceUtils.ts
-│   └── validationUtils.ts
-│
-├── types/                          # TypeScript types
-│   ├── tenant.ts
-│   ├── vehicle.ts
-│   ├── booking.ts
-│   └── api.ts
-│
-├── App.tsx
-├── main.tsx
-└── index.css
+├── public/
+├── next.config.mjs
+├── tailwind.config.ts
+├── package.json
+└── Dockerfile
 ```
 
 ---
@@ -270,7 +319,7 @@ frontend/src/
 | Entity | PascalCase | `Booking` |
 | DTO | PascalCase + Suffix | `BookingRequest`, `BookingResponse` |
 
-### 4.2 Frontend (React/TypeScript)
+### 4.2 Frontend (Next.js/TypeScript)
 
 | Type | Convention | Example |
 |------|------------|---------|
@@ -330,7 +379,7 @@ public List<Vehicle> getVehicles(HttpServletRequest request) {
 
 ```typescript
 // 1. Use TypeScript strict mode
-// 2. Use functional components with hooks
+// 2. Server Components by default; add 'use client' only when needed (state, effects, browser APIs)
 // 3. Use absolute imports
 import { Button } from '@/components/ui/Button';
 
@@ -338,9 +387,10 @@ import { Button } from '@/components/ui/Button';
 // Bad: VehicleForm.tsx (handles form + API calls + validation)
 // Good: VehicleForm.tsx (form only) + useVehicleForm.ts (logic)
 
-// 5. Use React Query for data fetching
-// 6. Use Zustand or Context for state management
-// 7. Write unit tests for components
+// 5. Use TanStack Query (React Query) for client-side data fetching
+// 6. Use Server Components + Server Actions for mutations when possible
+// 7. Use React Context (Client Components) or Zustand for client state
+// 8. Write unit tests for components (Vitest + Testing Library)
 ```
 
 ### 5.3 Git Rules

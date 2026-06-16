@@ -1,5 +1,8 @@
 # Car Rental SaaS - Project Information
 
+## Yêu cầu
+Xây dựng hệ thống quản lý, cho thuê xe du lịch tới khách hàng lẻ. Yêu cầu đi theo hướng Saas(B2B Saas). Hệ thống theo mô hình kiến trúc phần mềm Multi-tenant, mô hình nghiệp vụ sẽ là Multi-branch. Sản phẩm phải phù hợp với xu hướng, xu thế hiện tại
+
 ## 1. Tên Dự án
 **Car Rental SaaS Platform**
 
@@ -36,7 +39,7 @@ Hệ thống quản lý và cho thuê xe du lịch tới khách hàng lẻ, hỗ
 | Role | Trách nhiệm | Tech Stack |
 |------|-------------|------------|
 | **Backend Lead** | Spring Boot APIs, Security, Database | Java 17, Spring Boot 3.x, PostgreSQL |
-| **Frontend Lead** | React UI/UX, Components, Pages | React 18, TypeScript, Vite |
+| **Frontend Lead** | Next.js UI/UX, Components, Pages | Next.js 14, React 18, TypeScript |
 | **DevOps/Shared** | Docker, CI/CD, Infrastructure | Docker, Docker Compose |
 
 ### 4.2 Stakeholders
@@ -116,7 +119,7 @@ Ví dụ (xe base_price = 500,000đ/ngày):
 
 | Environment | URL | Purpose |
 |-------------|-----|---------|
-| Local Development | localhost:8080 (API), localhost:5173 (UI) | Development |
+| Local Development | localhost:8080 (API), localhost:3000 (UI) | Development |
 | Staging | staging.carrental-saas.com | UAT, Testing |
 | Production | production.carrental-saas.com | Live users |
 

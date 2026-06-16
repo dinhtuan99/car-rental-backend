@@ -297,5 +297,5 @@ Simple payments        →     Multi-payment gateway   →     Subscription mode
 | **Tại sao phải theo xu hướng?** | Khách hàng kỳ vọng trải nghiệm như Netflix, Grab, Airbnb |
 | **Không theo xu hướng thì sao?** | Sản phẩm lỗi thời ngay khi ra mắt, khách hàng không adopt |
 | **Làm sao không đi theo lối mòn?** | Cloud-native + API-first + AI-powered + Mobile-first |
-| **Tech stack nào đủ hiện đại?** | Spring Boot 3 + React 18 + PostgreSQL + Redis + Cloud |
+| **Tech stack nào đủ hiện đại?** | Spring Boot 3 + Next.js 14 (React 18) + PostgreSQL + Redis + Cloud |
 | **Điều gì làm khác biệt?** | AI pricing + Real-time tracking + Self-service + EV support |

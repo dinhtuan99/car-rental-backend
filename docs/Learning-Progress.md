@@ -27,7 +27,7 @@
 | Spring Boot 3.x | Can implement basic CRUD APIs | Week 3 |
 | Spring Security + JWT | Understand auth flow, implement JWT | Week 3 |
 | Spring Data JPA | Repository pattern, migrations | Week 3 |
-| React 18 + Vite | Component architecture, hooks | Week 4 |
+| Next.js 14 (App Router) | Server/Client Components, routing, data fetching | Week 4 |
 | PostgreSQL Multi-tenant | RLS, isolation patterns | Week 4 |
 | Docker | Containerize app | Week 4 |
 
@@ -38,7 +38,7 @@
 | Name | Role | Primary Track | Secondary Track |
 |------|------|---------------|-----------------|
 | Backend Lead | Backend | Spring Boot, Security, JPA | Docker |
-| Frontend Lead | Frontend | React 18, Vite, TypeScript | API Integration |
+| Frontend Lead | Frontend | Next.js 14, React 18, TypeScript | API Integration |
 | DevOps/Shared | DevOps | Docker, CI/CD | PostgreSQL |
 
 ---
@@ -149,7 +149,7 @@ Multi-tenant Security
 
 ---
 
-### Track 3: React 18 + Vite
+### Track 3: Next.js 14 (App Router)
 
 **Assigned to:** Frontend Lead
 **Status:** 🔄 In Progress
@@ -158,37 +158,36 @@ Multi-tenant Security
 
 | Topic | Sub-topics | Estimated Time | Status |
 |-------|------------|----------------|--------|
-| React Fundamentals | Components, JSX, Props, State | 4 hours | ☐ |
-| Hooks | useState, useEffect, useContext, useReducer | 4 hours | ☐ |
-| Vite Setup | Project structure, Configuration | 2 hours | ☐ |
+| Next.js Fundamentals | App Router, file-based routing, layouts | 4 hours | ☐ |
+| Server vs Client Components | When to use 'use client', data fetching patterns | 4 hours | ☐ |
+| Next.js Project Setup | `create-next-app`, `next.config.mjs`, TailwindCSS, TS config | 2 hours | ☐ |
 | TypeScript | Types, Interfaces, Generics | 3 hours | ☐ |
-| Component Patterns | Composition, HOC, Custom hooks | 3 hours | ☐ |
-| State Management | Context, React Query | 4 hours | ☐ |
+| Data Fetching | Server Components fetch, Server Actions, TanStack Query (Client) | 3 hours | ☐ |
+| State Management | React Context (Client Components), Zustand | 4 hours | ☐ |
 
 #### Progress Checklist
 
 ```
-React Fundamentals
-  ☐ Functional Components
-  ☐ JSX syntax
-  ☐ Props and Children
-  ☐ Conditional rendering
-  ☐ Lists and keys
+Next.js Fundamentals
+  ☐ App Router vs Pages Router
+  ☐ File-based routing (page.tsx, layout.tsx)
+  ☐ Route groups (group)/ and parallel routes
+  ☐ Root layout vs nested layout
+  ☐ Loading and error UI (loading.tsx, error.tsx)
 
-Hooks
-  ☐ useState (primitive, object, array)
-  ☐ useEffect (mount, update, cleanup)
-  ☐ useContext (create, provider, consumer)
-  ☐ useReducer (actions, reducers)
-  ☐ useCallback and useMemo
-  ☐ Custom hooks
+Server vs Client Components
+  ☐ Server Components by default
+  ☐ 'use client' directive
+  ☐ Composing Server + Client Components
+  ☐ Passing server data to client components
+  ☐ When NOT to use Server Components
 
-Vite Setup
-  ☐ Project initialization
-  ☐ TypeScript configuration
+Next.js Project Setup
+  ☐ create-next-app with App Router + TypeScript + TailwindCSS
+  ☐ next.config.mjs (images, redirects, env)
   ☐ Path aliases (@/)
-  ☐ Environment variables
-  ☐ Build configuration
+  ☐ Environment variables (.env.local)
+  ☐ Build and run scripts
 
 TypeScript
   ☐ Basic types
@@ -197,18 +196,19 @@ TypeScript
   ☐ Utility types
   ☐ Type guards
 
-Component Patterns
-  ☐ Component composition
-  ☐ Render props
-  ☐ Custom hooks
-  ☐ Error boundaries
+Data Fetching
+  ☐ fetch in Server Components
+  ☐ Caching and revalidation
+  ☐ Server Actions for mutations
+  ☐ TanStack Query for client-side
+  ☐ Optimistic updates
 
 State Management
-  ☐ React Context
+  ☐ React Context (Client Components)
   ☐ useContext patterns
-  ☐ React Query (TanStack Query)
-  ☐ Query caching
-  ☐ Mutations
+  ☐ Zustand for global state
+  ☐ Server-side data as state
+  ☐ Form state with Server Actions
 ```
 
 ---
@@ -277,7 +277,7 @@ Migrations
 | Docker Basics | Images, Containers, Dockerfile | 2 hours | ☐ |
 | Docker Compose | Multi-container setup | 2 hours | ☐ |
 | Backend Dockerization | Spring Boot + PostgreSQL | 2 hours | ☐ |
-| Frontend Dockerization | React + Nginx | 2 hours | ☐ |
+| Frontend Dockerization | Next.js (standalone output) | 2 hours | ☐ |
 | CI/CD Basics | GitHub Actions | 2 hours | ☐ |
 
 #### Progress Checklist
@@ -327,7 +327,7 @@ CI/CD Basics
 |-------------|-------|--------|---------|-----------|----------|--------|
 | Backend Lead | Spring Boot | ☐ | ☐ | ☐ | ☐ | ☐ |
 | Backend Lead | Security + JWT | ☐ | ☐ | ☐ | ☐ | ☐ |
-| Frontend Lead | React 18 | ☐ | ☐ | ☐ | ☐ | ☐ |
+| Frontend Lead | Next.js 14 | ☐ | ☐ | ☐ | ☐ | ☐ |
 | DevOps/Shared | Docker | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 ### Week 4 Progress (2026-06-15 to 2026-06-19)
@@ -336,7 +336,7 @@ CI/CD Basics
 |-------------|-------|--------|---------|-----------|----------|--------|
 | Backend Lead | Spring Boot | ☐ | ☐ | ☐ | ☐ | ☐ |
 | Backend Lead | Security + JWT | ☐ | ☐ | ☐ | ☐ | ☐ |
-| Frontend Lead | React 18 | ☐ | ☐ | ☐ | ☐ | ☐ |
+| Frontend Lead | Next.js 14 | ☐ | ☐ | ☐ | ☐ | ☐ |
 | DevOps/Shared | Docker | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 ---
@@ -353,14 +353,15 @@ CI/CD Basics
 | Spring Data JPA | https://www.baeldung.com/spring-data-jpa | 4h | ☐ |
 | Building REST APIs | https://www.baeldung.com/rest-with-spring-series | 4h | ☐ |
 
-### React Learning Resources
+### Next.js Learning Resources
 
 | Resource | URL | Time | Status |
 |----------|-----|------|--------|
-| React Official Tutorial | https://react.dev/learn | 4h | ☐ |
-| Vite Guide | https://vitejs.dev/guide/ | 2h | ☐ |
+| Next.js Learn Course | https://nextjs.org/learn | 4h | ☐ |
+| Next.js App Router Docs | https://nextjs.org/docs/app | 4h | ☐ |
+| React Official Tutorial (foundation) | https://react.dev/learn | 2h | ☐ |
 | TypeScript Handbook | https://www.typescriptlang.org/docs/ | 4h | ☐ |
-| React Query Guide | https://tanstack.com/query/latest | 3h | ☐ |
+| TanStack Query Guide | https://tanstack.com/query/latest | 3h | ☐ |
 
 ### Docker Learning Resources
 
@@ -387,7 +388,7 @@ CI/CD Basics
 |-------|----------|---------------|
 | Spring Boot 3.x | Complete sample CRUD API + tests | Spring Boot Certificate |
 | Spring Security + JWT | Implement auth flow with JWT | Security Certificate |
-| React 18 + Vite | Build 1 feature page with component library | React Certificate |
+| Next.js 14 (App Router) | Build 1 feature page with component library | Next.js Certificate |
 | PostgreSQL Multi-tenant | Implement RLS for 1 table | PostgreSQL Certificate |
 | Docker | Containerize backend + frontend | Docker Certificate |
 
@@ -397,7 +398,7 @@ CI/CD Basics
 |------------|--------|---------------|
 | Spring Boot | Coding challenge (2 hours) | 70% |
 | Spring Security | Security audit (1 hour) | 80% |
-| React | Build a page from mockup (3 hours) | 70% |
+| Next.js | Build a page from mockup (3 hours) | 70% |
 | PostgreSQL | Design multi-tenant schema (1 hour) | 80% |
 | Docker | Dockerize a sample app (2 hours) | 70% |
 

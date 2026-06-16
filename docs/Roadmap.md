@@ -18,7 +18,7 @@
 
 ```
 Week 1-2     │ Architecture & Design Documents ✅
-Week 3-4     │ Tech Learning (Spring Boot + React)
+Week 3-4     │ Tech Learning (Spring Boot + Next.js)
 Week 5-8     │ Phase 1: Core Infrastructure
 Week 9-12    │ Phase 2: MVP Features
 Week 13-14   │ Phase 3: Polish & Testing
@@ -49,13 +49,13 @@ Total: ~4 tháng (full-time)
 | 3 | Spring Boot 3.x fundamentals | Spring Core, IoC, DI | Có Java cơ bản thì nhanh hơn |
 | 3 | Spring Security + JWT | Auth flow, token handling | Quan trọng cho multi-tenant |
 | 3 | Spring Data JPA | Repository pattern, migrations | Database access |
-| 4 | React 18 + Vite | Component pattern, hooks | Frontend Lead |
+| 4 | Next.js 14 (App Router) | Server/Client Components, routing, data fetching | Frontend Lead |
 | 4 | PostgreSQL deep dive | Multi-tenant patterns | Cần cho isolation |
 | 4 | Docker basics | Containerize app | DevOps/Shared |
 
 **Learning Resources:**
 - Spring: [Baeldung Spring Boot Course](https://baeldung.com/spring-boot) - ~20h
-- React: [React Official Tutorial](https://react.dev/learn) - ~15h
+- Next.js: [Next.js Learn Course](https://nextjs.org/learn) - ~15h
 - PostgreSQL Multi-tenant: [PostgreSQL Documentation](https://www.postgresql.org/docs/) - ~5h
 - Docker: [Docker Official Tutorial](https://docs.docker.com/get-started/) - ~8h
 
@@ -65,9 +65,9 @@ Total: ~4 tháng (full-time)
 
 ## 3. Phase 1: Core Infrastructure (Week 5-8)
 
-| Week | Backend (Spring) | Frontend (React) | Infrastructure |
-|------|------------------|------------------|----------------|
-| 5 | Project setup, Docker compose | Project setup, Vite config | PostgreSQL, Redis |
+| Week | Backend (Spring) | Frontend (Next.js) | Infrastructure |
+|------|------------------|--------------------|----------------|
+| 5 | Project setup, Docker compose | Project setup, Next.js config (App Router) | PostgreSQL, Redis |
 | 5 | Multi-tenant middleware | Auth context, API service | JWT infrastructure |
 | 6 | Tenant, Branch APIs | Branch management UI | - |
 | 7 | Vehicle CRUD + Status | Vehicle list, detail UI | - |
@@ -109,7 +109,7 @@ Total: ~4 tháng (full-time)
 |------|-----------|--------------|
 | 13 | Unit tests (Backend: >70% coverage) | Test reports |
 | 13 | Integration tests | API tests |
-| 13 | Frontend testing (Vitest) | Component tests |
+| 13 | Frontend testing (Vitest + Testing Library) | Component tests |
 | 14 | Bug fixes | - |
 | 14 | Performance optimization | - |
 | 14 | Security audit | Security report |
@@ -146,7 +146,7 @@ Week 15:   Deploy, Support
 
 ```
 Week 1-2:  UI/UX Design, Component library structure ✅
-Week 3-4:  Học React 18 + Vite + TailwindCSS 🔄
+Week 3-4:  Học Next.js 14 (App Router) + TailwindCSS 🔄
 Week 5-8:  Implement: Dashboard, Branch, Vehicle, Customer pages
 Week 9-12: Implement: Booking flow, Payment UI, Reports
 Week 13-14: Testing, Polish, Responsive design
@@ -171,7 +171,7 @@ Week 15:   Deploy, Documentation
 | Milestone | Target | Criteria | Status |
 |-----------|--------|----------|--------|
 | **M1: Design Done** | Week 2 | SPEC.md, API Spec, DB Schema approved | ✅ Done |
-| **M2: Tech Learning Done** | Week 4 | Team có thể code base Spring + React | 🔄 In Progress |
+| **M2: Tech Learning Done** | Week 4 | Team có thể code base Spring + Next.js | 🔄 In Progress |
 | **M3: Core Infrastructure** | Week 8 | CRUD APIs + UI hoạt động | ☐ Pending |
 | **M4: MVP Features** | Week 12 | Full booking flow + payments | ☐ Pending |
 | **M5: Testing Complete** | Week 14 | Tests passed, bugs fixed | ☐ Pending |
@@ -260,7 +260,7 @@ Week 15:   Deploy, Documentation
 ```
 car-rental-saas/
 ├── backend/              # Spring Boot (future)
-├── frontend/            # React + Vite (future)
+├── frontend/            # Next.js (future)
 ├── docs/                # This documentation
 └── docker-compose.yml   # Infrastructure
 ```

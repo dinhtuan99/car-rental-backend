@@ -25,7 +25,7 @@ A multi-tenant SaaS platform for car rental businesses — from single-branch lo
 | Layer | Technology |
 |-------|-----------|
 | Backend | Java 17, Spring Boot 3.x, Spring Security, Spring Data JPA |
-| Frontend | React 18, TypeScript, Vite |
+| Frontend | Next.js 14, React 18, TypeScript |
 | Database | PostgreSQL (shared, `tenant_id` isolation) |
 | Cache / Session | Redis |
 | File storage | MinIO / S3 |
@@ -41,7 +41,7 @@ A multi-tenant SaaS platform for car rental businesses — from single-branch lo
 car-rental-backend/
 ├── docs/          # Design documents (spec, API, schema, security, roadmap, …)
 ├── backend/       # Spring Boot application (in development)
-├── frontend/      # React + Vite application (in development)
+├── frontend/      # Next.js 14 application (App Router, in development)
 ├── docker-compose.yml
 ├── docker-compose.prod.yml
 ├── LICENSE
@@ -77,7 +77,7 @@ All design documents live under [`docs/`](docs/):
 > Source code is not yet committed. Once Phase 1 lands (target: Week 8), this section will include:
 > 1. `docker-compose up` to start PostgreSQL + Redis + backend + frontend
 > 2. Default admin credentials
-> 3. `localhost:8080` (API) and `localhost:5173` (UI)
+> 3. `localhost:8080` (API) and `localhost:3000` (UI)
 
 For now, see [Roadmap](docs/Roadmap.md) for the build plan.
 
@@ -90,7 +90,7 @@ For now, see [Roadmap](docs/Roadmap.md) for the build plan.
 | Role | Focus |
 |------|-------|
 | Backend Lead | Spring Boot APIs, security, database |
-| Frontend Lead | React UI, components, pages |
+| Frontend Lead | Next.js UI, components, pages |
 | DevOps / Shared | Docker, CI/CD, infrastructure |
 
 ---
