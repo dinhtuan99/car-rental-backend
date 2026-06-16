@@ -48,15 +48,19 @@ car-rental-saas/
 │   ├── pom.xml
 │   └── Dockerfile
 │
-├── frontend/                       # React + Vite Application
+├── frontend/                       # React + Vite Application (Customer Website & Admin Dashboard in one build or separate routes)
 │   ├── src/
 │   │   ├── components/             # Reusable Components
 │   │   │   ├── ui/                 # Base UI components
 │   │   │   ├── forms/             # Form components
 │   │   │   └── layout/            # Layout components
+│   │   │       ├── AdminLayout.tsx
+│   │   │       ├── CustomerLayout.tsx
+│   │   │       └── SuperAdminLayout.tsx
 │   │   ├── pages/                 # Page Components
+│   │   │   ├── super-admin/       # SaaS Operations pages
 │   │   │   ├── admin/             # Admin pages
-│   │   │   ├── customer/          # Customer pages
+│   │   │   ├── customer/          # Customer pages (Home, Booking, MyBookings, Profile)
 │   │   │   └── auth/              # Auth pages
 │   │   ├── hooks/                 # Custom Hooks
 │   │   ├── services/              # API Services
@@ -183,10 +187,17 @@ frontend/src/
 │   └── layout/                     # Layout components
 │       ├── AdminLayout.tsx
 │       ├── CustomerLayout.tsx
+│       ├── SuperAdminLayout.tsx
 │       ├── Header.tsx
 │       └── Sidebar.tsx
 │
 ├── pages/                          # Page Components
+│   ├── super-admin/                # SaaS Operations pages
+│   │   ├── Dashboard.tsx
+│   │   ├── TenantList.tsx
+│   │   ├── SubscriptionConfig.tsx
+│   │   ├── BillingApproval.tsx
+│   │   └── Settings.tsx
 │   ├── admin/                      # Admin pages
 │   │   ├── Dashboard.tsx
 │   │   ├── BranchList.tsx
@@ -195,11 +206,11 @@ frontend/src/
 │   │   ├── CustomerList.tsx
 │   │   ├── ReportList.tsx
 │   │   └── Settings.tsx
-│   ├── customer/                  # Customer pages
-│   │   ├── Home.tsx
-│   │   ├── BookingPage.tsx
-│   │   ├── MyBookings.tsx
-│   │   └── Profile.tsx
+│   ├── customer/                  # Customer pages (Public & Portal)
+│   │   ├── Home.tsx                # Catalog & Search (Public)
+│   │   ├── BookingPage.tsx         # Booking Form (Public/Portal)
+│   │   ├── MyBookings.tsx          # Booking History (Portal)
+│   │   └── Profile.tsx             # Customer Profile (Portal)
 │   └── auth/                      # Auth pages
 │       ├── Login.tsx
 │       ├── Register.tsx

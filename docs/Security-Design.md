@@ -106,6 +106,19 @@
 }
 ```
 
+#### Super Admin Access Token Payload
+```json
+{
+  "sub": "super-admin-uuid",
+  "tenant_id": null,
+  "email": "superadmin@saas-carrental.com",
+  "role": "SUPER_ADMIN",
+  "type": "access",
+  "iat": 1704067200,
+  "exp": 1704068100
+}
+```
+
 #### Refresh Token Payload
 ```json
 {
@@ -142,6 +155,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/public/**").permitAll()
+                .requestMatchers("/api/v1/super-admin/**").hasRole("SUPER_ADMIN")
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
@@ -162,6 +176,10 @@ public class SecurityConfig {
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                        Role Hierarchy                                     │
 │                                                                              │
+│                         SUPER_ADMIN                                         │
+│                    (Global SaaS Operations)                                 │
+│                           │                                                 │
+│                           ▼                                                 │
 │                         TENANT_ADMIN                                        │
 │                    (Full access to tenant)                                  │
 │                           │                                                 │
@@ -176,12 +194,13 @@ public class SecurityConfig {
 
 ### 3.2 Role Permissions
 
-| Role | Tenant Data | Branch Data | Booking | Payment | Report | Settings |
-|------|-------------|------------|---------|---------|--------|----------|
-| TENANT_ADMIN | RW | RW | RW | RW | RW | RW |
-| CENTRAL_MANAGER | R | RW (all) | RW | R | RW | - |
-| BRANCH_MANAGER | R | RW (own) | RW | R | R | - |
-| STAFF | R | R (own) | RW (limited) | R | - | - |
+| Role | Tenant Data | Branch Data | Booking | Payment | Report | Settings | System Config |
+|------|-------------|------------|---------|---------|--------|----------|---------------|
+| SUPER_ADMIN | RW (all) | RW (all) | RW (all) | RW (all) | RW (all) | RW (all) | RW |
+| TENANT_ADMIN | RW | RW | RW | RW | RW | RW | - |
+| CENTRAL_MANAGER | R | RW (all) | RW | R | RW | - | - |
+| BRANCH_MANAGER | R | RW (own) | RW | R | R | - | - |
+| STAFF | R | R (own) | RW (limited) | R | - | - | - |
 
 ### 3.3 Method-Level Security
 
@@ -203,6 +222,11 @@ public class BookingService {
     public void deleteBooking(UUID bookingId) {
         // Only tenant admin can delete bookings
     }
+
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    public void deactivateTenant(UUID tenantId) {
+        // Only Super Admin can deactivate a tenant
+    }
 }
 ```
 
@@ -218,7 +242,7 @@ public class BookingService {
 │                                                                              │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
 │  │                     JWT Token Contains:                              │    │
-│  │  - tenant_id (UUID)                                                  │    │
+│  │  - tenant_id (UUID, nullable for SUPER_ADMIN)                        │    │
 │  │  - user_id (UUID)                                                    │    │
 │  │  - role (string)                                                      │    │
 │  └─────────────────────────────────────────────────────────────────────┘    │
@@ -229,7 +253,8 @@ public class BookingService {
 │  │  1. Extract token from Authorization header                        │    │
 │  │  2. Validate token signature & expiration                           │    │
 │  │  3. Extract tenant_id from token claims                             │    │
-│  │  4. Set TenantContext.setCurrentTenant(tenant_id)                   │    │
+│  │  4. If tenant_id != null, set TenantContext.setCurrentTenant(id)   │    │
+│  │     Else if role == 'SUPER_ADMIN', TenantContext.setTenantId(null)   │    │
 │  └─────────────────────────────────────────────────────────────────────┘    │
 │                              │                                              │
 │                              ▼                                              │
@@ -259,8 +284,10 @@ public class BookingService {
 │  │          JpaSpecificationExecutor<Vehicle> {                         │    │
 │  │                                                                      │    │
 │  │      default Specification<Vehicle> withTenant(UUID tenantId) {     │    │
-│  │          return (root, query, cb) ->                                 │    │
-│  │              cb.equal(root.get("tenantId"), tenantId);               │    │
+│  │          return (root, query, cb) -> {                               │    │
+│  │              if (tenantId == null) return cb.conjunction(); // Bypassed│    │
+│  │              return cb.equal(root.get("tenantId"), tenantId);        │    │
+│  │          };                                                          │    │
 │  │      }                                                               │    │
 │  │  }                                                                   │    │
 │  │                                                                      │    │

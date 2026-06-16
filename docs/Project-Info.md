@@ -23,9 +23,9 @@ Hệ thống quản lý và cho thuê xe du lịch tới khách hàng lẻ, hỗ
 
 | Ứng dụng | Mô tả | Người dùng |
 |----------|-------|------------|
+| **SaaS Admin Portal** | Trang quản trị toàn hệ thống SaaS: Quản lý tenant, subscription, cấu hình dùng chung và báo cáo tổng thể doanh thu nền tảng. | Đội ngũ vận hành hệ thống (Super Admin, Support, Billing Operations) |
 | **Admin Dashboard** | Trang quản lý cho nhà xe | Nhân viên, quản lý nhà xe |
-| **Public Website** | Trang đặt xe công khai | Khách hàng thuê xe |
-| **Customer Portal** | Trang cá nhân của khách hàng | Khách hàng đã đặt |
+| **Customer Website** | Trang đặt xe công khai kết hợp cổng thông tin cá nhân (quản lý lịch sử thuê xe, hồ sơ cá nhân). | Khách hàng thuê xe (Vãng lai & Đã có tài khoản) |
 
 ---
 
@@ -56,6 +56,7 @@ Hệ thống quản lý và cho thuê xe du lịch tới khách hàng lẻ, hỗ
 
 | Module | Chức năng | Priority |
 |--------|-----------|----------|
+| **SaaS Platform Operations** | Quản lý tenants, duyệt subscription, cấu hình tham số hệ thống dùng chung, xem báo cáo doanh thu platform. | P0 |
 | **Tenant Management** | Đăng ký, đăng nhập, quản lý subscription (FREE/BASIC/PRO/ENTERPRISE) | P0 |
 | **Branch Management** | CRUD chi nhánh, đánh dấu central branch | P0 |
 | **Vehicle Management** | CRUD xe, theo dõi trạng thái (available/rented/maintenance) | P0 |
@@ -99,7 +100,7 @@ Ví dụ (xe base_price = 500,000đ/ngày):
 | **Mô hình** | Multi-tenant SaaS (1 app, nhiều khách hàng) |
 | **Architecture** | Monolithic (MVP), có thể chuyển Microservices sau |
 | **Database** | Shared PostgreSQL với tenant_id isolation |
-| **Authentication** | JWT with access/refresh tokens |
+| **Authentication** | JWT with access/refresh tokens. Tenant users isolated under `tenant_id`. Super Admin has global scope (tenant_id = null). |
 | **Deployment** | Docker containers, Cloud deployment |
 | **Scalability** | 10 → 1000+ tenants without code change |
 

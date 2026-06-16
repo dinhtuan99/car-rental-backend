@@ -112,6 +112,33 @@ CENTRAL MANAGER:
  └── Lên kế hoạch bảo dưỡng định kỳ
 ```
 
+### 2.3 SaaS Platform Operations Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                SAAS PLATFORM OPERATIONS FLOW                │
+└─────────────────────────────────────────────────────────────┘
+
+1. ĐĂNG NHẬP → SUPER ADMIN DASHBOARD
+   └── Xem tổng quan: Số lượng Tenants, Doanh thu hệ thống, Trạng thái tài nguyên
+
+2. QUẢN LÝ TENANTS (NHÀ XE)
+ ├── Xem danh sách tất cả các tenants
+ ├── Phê duyệt/kích hoạt tenant mới đăng ký
+ ├── Khóa/Tạm ngưng tenant vi phạm điều khoản hoặc nợ phí
+ └── Xem chi tiết thông tin, dung lượng sử dụng của từng tenant
+
+3. QUẢN LÝ SUBSCRIPTION PLANS & BILLING
+ ├── Cấu hình các gói dịch vụ (FREE, BASIC, PRO, ENTERPRISE)
+ ├── Duyệt các yêu cầu thanh toán / gia hạn gói dịch vụ từ các tenants
+ └── Tra cứu lịch sử thanh toán toàn hệ thống
+
+4. CẤU HÌNH HỆ THỐNG & GIÁM SÁT
+ ├── Cấu hình cổng thanh toán dùng chung (VNPAY, Momo, Bank Transfer...)
+ ├── Giám sát logs hệ thống (System logs, Audit logs bảo mật)
+ └── Cấu hình template thông báo (SMS, Email OTP...)
+```
+
 ---
 
 ## 3. Customer Booking Flow
@@ -303,6 +330,7 @@ Trả về chỉ xe của Tenant B ✓
 
 | Role | Scope | Permissions |
 |------|-------|-------------|
+| **Super Admin** | Toàn hệ thống SaaS | Quản trị toàn sàn, quản lý tenant, subscription, xem log & báo cáo doanh thu toàn hệ thống |
 | **Tenant Admin** | Toàn tenant | Quản lý subscription, thêm nhân viên, xem báo cáo |
 | **Branch Manager** | 1 chi nhánh | Quản lý xe, booking, customer của chi nhánh |
 | **Staff** | 1 chi nhánh | Tiếp nhận booking, giao xe, thu tiền |
@@ -313,7 +341,7 @@ Trả về chỉ xe của Tenant B ✓
 
 ## 7. Key Screens
 
-### 7.1 Customer-facing (Public Website/App)
+### 7.1 Customer-facing (Customer Website)
 
 | Screen | Purpose |
 |--------|---------|
@@ -322,7 +350,7 @@ Trả về chỉ xe của Tenant B ✓
 | Vehicle catalog | Danh sách xe + giá |
 | Booking form | Form đặt xe |
 | Booking confirmation | Trang xác nhận + QR code |
-| Customer portal | Lịch sử thuê, thông tin cá nhân |
+| Customer portal | Cổng thông tin cá nhân: Lịch sử thuê xe, trạng thái đơn đặt, cập nhật thông tin cá nhân (CCCD, GPLX) |
 
 ### 7.2 Tenant-facing (Admin Dashboard)
 
@@ -337,3 +365,14 @@ Trả về chỉ xe của Tenant B ✓
 | Transfer management | Request/approve transfer |
 | Reports | Doanh thu, thống kê |
 | Settings | Tenant info, users, subscription |
+
+### 7.3 SaaS Admin-facing (Super Admin Portal)
+
+| Screen | Purpose |
+|--------|---------|
+| Overview Dashboard | Tổng quan KPIs toàn hệ thống (Doanh thu SaaS, Active Tenants...) |
+| Tenant Directory | Quản lý danh sách các nhà xe đăng ký hệ thống (Kích hoạt/Tạm khóa) |
+| Subscription Configurations | Thiết lập và quản lý cấu hình các gói dịch vụ (FREE/BASIC/PRO...) |
+| Billing & Payments | Duyệt và đối soát các giao dịch thanh toán gói dịch vụ của các Tenant |
+| Global Settings | Cấu hình tham số hệ thống dùng chung (Cổng thanh toán, Email/SMS Gateway...) |
+| System Logs & Audits | Theo dõi lịch sử thao tác của các Tenant Admin và các log nghiệp vụ quan trọng |

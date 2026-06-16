@@ -3,14 +3,17 @@
 ## Mục lục
 1. [Overview](#1-overview)
 2. [Authentication](#2-authentication)
-3. [Tenant APIs](#3-tenant-apis)
-4. [Branch APIs](#4-branch-apis)
-5. [Vehicle APIs](#5-vehicle-apis)
-6. [Customer APIs](#6-customer-apis)
-7. [Booking APIs](#7-booking-apis)
-8. [Payment APIs](#8-payment-apis)
-9. [Pricing APIs](#9-pricing-apis)
-10. [Report APIs](#10-report-apis)
+3. [Super Admin APIs](#3-super-admin-apis)
+4. [Tenant APIs](#4-tenant-apis)
+5. [Branch APIs](#5-branch-apis)
+6. [Vehicle APIs](#6-vehicle-apis)
+7. [Customer APIs](#7-customer-apis)
+8. [Booking APIs](#8-booking-apis)
+9. [Payment APIs](#9-payment-apis)
+10. [Pricing APIs](#10-pricing-apis)
+11. [Report APIs](#11-report-apis)
+12. [Vehicle Transfer APIs](#12-vehicle-transfer-apis)
+13. [Public & Customer Portal APIs](#13-public--customer-portal-apis)
 
 ---
 
@@ -75,7 +78,7 @@ POST /auth/login
 }
 ```
 
-**Response:**
+**Response (Tenant Admin / Staff):**
 ```json
 {
   "success": true,
@@ -93,6 +96,25 @@ POST /auth/login
       "email": "admin@tenantA.com",
       "name": "Nguyen Van A",
       "role": "TENANT_ADMIN"
+    }
+  }
+}
+```
+
+**Response (Super Admin):**
+```json
+{
+  "success": true,
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
+    "expiresIn": 3600,
+    "tenant": null,
+    "user": {
+      "id": "uuid",
+      "email": "superadmin@saas-carrental.com",
+      "name": "Super Admin System",
+      "role": "SUPER_ADMIN"
     }
   }
 }
@@ -130,7 +152,89 @@ POST /auth/refresh
 
 ---
 
-## 3. Tenant APIs
+## 3. Super Admin APIs
+
+Endpoints under `/api/v1/super-admin/**` are restricted to `SUPER_ADMIN` only.
+
+### 3.1 List Tenants
+
+```
+GET /super-admin/tenants
+```
+
+**Query Parameters:**
+- `page`, `size` (int): Pagination
+- `search` (string): Search by tenant name or domain
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "content": [
+      {
+        "id": "uuid",
+        "name": "RentCar VN",
+        "domain": "rentcar-vn.com",
+        "planTier": "PRO",
+        "isActive": true,
+        "createdAt": "2024-01-01T00:00:00Z"
+      }
+    ],
+    "totalElements": 1,
+    "totalPages": 1
+  }
+}
+```
+
+### 3.2 Update Tenant Status
+
+```
+PATCH /super-admin/tenants/{tenantId}/status
+```
+
+**Request:**
+```json
+{
+  "isActive": false
+}
+```
+
+### 3.3 Manage Subscriptions
+
+```
+POST /super-admin/subscriptions/billing-approval
+```
+
+**Request:**
+```json
+{
+  "tenantId": "uuid",
+  "approved": true,
+  "transactionId": "SAAS-BILL-1002"
+}
+```
+
+### 3.4 Get System Dashboard Stats
+
+```
+GET /super-admin/dashboard/stats
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "totalTenants": 120,
+    "activeTenants": 115,
+    "totalActiveVehicles": 2500,
+    "monthlySystemRevenue": 150000000
+  }
+}
+```
+
+## 4. Tenant APIs
 
 ### 3.1 Get Tenant Info
 
@@ -688,9 +792,9 @@ GET /reports/customers
 
 ---
 
-## 11. Vehicle Transfer APIs
+## 12. Vehicle Transfer APIs
 
-### 11.1 List Transfers
+### 12.1 List Transfers
 
 ```
 GET /transfers
@@ -700,7 +804,7 @@ GET /transfers
 - `status` (string): pending, in_transit, completed
 - `fromBranchId`, `toBranchId` (UUID)
 
-### 11.2 Create Transfer Request
+### 12.2 Create Transfer Request
 
 ```
 POST /transfers
@@ -715,7 +819,7 @@ POST /transfers
 }
 ```
 
-### 11.3 Approve/Reject Transfer
+### 12.3 Approve/Reject Transfer
 
 ```
 PATCH /transfers/{transferId}/status
@@ -730,9 +834,11 @@ PATCH /transfers/{transferId}/status
 
 ---
 
-## 12. Public APIs (Customer-facing)
+## 13. Public & Customer Portal APIs
 
-### 12.1 Get Available Vehicles
+These endpoints are exposed under `/api/v1/public/**` and are consumed by the unified **Customer Website**.
+
+### 13.1 Get Available Vehicles (Public Search)
 
 ```
 GET /public/vehicles
@@ -744,13 +850,13 @@ GET /public/vehicles
 - `returnDate` (date): Required
 - `vehicleTypeId` (UUID): Optional
 
-### 12.2 Calculate Price (Public)
+### 13.2 Calculate Price (Public)
 
 ```
 GET /public/pricing?branchId=xxx&pickupDate=xxx&returnDate=xxx&vehicleTypeId=xxx
 ```
 
-### 12.3 Create Public Booking
+### 13.3 Create Booking (Public / Guest checkout)
 
 ```
 POST /public/bookings
@@ -768,5 +874,53 @@ POST /public/bookings
   },
   "pickupDate": "2024-01-20",
   "returnDate": "2024-01-22"
+}
+```
+
+### 13.4 Customer Login (Portal access)
+
+```
+POST /public/customer/login
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
+    "user": {
+      "id": "uuid",
+      "email": "customer@email.com",
+      "name": "Nguyen Van B",
+      "role": "CUSTOMER"
+    }
+  }
+}
+```
+
+### 13.5 Get My Rental History (Portal Dashboard)
+
+Requires token authentication.
+
+```
+GET /public/customer/me/bookings
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "uuid",
+      "bookingCode": "CR-2024-0001",
+      "pickupDate": "2024-01-20",
+      "returnDate": "2024-01-22",
+      "totalAmount": 1200000,
+      "status": "completed"
+    }
+  ]
 }
 ```

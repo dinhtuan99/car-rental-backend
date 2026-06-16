@@ -293,12 +293,12 @@ CREATE INDEX idx_vehicle_transfers_status ON vehicle_transfers(tenant_id, status
 ```sql
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+    tenant_id UUID REFERENCES tenants(id) ON DELETE CASCADE, -- Nullable for SUPER_ADMIN
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     name VARCHAR(255),
     role VARCHAR(20) NOT NULL
-        CHECK (role IN ('TENANT_ADMIN', 'BRANCH_MANAGER', 'STAFF', 'CENTRAL_MANAGER')),
+        CHECK (role IN ('SUPER_ADMIN', 'TENANT_ADMIN', 'BRANCH_MANAGER', 'STAFF', 'CENTRAL_MANAGER')),
     branch_id UUID REFERENCES branches(id),
     is_active BOOLEAN DEFAULT TRUE,
     last_login_at TIMESTAMP WITH TIME ZONE,
@@ -306,7 +306,7 @@ CREATE TABLE users (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_users_tenant_id ON users(tenant_id);
+CREATE INDEX idx_users_tenant_id ON users(tenant_id) WHERE tenant_id IS NOT NULL;
 CREATE INDEX idx_users_email ON users(email);
 ```
 
@@ -363,7 +363,11 @@ ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
 
 -- Create policy
 CREATE POLICY tenant_isolation ON vehicles
-    USING (tenant_id = current_setting('app.current_tenant')::uuid);
+    USING (
+        -- Allow SUPER_ADMIN to bypass isolation filter
+        (current_setting('app.current_user_role', true) = 'SUPER_ADMIN') OR
+        (tenant_id = current_setting('app.current_tenant', true)::uuid)
+    );
 ```
 
 ### 4.2 Application-Level Filtering
