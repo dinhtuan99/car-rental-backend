@@ -67,45 +67,42 @@ Total: ~4 tháng (full-time)
 
 ## 3. Phase 1: Core Infrastructure (Week 5-8)
 
-| Week | Backend (Spring) | Frontend - Admin (Angular) | Frontend - Customer (Next.js) | Infrastructure |
-|------|------------------|----------------------------|-------------------------------|----------------|
-| 5 | Project setup, Docker compose | `frontend-admin/` setup, Angular config | `frontend-customer/` setup, Next.js config (App Router) | PostgreSQL, Redis |
-| 5 | Multi-tenant middleware | Auth service, JWT/Tenant interceptors | Auth context, API service | JWT infrastructure |
-| 6 | Tenant, Branch APIs | Branch management UI (Angular) | Home + Vehicle catalog (Next.js) | - |
-| 7 | Vehicle CRUD + Status | Vehicle list, detail UI (Angular) | Vehicle search/filter (Next.js) | - |
-| 8 | Customer CRUD | Customer management UI (Angular) | Customer register/login (Next.js) | - |
+| Week | Backend (Spring) | Frontend (Next.js) | Infrastructure |
+|------|------------------|--------------------|----------------|
+| 5 | Project setup, Docker compose | Project setup, Next.js config (App Router) | PostgreSQL, Redis |
+| 5 | Multi-tenant middleware | Auth context, API service | JWT infrastructure |
+| 6 | Super Admin APIs (Tenant listing & status, plans config) | SaaS Admin Portal UI (Tenants management) | - |
+| 6 | Tenant, Branch APIs | Tenant & Branch management UI | - |
+| 7 | Vehicle CRUD + Status | Vehicle list, detail UI | - |
+| 8 | Customer CRUD | Customer Website UI (Home, catalog, profile) | - |
 
 **Deliverables Phase 1:**
 - [ ] Backend skeleton chạy được
-- [ ] Frontend Admin (Angular) skeleton với routing
-- [ ] Frontend Customer (Next.js) skeleton với routing
-- [ ] Multi-tenant middleware hoạt động
-- [ ] CRUD APIs: Tenant, Branch, Vehicle, Customer
-- [ ] UI cơ bản (Admin): Dashboard, Branch, Vehicle, Customer
-- [ ] UI cơ bản (Customer): Home, Vehicle catalog, Auth
+- [ ] Frontend skeleton với routing Next.js App Router (Layout groups)
+- [ ] Multi-tenant middleware & RLS bypass (SUPER_ADMIN) hoạt động
+- [ ] CRUD APIs: Super Admin, Tenant, Branch, Vehicle, Customer
+- [ ] UI cơ bản: SaaS Admin Portal, Admin Dashboard, Customer Website (Public skeleton)
 
 ---
 
 ## 4. Phase 2: MVP Features (Week 9-12)
 
-| Week | Backend | Frontend - Admin (Angular) | Frontend - Customer (Next.js) | Integrations |
-|------|---------|----------------------------|-------------------------------|--------------|
-| 9 | Booking API (create, update, cancel) | Booking management UI (Angular) | Booking flow UI (Next.js) | - |
-| 10 | Pricing Engine (dynamic pricing) | Pricing rules UI (Angular) | Pricing display (Next.js) | - |
-| 10 | Payment API | Payment recording UI (Angular) | Payment UI (Next.js) | - |
-| 11 | Vehicle Transfer API | Transfer request UI (Angular) | - | - |
-| 11 | Notification Service | - | - | SMS/Email setup |
-| 12 | Reporting API | Report dashboard (Angular) | - | - |
-| 12 | Tenant mgmt + Subscription | SaaS Admin Portal (Angular) features | - | - |
+| Week | Backend | Frontend | Integrations |
+|------|---------|----------|--------------|
+| 9 | Booking API (create, update, cancel) | Customer Website (Booking flow UI) | - |
+| 10 | Pricing Engine (dynamic pricing) | Pricing display | - |
+| 10 | Payment API | SaaS Admin Portal (Billing approval) & Tenant Dashboard (Payment records) | VNPAY Gateway integration |
+| 11 | Vehicle Transfer API | Transfer request UI | - |
+| 11 | Notification Service | - | SMS/Email setup |
+| 12 | Reporting API (Tenant + Super Admin global revenue reports) | Reports dashboard (Tenant / Super Admin views) | - |
 
 **Deliverables Phase 2:**
-- [ ] Booking flow hoàn chỉnh (Admin + Customer)
-- [ ] Dynamic pricing tính đúng
-- [ ] Payment recording đầy đủ
-- [ ] Vehicle transfer flow
-- [ ] SMS/Email notifications
-- [ ] Basic reporting
-- [ ] SaaS Admin Portal MVP (Tenants, Subscriptions)
+- [ ] Booking flow hoàn chỉnh trên Customer Website
+- [ ] Dynamic pricing tính đúng theo thiết kế
+- [ ] Tích hợp thanh toán VNPAY & cổng duyệt thanh toán Super Admin
+- [ ] Luồng điều phối xe (Vehicle transfer flow) giữa các chi nhánh
+- [ ] Hệ thống thông báo tự động qua SMS/Email
+- [ ] Báo cáo doanh thu Tenant & Báo cáo tổng thể hệ thống SaaS (Super Admin)
 
 ---
 
@@ -142,9 +139,9 @@ Total: ~4 tháng (full-time)
 
 ```
 Week 1-2:  Thiết kế API + Database Schema ✅
-Week 3-4:  Học Spring Security + JPA 🔄
-Week 5-8:  Implement: Tenant, Branch, Vehicle, Customer APIs
-Week 9-12: Implement: Booking, Pricing, Payment, Transfer APIs
+Week 3-4:  Học Spring Security + JPA + RLS patterns 🔄
+Week 5-8:  Implement: Tenant, Super Admin, Branch, Vehicle, Customer APIs (Phase 1)
+Week 9-12: Implement: Booking, Pricing Engine, VNPAY Integration, Transfer, Reports (Phase 2)
 Week 13-14: Testing, Bug fixes, Security audit
 Week 15:   Deploy, Support
 ```
@@ -152,23 +149,11 @@ Week 15:   Deploy, Support
 ### Frontend Lead (Admin - Angular, 1 người)
 
 ```
-Week 1-2:  UI/UX Design (Admin), Component library structure ✅
-Week 3-4:  Học Angular 17+ (Standalone, Signals, RxJS) 🔄
-Week 5-8:  Implement: Dashboard, Branch, Vehicle, Customer pages (Admin Dashboard)
-Week 9-12: Implement: Booking, Pricing, Payment, Reports (Admin Dashboard)
-Week 9-12: Implement: Tenants, Subscriptions (SaaS Admin Portal) - song song
-Week 13-14: Testing (Jest), Polish, Responsive design
-Week 15:   Deploy, Support
-```
-
-### Frontend Lead (Customer - Next.js, 1 người)
-
-```
-Week 1-2:  UI/UX Design (Customer), Component library structure ✅
+Week 1-2:  UI/UX Design, Route group structure ✅
 Week 3-4:  Học Next.js 14 (App Router) + TailwindCSS 🔄
-Week 5-8:  Implement: Home, Vehicle catalog, Auth pages
-Week 9-12: Implement: Booking flow, My bookings, Profile, Payment UI
-Week 13-14: Testing (Vitest), Polish, SEO optimization
+Week 5-8:  Implement Next.js folders (super-admin), (admin), (customer), (auth) & Page CRUDs (Phase 1)
+Week 9-12: Implement: Customer booking flow, Billing approval page, Payments, Reports (Phase 2)
+Week 13-14: Testing, Polish, Responsive design
 Week 15:   Deploy, Support
 ```
 
@@ -177,9 +162,9 @@ Week 15:   Deploy, Support
 ```
 Week 1-2:  Architecture diagram, Project structure ✅
 Week 3-4:  Học Docker, CI/CD basics 🔄
-Week 5-8:  Docker compose, CI/CD pipeline, Database migrations
-Week 9-12: Monitoring, Logging, SMS/Email integration setup
-Week 13-14: Performance optimization, Security
+Week 5-8:  Docker compose, Database migrations (nullable tenant_id, RLS bypass setup)
+Week 9-12: Monitoring, Logging, VNPAY merchant config, SMS/Email gateway integration
+Week 13-14: Performance optimization, Security audit
 Week 15:   Deploy, Documentation
 ```
 
@@ -190,11 +175,11 @@ Week 15:   Deploy, Documentation
 | Milestone | Target | Criteria | Status |
 |-----------|--------|----------|--------|
 | **M1: Design Done** | Week 2 | SPEC.md, API Spec, DB Schema approved | ✅ Done |
-| **M2: Tech Learning Done** | Week 4 | Team có thể code base Spring + Angular (Admin) + Next.js (Customer) | 🔄 In Progress |
-| **M3: Core Infrastructure** | Week 8 | CRUD APIs + Admin (Angular) + Customer (Next.js) UI hoạt động | ☐ Pending |
-| **M4: MVP Features** | Week 12 | Full booking flow + payments + SaaS Admin Portal | ☐ Pending |
-| **M5: Testing Complete** | Week 14 | Tests passed, bugs fixed (cả 2 stack) | ☐ Pending |
-| **M6: MVP Launch** | Week 15 | Production deployment (3 frontend apps) | ☐ Pending |
+| **M2: Tech Learning Done** | Week 4 | Team có thể code base Spring + Next.js App Router | 🔄 In Progress |
+| **M3: Core Infrastructure** | Week 8 | SaaS Admin Portal, Admin Dashboard & Public Website CRUDs hoạt động | ☐ Pending |
+| **M4: MVP Features** | Week 12 | Customer booking flow, VNPAY integration & reports completed | ☐ Pending |
+| **M5: Testing Complete** | Week 14 | Tests passed, bugs fixed | ☐ Pending |
+| **M6: MVP Launch** | Week 15 | Production deployment | ☐ Pending |
 
 ---
 
