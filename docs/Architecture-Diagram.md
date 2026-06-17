@@ -181,55 +181,117 @@
 
 ## 4. Frontend Architecture
 
+Hệ thống gồm **3 frontend apps** chia làm 2 nhóm stack:
+
+| App | Nhóm | Stack | Port (dev) | Người dùng |
+|-----|------|-------|------------|------------|
+| SaaS Admin Portal | Admin (Angular) | Angular 17+ | 4200 | Super Admin |
+| Admin Dashboard | Admin (Angular) | Angular 17+ | 4201 | Tenant staff |
+| Customer Website | Customer (Next.js) | Next.js 14+ | 3000 | End customer |
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                       Next.js 14 Application (App Router)                        │
+│                       FRONTEND LAYER (3 apps)                                │
 │                                                                              │
-│  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │                  Routing Layer (App Router - file-based)             │    │
-│  │  ┌──────────────────┐ ┌──────────────┐ ┌──────────────┐ ┌─────────────┐     │  │
-│  │  │  /super-admin/*  │ │   /admin/*   │ │ /customer/*  │ │   /auth/*   │     │  │
-│  │  └──────────────────┘ └──────────────┘ └──────────────┘ └─────────────┘     │  │
-│  └─────────────────────────────────────────────────────────────────────┘    │
-│                              │                                               │
-│                              ▼                                               │
-│  ┌─────────────────────────────────────────────────────────────────────────┐  │
-│  │                      Page Components                                    │  │
-│  │  ┌────────────────│ ┌────────────┐ ┌────────────┐ ┌────────────┐            │  │
-│  │  │  Super Admin   │ │  Admin     │ │  Customer  │ │    Auth    │            │  │
-│  │  │  Pages         │ │  Pages     │ │  Pages     │ │   Pages    │            │  │
-│  │  └───────┬────────┘ └─────┬──────┘ └─────┬──────┘ └─────┬──────┘            │  │
-│  └──────────┼────────────────┼──────────────┼─────────────┼────────────────────┘  │
-│           │               │             │             │                        │
-│           ▼               ▼             ▼             ▼                        │
-│  ┌─────────────────────────────────────────────────────────────────────────┐  │
-│  │                      Component Library                                  │  │
-│  │  ┌──────────────┐ ┌──────────────┐ ┌───────────────────────────┐            │  │
-│  │  │     UI      │ │    Forms      │ │         Layout            │            │  │
-│  │  │  Components  │ │  Components   │ │       Components          │            │  │
-│  │  │ Button,Input│ │ BookingForm   │ │ AdminLayout, CustomerLayout│            │  │
-│  │  │ Modal,Table  │ │ VehicleForm   │ │ SuperAdminLayout, Header  │            │  │
-│  │  └──────────────┘ └──────────────┘ └───────────────────────────┘            │  │
-│  └─────────────────────────────────────────────────────────────────────────┘  │
-│                                                                              │
-│  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │                      State Management                                │    │
-│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐                │    │
-│  │  │  TanStack   │ │    Auth      │ │   Tenant     │                  │    │
-│  │  │   Query     │ │   Context    │ │   Context    │                  │    │
-│  │  │ (Data Fetch)│ │ (User State) │ │(Tenant State)│                  │    │
-│  │  └──────────────┘ │ (Client Cmp) │ │ (Client Cmp)│                  │    │
-│  │                   └──────────────┘ └──────────────┘                  │    │
-│  └─────────────────────────────────────────────────────────────────────┘    │
-│                                                                              │
-│  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │                      Service Layer (API Calls)                        │    │
-│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐                │    │
-│  │  │    api.ts   │ │ authService.ts│ │bookingService│                │    │
-│  │  │  (Axios)    │ │              │ │              │                  │    │
-│  │  └──────────────┘ └──────────────┘ └──────────────┘                │    │
-│  └─────────────────────────────────────────────────────────────────────┘    │
+│  ┌──────────────────────────────────────┐  ┌─────────────────────────────────┐
+│  │   Admin Frontends (Angular 17+)      │  │  Customer Frontend (Next.js 14) │
+│  │                                      │  │                                 │
+│  │  ┌────────────────────────────────┐  │  │  ┌──────────────────────────┐  │
+│  │  │  SaaS Admin Portal            │  │  │  │  Customer Website         │  │
+│  │  │  /tenants, /subscriptions,    │  │  │  │  (Public + Portal)       │  │
+│  │  │  /billing, /platform-reports  │  │  │  │  /, /booking, /profile,  │  │
+│  │  └────────────────────────────────┘  │  │  │  /my-bookings            │  │
+│  │                                      │  │  └──────────────────────────┘  │
+│  │  ┌────────────────────────────────┐  │  │                                 │
+│  │  │  Admin Dashboard              │  │  │  App Router (file-based):       │
+│  │  │  /branches, /vehicles,        │  │  │  - (public)/  ← public site   │
+│  │  │  /bookings, /customers,       │  │  │  - (portal)/  ← auth required │
+│  │  │  /reports, /settings          │  │  │  - (auth)/    ← login/register│
+│  │  └────────────────────────────────┘  │  │                                 │
+│  │                                      │  │  React 18, Server/Client       │
+│  │  Angular CLI, Standalone Components  │  │  Components, Server Actions,   │
+│  │  Signals, RxJS, NgRx (nếu cần)     │  │  TanStack Query, TailwindCSS   │
+│  │  Angular Material / PrimeNG          │  │                                 │
+│  └──────────────────────────────────────┘  └─────────────────────────────────┘
+│           │                                          │
+│           └──────────────────┬───────────────────────┘
+│                              ▼
+│  ┌─────────────────────────────────────────────────────────────────────────┐
+│  │                  Shared Frontend Layer (cross-cutting)                  │
+│  │  ┌──────────────────────┐  ┌────────────────────┐  ┌──────────────────┐  │
+│  │  │  HTTP Interceptors   │  │  Auth Guard        │  │  Shared Types     │  │
+│  │  │  (JWT, Tenant-ID,    │  │  (Admin: route     │  │  (DTO contracts   │  │
+│  │  │   Error handling)    │  │   guards; Customer │  │   từ backend      │  │
+│  │  │                      │  │   : middleware)    │  │   OpenAPI gen)    │  │
+│  │  └──────────────────────┘  └────────────────────┘  └──────────────────┘  │
+│  │                                                                         │
+│  │  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │  │  @car-rental/ui (shared component library, optional)             │  │
+│  │  │  Button, Modal, Table, Form inputs, Toast, Date picker           │  │
+│  │  │  - Publish dạng package nội bộ (npm workspace hoặc Verdaccio)    │  │
+│  │  └──────────────────────────────────────────────────────────────────┘  │
+│  └─────────────────────────────────────────────────────────────────────────┘
+│                              │
+│                              ▼ (HTTP/REST + JWT)
+│                       API Gateway (Spring)
 └─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 4.1 Admin Frontend (Angular)
+
+Cấu trúc module chính:
+
+```
+src/app/
+├── core/                      # Singleton services, guards, interceptors
+│   ├── auth/                  # AuthService, AuthGuard, RoleGuard
+│   ├── http/                  # HTTP interceptors (JWT, Tenant, Error)
+│   ├── tenant/                # TenantContext, TenantResolver
+│   └── api/                   # Generated từ OpenAPI (orval/ng-openapi)
+├── shared/                    # Reusable components, pipes, directives
+│   ├── ui/                    # Button, Input, Modal, Table, Toast
+│   ├── forms/                 # ReactiveForm helpers, validators
+│   └── layout/                # Header, Sidebar, Footer
+├── features/                  # Feature modules (lazy-loaded)
+│   ├── saas-admin/            # SaaS Admin Portal features
+│   │   ├── tenants/
+│   │   ├── subscriptions/
+│   │   ├── billing/
+│   │   └── platform-reports/
+│   └── admin/                 # Admin Dashboard features
+│       ├── branches/
+│       ├── vehicles/
+│       ├── bookings/
+│       ├── customers/
+│       ├── reports/
+│       └── settings/
+├── app.config.ts              # Standalone bootstrap, providers
+├── app.routes.ts              # Top-level routes (lazy loading)
+└── app.component.ts           # Root component
+```
+
+### 4.2 Customer Frontend (Next.js)
+
+Cấu trúc App Router (đã giữ nguyên cấu trúc đã thiết kế):
+
+```
+app/
+├── (public)/                  # Public route group (SEO, SSR)
+│   ├── layout.tsx
+│   ├── page.tsx               # Home (vehicle catalog)
+│   ├── search/page.tsx        # Search & filter
+│   └── vehicles/[id]/page.tsx # Vehicle detail
+├── (portal)/                  # Authenticated customer portal
+│   ├── layout.tsx
+│   ├── booking/page.tsx
+│   ├── my-bookings/page.tsx
+│   └── profile/page.tsx
+├── (auth)/                    # Auth flow
+│   ├── login/page.tsx
+│   └── register/page.tsx
+├── api/                       # Route handlers (BFF nếu cần)
+├── layout.tsx                 # Root layout
+└── page.tsx                   # Root page (redirect)
 ```
 
 ---

@@ -27,9 +27,10 @@
 | Spring Boot 3.x | Can implement basic CRUD APIs | Week 3 |
 | Spring Security + JWT | Understand auth flow, implement JWT | Week 3 |
 | Spring Data JPA | Repository pattern, migrations | Week 3 |
-| Next.js 14 (App Router) | Server/Client Components, routing, data fetching | Week 4 |
+| Angular 17+ (Admin) | Standalone components, signals, RxJS, routing, lazy loading | Week 3 |
+| Next.js 14 (Customer) | Server/Client Components, App Router, data fetching, SEO | Week 4 |
 | PostgreSQL Multi-tenant | RLS, isolation patterns | Week 4 |
-| Docker | Containerize app | Week 4 |
+| Docker | Containerize app (3 frontend + 1 backend) | Week 4 |
 
 ---
 
@@ -38,7 +39,8 @@
 | Name | Role | Primary Track | Secondary Track |
 |------|------|---------------|-----------------|
 | Backend Lead | Backend | Spring Boot, Security, JPA | Docker |
-| Frontend Lead | Frontend | Next.js 14, React 18, TypeScript | API Integration |
+| Frontend Lead (Admin) | Frontend | Angular 17+, TypeScript, RxJS | API Integration, NgRx (nếu cần) |
+| Frontend Lead (Customer) | Frontend | Next.js 14, React 18, TypeScript | API Integration, SEO |
 | DevOps/Shared | DevOps | Docker, CI/CD | PostgreSQL |
 
 ---
@@ -149,16 +151,82 @@ Multi-tenant Security
 
 ---
 
-### Track 3: Next.js 14 (App Router)
+### Track 3: Angular 17+ (Admin)
 
-**Assigned to:** Frontend Lead
+**Assigned to:** Frontend Lead (Admin)
+**Status:** 🔄 In Progress
+
+#### Week 3 Goals
+
+| Topic | Sub-topics | Estimated Time | Status |
+|-------|------------|----------------|--------|
+| Angular Fundamentals | Standalone components, signals, control flow (@if/@for) | 4 hours | ☐ |
+| TypeScript | Types, Interfaces, Generics, Decorators | 3 hours | ☐ |
+| Angular CLI & Project Setup | `ng new`, `angular.json`, environments, build config | 2 hours | ☐ |
+| Routing & Lazy Loading | `provideRouter`, `loadChildren`, route guards | 3 hours | ☐ |
+| Forms (Reactive) | FormBuilder, FormGroup, Validators | 3 hours | ☐ |
+| HTTP & Interceptors | HttpClient, interceptors (JWT, Tenant, Error) | 3 hours | ☐ |
+| RxJS Essentials | Observable, Subject, operators, async pipe | 3 hours | ☐ |
+
+#### Progress Checklist
+
+```
+Angular Fundamentals
+  ☐ Standalone components (no NgModule)
+  ☐ Signals & computed signals
+  ☐ New control flow syntax (@if, @for, @switch)
+  ☐ OnPush change detection
+  ☐ Dependency injection với inject()
+  ☐ Lifecycle hooks
+
+Angular CLI & Project Setup
+  ☐ ng new with --standalone --routing --style=scss
+  ☐ angular.json (budgets, assets, environments)
+  ☐ Environment files (dev/prod)
+  ☐ Build & serve scripts
+  ☐ Path aliases (tsconfig paths)
+
+Routing & Lazy Loading
+  ☐ provideRouter() in app.config.ts
+  ☐ Feature routes (loadChildren, loadComponent)
+  ☐ Route guards (CanActivate, CanMatch)
+  ☐ Route data & resolvers
+  ☐ Wildcard & redirect routes
+
+Reactive Forms
+  ☐ FormBuilder.nonGrouped
+  ☐ Built-in validators (required, email, minLength)
+  ☐ Custom validators
+  ☐ Dynamic form arrays (FormArray)
+  ☐ Error state UX
+
+HTTP & Interceptors
+  ☐ provideHttpClient(withInterceptors([...]))
+  ☐ JWT interceptor (attach Bearer token)
+  ☐ Tenant interceptor (attach X-Tenant-Id)
+  ☐ Error interceptor (401 → logout, 403 → toast)
+  ☐ Loading interceptor (optional)
+
+RxJS Essentials
+  ☐ Observable, Observer, Subscription
+  ☐ of, from, map, switchMap, catchError
+  ☐ Subject & BehaviorSubject
+  ☐ async pipe (auto unsubscribe)
+  ☐ combineLatest, forkJoin
+```
+
+---
+
+### Track 4: Next.js 14 (App Router) - Customer
+
+**Assigned to:** Frontend Lead (Customer)
 **Status:** 🔄 In Progress
 
 #### Week 4 Goals
 
 | Topic | Sub-topics | Estimated Time | Status |
 |-------|------------|----------------|--------|
-| Next.js Fundamentals | App Router, file-based routing, layouts | 4 hours | ☐ |
+| Next.js Fundamentals | App Router, file-based routing, layouts, route groups | 4 hours | ☐ |
 | Server vs Client Components | When to use 'use client', data fetching patterns | 4 hours | ☐ |
 | Next.js Project Setup | `create-next-app`, `next.config.mjs`, TailwindCSS, TS config | 2 hours | ☐ |
 | TypeScript | Types, Interfaces, Generics | 3 hours | ☐ |
@@ -187,7 +255,7 @@ Next.js Project Setup
   ☐ next.config.mjs (images, redirects, env)
   ☐ Path aliases (@/)
   ☐ Environment variables (.env.local)
-  ☐ Build and run scripts
+  ☐ Build and run scripts (standalone output for Docker)
 
 TypeScript
   ☐ Basic types
@@ -213,7 +281,7 @@ State Management
 
 ---
 
-### Track 4: PostgreSQL Multi-tenant
+### Track 5: PostgreSQL Multi-tenant
 
 **Assigned to:** DevOps/Shared
 **Status:** 🔄 In Progress
@@ -265,7 +333,7 @@ Migrations
 
 ---
 
-### Track 5: Docker
+### Track 6: Docker
 
 **Assigned to:** DevOps/Shared
 **Status:** 🔄 In Progress
@@ -277,7 +345,7 @@ Migrations
 | Docker Basics | Images, Containers, Dockerfile | 2 hours | ☐ |
 | Docker Compose | Multi-container setup | 2 hours | ☐ |
 | Backend Dockerization | Spring Boot + PostgreSQL | 2 hours | ☐ |
-| Frontend Dockerization | Next.js (standalone output) | 2 hours | ☐ |
+| Frontend Dockerization | Angular (nginx) + Next.js (standalone) | 2 hours | ☐ |
 | CI/CD Basics | GitHub Actions | 2 hours | ☐ |
 
 #### Progress Checklist
@@ -305,10 +373,10 @@ Backend Dockerization
   ☐ Health checks
 
 Frontend Dockerization
-  ☐ Node.js build stage
-  ☐ Nginx serving stage
-  ☐ SPA routing configuration
+  ☐ Angular: ng build → nginx alpine (gzip, cache headers, SPA fallback)
+  ☐ Next.js: next build (standalone output)
   ☐ Environment variables
+  ☐ Multi-stage builds để giảm image size
 
 CI/CD Basics
   ☐ GitHub Actions workflow
@@ -327,7 +395,7 @@ CI/CD Basics
 |-------------|-------|--------|---------|-----------|----------|--------|
 | Backend Lead | Spring Boot | ☐ | ☐ | ☐ | ☐ | ☐ |
 | Backend Lead | Security + JWT | ☐ | ☐ | ☐ | ☐ | ☐ |
-| Frontend Lead | Next.js 14 | ☐ | ☐ | ☐ | ☐ | ☐ |
+| Frontend Lead (Admin) | Angular 17+ | ☐ | ☐ | ☐ | ☐ | ☐ |
 | DevOps/Shared | Docker | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 ### Week 4 Progress (2026-06-15 to 2026-06-19)
@@ -336,7 +404,7 @@ CI/CD Basics
 |-------------|-------|--------|---------|-----------|----------|--------|
 | Backend Lead | Spring Boot | ☐ | ☐ | ☐ | ☐ | ☐ |
 | Backend Lead | Security + JWT | ☐ | ☐ | ☐ | ☐ | ☐ |
-| Frontend Lead | Next.js 14 | ☐ | ☐ | ☐ | ☐ | ☐ |
+| Frontend Lead (Customer) | Next.js 14 | ☐ | ☐ | ☐ | ☐ | ☐ |
 | DevOps/Shared | Docker | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 ---
@@ -363,6 +431,16 @@ CI/CD Basics
 | TypeScript Handbook | https://www.typescriptlang.org/docs/ | 4h | ☐ |
 | TanStack Query Guide | https://tanstack.com/query/latest | 3h | ☐ |
 
+### Angular Learning Resources
+
+| Resource | URL | Time | Status |
+|----------|-----|------|--------|
+| Angular Official Tutorial (Tour of Heroes) | https://angular.dev/tutorial | 4h | ☐ |
+| Angular Docs (Standalone, Signals) | https://angular.dev/guide | 4h | ☐ |
+| RxJS Official Guide | https://rxjs.dev/guide/overview | 3h | ☐ |
+| Angular Material (UI components) | https://material.angular.io/ | 2h | ☐ |
+| NgRx (state management) | https://ngrx.io/ | 2h | ☐ |
+
 ### Docker Learning Resources
 
 | Resource | URL | Time | Status |
@@ -388,9 +466,10 @@ CI/CD Basics
 |-------|----------|---------------|
 | Spring Boot 3.x | Complete sample CRUD API + tests | Spring Boot Certificate |
 | Spring Security + JWT | Implement auth flow with JWT | Security Certificate |
-| Next.js 14 (App Router) | Build 1 feature page with component library | Next.js Certificate |
+| Angular 17+ (Admin) | Build 1 feature page (e.g. Vehicle list) with Angular Material | Angular Certificate |
+| Next.js 14 (Customer) | Build 1 feature page (e.g. Vehicle catalog) with component library | Next.js Certificate |
 | PostgreSQL Multi-tenant | Implement RLS for 1 table | PostgreSQL Certificate |
-| Docker | Containerize backend + frontend | Docker Certificate |
+| Docker | Containerize backend + 3 frontend apps | Docker Certificate |
 
 ### Assessment
 
@@ -398,9 +477,10 @@ CI/CD Basics
 |------------|--------|---------------|
 | Spring Boot | Coding challenge (2 hours) | 70% |
 | Spring Security | Security audit (1 hour) | 80% |
-| Next.js | Build a page from mockup (3 hours) | 70% |
+| Angular | Build an admin page from mockup (3 hours) | 70% |
+| Next.js | Build a customer page from mockup (3 hours) | 70% |
 | PostgreSQL | Design multi-tenant schema (1 hour) | 80% |
-| Docker | Dockerize a sample app (2 hours) | 70% |
+| Docker | Dockerize a multi-service app (2 hours) | 70% |
 
 ---
 
@@ -417,3 +497,4 @@ CI/CD Basics
 | Date | Updated By | Changes |
 |------|-----------|---------|
 | 2026-06-12 | Team | Initial document created |
+| 2026-06-17 | Team | Split frontend into Admin (Angular) + Customer (Next.js); added Track 3 Angular |

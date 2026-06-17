@@ -24,11 +24,11 @@ Hệ thống quản lý và cho thuê xe du lịch tới khách hàng lẻ, hỗ
 
 ## 3. Các ứng dụng liên quan
 
-| Ứng dụng | Mô tả | Người dùng |
-|----------|-------|------------|
-| **SaaS Admin Portal** | Trang quản trị toàn hệ thống SaaS: Quản lý tenant, subscription, cấu hình dùng chung và báo cáo tổng thể doanh thu nền tảng. | Đội ngũ vận hành hệ thống (Super Admin, Support, Billing Operations) |
-| **Admin Dashboard** | Trang quản lý cho nhà xe | Nhân viên, quản lý nhà xe |
-| **Customer Website** | Trang đặt xe công khai kết hợp cổng thông tin cá nhân (quản lý lịch sử thuê xe, hồ sơ cá nhân). | Khách hàng thuê xe (Vãng lai & Đã có tài khoản) |
+| Ứng dụng | Mô tả | Người dùng | Tech Stack |
+|----------|-------|------------|------------|
+| **SaaS Admin Portal** | Trang quản trị toàn hệ thống SaaS: Quản lý tenant, subscription, cấu hình dùng chung và báo cáo tổng thể doanh thu nền tảng. | Đội ngũ vận hành hệ thống (Super Admin, Support, Billing Operations) | Angular 17+ |
+| **Admin Dashboard** | Trang quản lý cho nhà xe | Nhân viên, quản lý nhà xe | Angular 17+ |
+| **Customer Website** | Trang đặt xe công khai kết hợp cổng thông tin cá nhân (quản lý lịch sử thuê xe, hồ sơ cá nhân). | Khách hàng thuê xe (Vãng lai & Đã có tài khoản) | Next.js 14+ |
 
 ---
 
@@ -39,7 +39,8 @@ Hệ thống quản lý và cho thuê xe du lịch tới khách hàng lẻ, hỗ
 | Role | Trách nhiệm | Tech Stack |
 |------|-------------|------------|
 | **Backend Lead** | Spring Boot APIs, Security, Database | Java 17, Spring Boot 3.x, PostgreSQL |
-| **Frontend Lead** | Next.js UI/UX, Components, Pages | Next.js 14, React 18, TypeScript |
+| **Frontend Lead (Admin)** | UI/UX cho SaaS Admin Portal + Admin Dashboard (Angular) | Angular 17+, TypeScript, RxJS, NgRx (nếu cần) |
+| **Frontend Lead (Customer)** | UI/UX cho Customer Website (Next.js) | Next.js 14, React 18, TypeScript, App Router |
 | **DevOps/Shared** | Docker, CI/CD, Infrastructure | Docker, Docker Compose |
 
 ### 4.2 Stakeholders
@@ -119,7 +120,7 @@ Ví dụ (xe base_price = 500,000đ/ngày):
 
 | Environment | URL | Purpose |
 |-------------|-----|---------|
-| Local Development | localhost:8080 (API), localhost:3000 (UI) | Development |
+| Local Development | localhost:8080 (API), localhost:4200 (Angular Admin), localhost:3000 (Next.js Customer) | Development |
 | Staging | staging.carrental-saas.com | UAT, Testing |
 | Production | production.carrental-saas.com | Live users |
 
@@ -157,4 +158,4 @@ Ví dụ (xe base_price = 500,000đ/ngày):
 
 ---
 
-*Last updated: 2026-06-15*
+*Last updated: 2026-06-17*

@@ -138,7 +138,9 @@ CUSTOMER JOURNEY
 |-------|---------------|---------|-----|
 | **Backend** | Spring Boot | 3.x | Enterprise-grade, reactive, great multi-tenancy |
 | **Language** | Java | 17+ | LTS, modern features |
-| **Frontend** | Next.js (React) | 14+ | SSR + SPA hybrid, SEO-friendly |
+| **Frontend - Admin (SaaS Admin Portal + Admin Dashboard)** | Angular | 17+ | TypeScript-first, opinionated structure, RxJS cho data flow phức tạp, enterprise-friendly |
+| **Frontend - Customer (Customer Website)** | Next.js (React) | 14+ | SSR + SPA hybrid, SEO-friendly, App Router tối ưu cho public site |
+| **Language (FE)** | TypeScript | 5+ | Type safety, chia sẻ types với backend DTO |
 | **Mobile** | React Native | latest | 1 codebase iOS + Android |
 | **Database** | PostgreSQL | 15+ | Multi-tenant support tốt, JSON support |
 | **Caching** | Redis | 7+ | Real-time, session management |
@@ -159,7 +161,8 @@ CUSTOMER JOURNEY
 | Layer | Nên dùng | Không nên dùng |
 |-------|----------|----------------|
 | Backend | Spring Boot 3.x, Go, Node.js | PHP, Plain Java, .NET legacy |
-| Frontend | Next.js, React 18, Vue 3 | jQuery, AngularJS, Ember |
+| Frontend (Admin) | Angular 17+ | jQuery, AngularJS, Ember |
+| Frontend (Customer/Public) | Next.js 14, React 18, Vue 3 | jQuery, AngularJS, Ember |
 | Database | PostgreSQL (cloud), MongoDB | MySQL (on-prem), Access |
 | Auth | JWT + OAuth 2.0 | Session + Cookies |
 | API | REST + GraphQL (optional) | SOAP |
@@ -181,7 +184,8 @@ CUSTOMER JOURNEY
                     │                         │
              ┌──────▼──────┐          ┌──────▼──────┐
              │   Web App    │          │  Mobile App │
-             │  (Next.js)  │          │(React Native)│
+             │(Angular+    │          │(React Native)│
+             │ Next.js)    │          │             │
              └──────┬──────┘          └──────┬──────┘
                     │                         │
                     └────────────┬────────────┘
@@ -297,5 +301,5 @@ Simple payments        →     Multi-payment gateway   →     Subscription mode
 | **Tại sao phải theo xu hướng?** | Khách hàng kỳ vọng trải nghiệm như Netflix, Grab, Airbnb |
 | **Không theo xu hướng thì sao?** | Sản phẩm lỗi thời ngay khi ra mắt, khách hàng không adopt |
 | **Làm sao không đi theo lối mòn?** | Cloud-native + API-first + AI-powered + Mobile-first |
-| **Tech stack nào đủ hiện đại?** | Spring Boot 3 + Next.js 14 (React 18) + PostgreSQL + Redis + Cloud |
+| **Tech stack nào đủ hiện đại?** | Spring Boot 3 + Angular 17 (Admin) + Next.js 14 (Customer, React 18) + PostgreSQL + Redis + Cloud |
 | **Điều gì làm khác biệt?** | AI pricing + Real-time tracking + Self-service + EV support |

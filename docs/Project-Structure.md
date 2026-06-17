@@ -3,7 +3,9 @@
 ## Mục lục
 1. [Directory Structure](#1-directory-structure)
 2. [Backend Structure (Spring Boot)](#2-backend-structure-spring-boot)
-3. [Frontend Structure (Next.js)](#3-frontend-structure-nextjs)
+3. [Frontend Structure (Angular + Next.js)](#3-frontend-structure-angular--nextjs)
+   - 3.1 [Admin Frontend (Angular)](#31-admin-frontend-angular)
+   - 3.2 [Customer Frontend (Next.js)](#32-customer-frontend-nextjs)
 4. [Naming Conventions](#4-naming-conventions)
 5. [Coding Rules](#5-coding-rules)
 
@@ -48,37 +50,84 @@ car-rental-saas/
 │   ├── pom.xml
 │   └── Dockerfile
 │
-├── frontend/                       # Next.js 14 Application (App Router)
+├── frontend-saas-admin/            # Angular 17+ - SaaS Admin Portal (Super Admin)
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── core/              # Auth, HTTP interceptors, guards
+│   │   │   │   ├── auth/
+│   │   │   │   ├── http/
+│   │   │   │   ├── tenant/
+│   │   │   │   └── api/           # Generated clients (orval)
+│   │   │   ├── shared/            # Reusable UI, pipes, directives
+│   │   │   │   ├── ui/
+│   │   │   │   ├── forms/
+│   │   │   │   └── layout/
+│   │   │   ├── features/          # Feature modules (lazy)
+│   │   │   │   ├── tenants/
+│   │   │   │   ├── subscriptions/
+│   │   │   │   ├── billing/
+│   │   │   │   ├── platform-reports/
+│   │   │   │   └── settings/
+│   │   │   ├── app.component.ts
+│   │   │   ├── app.config.ts      # Standalone bootstrap, providers
+│   │   │   └── app.routes.ts      # Top-level routes
+│   │   ├── assets/
+│   │   ├── environments/
+│   │   │   ├── environment.ts
+│   │   │   └── environment.prod.ts
+│   │   ├── styles.scss
+│   │   ├── index.html
+│   │   └── main.ts
+│   ├── angular.json
+│   ├── tsconfig.json
+│   ├── package.json
+│   ├── Dockerfile                 # Multi-stage: ng build → nginx
+│   └── nginx.conf
+│
+├── frontend-admin/                # Angular 17+ - Admin Dashboard (Tenant staff)
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── core/              # (tương tự SaaS Admin)
+│   │   │   ├── shared/
+│   │   │   ├── features/          # Feature modules
+│   │   │   │   ├── branches/
+│   │   │   │   ├── vehicles/
+│   │   │   │   ├── bookings/
+│   │   │   │   ├── customers/
+│   │   │   │   ├── pricing/
+│   │   │   │   ├── reports/
+│   │   │   │   └── settings/
+│   │   │   ├── app.component.ts
+│   │   │   ├── app.config.ts
+│   │   │   └── app.routes.ts
+│   │   ├── assets/
+│   │   ├── environments/
+│   │   ├── styles.scss
+│   │   ├── index.html
+│   │   └── main.ts
+│   ├── angular.json
+│   ├── tsconfig.json
+│   ├── package.json
+│   └── Dockerfile
+│
+├── frontend-customer/             # Next.js 14+ - Customer Website (Public + Portal)
 │   ├── app/                        # App Router (file-based routing)
-│   │   ├── (super-admin)/          # Super-admin route group
+│   │   ├── (public)/              # Public route group (SSR, SEO)
 │   │   │   ├── layout.tsx
-│   │   │   ├── dashboard/page.tsx
-│   │   │   ├── tenants/page.tsx
-│   │   │   ├── subscriptions/page.tsx
-│   │   │   ├── billing/page.tsx
-│   │   │   └── settings/page.tsx
-│   │   ├── (admin)/                # Admin route group
+│   │   │   ├── page.tsx            # Home (vehicle catalog)
+│   │   │   ├── search/page.tsx
+│   │   │   └── vehicles/[id]/page.tsx
+│   │   ├── (portal)/              # Authenticated customer portal
 │   │   │   ├── layout.tsx
-│   │   │   ├── dashboard/page.tsx
-│   │   │   ├── branches/page.tsx
-│   │   │   ├── vehicles/page.tsx
-│   │   │   ├── bookings/page.tsx
-│   │   │   ├── customers/page.tsx
-│   │   │   ├── reports/page.tsx
-│   │   │   └── settings/page.tsx
-│   │   ├── (customer)/             # Customer route group (public + portal)
-│   │   │   ├── layout.tsx
-│   │   │   ├── page.tsx            # Home (public catalog)
-│   │   │   ├── booking/page.tsx    # Booking form
+│   │   │   ├── booking/page.tsx
 │   │   │   ├── my-bookings/page.tsx
 │   │   │   └── profile/page.tsx
-│   │   ├── (auth)/                 # Auth route group
+│   │   ├── (auth)/                 # Auth flow
 │   │   │   ├── login/page.tsx
 │   │   │   ├── register/page.tsx
 │   │   │   └── forgot-password/page.tsx
-│   │   ├── api/                    # Route handlers (e.g., auth callback)
+│   │   ├── api/                    # Route handlers (BFF nếu cần)
 │   │   ├── layout.tsx              # Root layout
-│   │   ├── page.tsx                # Root page (redirects to /login or dashboard)
 │   │   └── globals.css
 │   ├── components/                 # Reusable Components
 │   │   ├── ui/                     # Base UI components
@@ -94,7 +143,7 @@ car-rental-saas/
 │   ├── next.config.mjs
 │   ├── tailwind.config.ts
 │   ├── package.json
-│   └── Dockerfile
+│   └── Dockerfile                 # Multi-stage: next build → standalone
 │
 ├── docker-compose.yml              # Docker Compose for local dev
 ├── docker-compose.prod.yml        # Docker Compose for production
@@ -189,64 +238,114 @@ backend/src/main/java/com/carrental/
 
 ---
 
-## 3. Frontend Structure (Next.js)
+## 3. Frontend Structure (Angular + Next.js)
+
+Hệ thống có **3 frontend apps** thuộc 2 stack:
+
+| App | Folder | Stack |
+|-----|--------|-------|
+| SaaS Admin Portal | `frontend-saas-admin/` | Angular 17+ |
+| Admin Dashboard | `frontend-admin/` | Angular 17+ |
+| Customer Website | `frontend-customer/` | Next.js 14+ |
+
+### 3.1 Admin Frontend (Angular)
+
+Cấu trúc dùng chung cho cả `frontend-saas-admin/` và `frontend-admin/`. Khác biệt chính nằm ở folder `features/`.
 
 ```
-frontend/
+frontend-admin/                    # (tương tự cho frontend-saas-admin/)
+│
+├── src/
+│   ├── app/
+│   │   ├── core/                  # Singleton services, guards, interceptors
+│   │   │   ├── auth/
+│   │   │   │   ├── auth.service.ts
+│   │   │   │   ├── auth.guard.ts
+│   │   │   │   ├── role.guard.ts
+│   │   │   │   └── token.storage.ts
+│   │   │   ├── http/
+│   │   │   │   ├── jwt.interceptor.ts
+│   │   │   │   ├── tenant.interceptor.ts
+│   │   │   │   ├── error.interceptor.ts
+│   │   │   │   └── api.config.ts
+│   │   │   ├── tenant/
+│   │   │   │   └── tenant.service.ts
+│   │   │   └── api/               # Generated API clients (orval / ng-openapi)
+│   │   │       ├── tenant.api.ts
+│   │   │       ├── branch.api.ts
+│   │   │       ├── vehicle.api.ts
+│   │   │       ├── booking.api.ts
+│   │   │       └── ...
+│   │   ├── shared/                # Reusable UI, pipes, directives
+│   │   │   ├── ui/                # Button, Input, Modal, Table, Toast, Card
+│   │   │   ├── forms/             # ReactiveForm helpers, custom validators
+│   │   │   ├── pipes/             # CurrencyVnd, DateVi, StatusLabel
+│   │   │   └── layout/            # Header, Sidebar, Footer, Shell
+│   │   ├── features/              # Feature modules (lazy-loaded)
+│   │   │   ├── dashboard/
+│   │   │   │   ├── dashboard.component.ts
+│   │   │   │   ├── dashboard.routes.ts
+│   │   │   │   └── widgets/
+│   │   │   ├── branches/          # CRUD chi nhánh
+│   │   │   ├── vehicles/          # CRUD xe, status
+│   │   │   ├── bookings/          # Booking flow
+│   │   │   ├── customers/         # Quản lý khách
+│   │   │   ├── pricing/           # Pricing rules
+│   │   │   ├── reports/           # Báo cáo
+│   │   │   └── settings/          # Cấu hình tenant
+│   │   ├── app.component.ts       # Root standalone component
+│   │   ├── app.config.ts          # provideRouter, provideHttpClient, ...
+│   │   └── app.routes.ts          # Top-level routes (lazy load)
+│   ├── assets/                    # Static assets (images, i18n)
+│   ├── environments/
+│   │   ├── environment.ts         # Dev: apiBaseUrl=http://localhost:8080
+│   │   └── environment.prod.ts
+│   ├── styles.scss                # Global styles (Tailwind, Angular Material)
+│   ├── index.html
+│   └── main.ts
+│
+├── angular.json
+├── tsconfig.json
+├── tsconfig.app.json
+├── package.json
+├── Dockerfile                     # Multi-stage: ng build → nginx alpine
+├── nginx.conf                     # SPA fallback, gzip, cache headers
+└── README.md
+```
+
+Cho **SaaS Admin Portal** (`frontend-saas-admin/`), `features/` chứa:
+- `tenants/` - Quản lý tenants
+- `subscriptions/` - Plans, billing
+- `billing/` - Invoices, payment ops
+- `platform-reports/` - Doanh thu platform
+- `settings/` - Cấu hình global
+
+### 3.2 Customer Frontend (Next.js)
+
+```
+frontend-customer/
 │
 ├── app/                            # App Router (file-based routing)
-│   ├── (super-admin)/              # Super-admin route group (no URL segment)
-│   │   ├── layout.tsx              # SuperAdminLayout
-│   │   ├── dashboard/
-│   │   │   └── page.tsx            # /super-admin/dashboard
-│   │   ├── tenants/
-│   │   │   └── page.tsx            # /super-admin/tenants
-│   │   ├── subscriptions/
-│   │   │   └── page.tsx            # /super-admin/subscriptions
-│   │   ├── billing/
-│   │   │   └── page.tsx            # /super-admin/billing
-│   │   └── settings/
-│   │       └── page.tsx            # /super-admin/settings
+│   ├── (public)/                   # Public route group (SSR-friendly, SEO)
+│   │   ├── layout.tsx
+│   │   ├── page.tsx                # / — Home (vehicle catalog)
+│   │   ├── search/page.tsx          # /search
+│   │   └── vehicles/[id]/page.tsx   # /vehicles/:id
 │   │
-│   ├── (admin)/                    # Admin route group (no URL segment)
-│   │   ├── layout.tsx              # AdminLayout
-│   │   ├── dashboard/
-│   │   │   └── page.tsx            # /admin/dashboard
-│   │   ├── branches/
-│   │   │   └── page.tsx            # /admin/branches
-│   │   ├── vehicles/
-│   │   │   └── page.tsx            # /admin/vehicles
-│   │   ├── bookings/
-│   │   │   └── page.tsx            # /admin/bookings
-│   │   ├── customers/
-│   │   │   └── page.tsx            # /admin/customers
-│   │   ├── reports/
-│   │   │   └── page.tsx            # /admin/reports
-│   │   └── settings/
-│   │       └── page.tsx            # /admin/settings
+│   ├── (portal)/                   # Authenticated customer portal
+│   │   ├── layout.tsx              # CustomerLayout (header, footer)
+│   │   ├── booking/page.tsx         # /booking
+│   │   ├── my-bookings/page.tsx     # /my-bookings
+│   │   └── profile/page.tsx         # /profile
 │   │
-│   ├── (customer)/                 # Customer route group (public + portal)
-│   │   ├── layout.tsx              # CustomerLayout
-│   │   ├── page.tsx                # / (Home — public catalog)
-│   │   ├── booking/
-│   │   │   └── page.tsx            # /booking
-│   │   ├── my-bookings/
-│   │   │   └── page.tsx            # /my-bookings
-│   │   └── profile/
-│   │       └── page.tsx            # /profile
+│   ├── (auth)/                     # Auth flow
+│   │   ├── login/page.tsx           # /login
+│   │   ├── register/page.tsx        # /register
+│   │   └── forgot-password/page.tsx
 │   │
-│   ├── (auth)/                     # Auth route group
-│   │   ├── login/
-│   │   │   └── page.tsx            # /login
-│   │   ├── register/
-│   │   │   └── page.tsx            # /register
-│   │   └── forgot-password/
-│   │       └── page.tsx            # /forgot-password
-│   │
-│   ├── api/                        # Route handlers (e.g., /api/auth/[...nextauth])
+│   ├── api/                        # Route handlers (BFF nếu cần)
 │   │
 │   ├── layout.tsx                  # Root layout (shared chrome, providers)
-│   ├── page.tsx                    # Root page (redirects based on auth)
 │   └── globals.css                 # Tailwind base styles
 │
 ├── components/                     # Reusable Components
@@ -260,36 +359,31 @@ frontend/
 │   │   └── Badge.tsx
 │   ├── forms/                      # Form components
 │   │   ├── BookingForm.tsx
-│   │   ├── VehicleForm.tsx
-│   │   └── CustomerForm.tsx
+│   │   ├── VehicleSearchForm.tsx
+│   │   └── ProfileForm.tsx
 │   └── layout/                     # Layout components
 │       ├── Header.tsx
-│       └── Sidebar.tsx
+│       └── Footer.tsx
 │
 ├── lib/                            # Utilities, services, hooks
 │   ├── hooks/                      # Custom Hooks
 │   │   ├── useAuth.ts
-│   │   ├── useTenant.ts
 │   │   ├── useBooking.ts
 │   │   └── useToast.ts
 │   ├── services/                   # API Services
 │   │   ├── api.ts                  # Axios instance
 │   │   ├── authService.ts
-│   │   ├── tenantService.ts
-│   │   ├── branchService.ts
 │   │   ├── vehicleService.ts
 │   │   ├── bookingService.ts
 │   │   └── paymentService.ts
 │   ├── context/                    # React Context (Client Components only)
 │   │   ├── AuthContext.tsx
-│   │   ├── TenantContext.tsx
 │   │   └── ToastContext.tsx
 │   ├── utils/                      # Utilities
 │   │   ├── dateUtils.ts
 │   │   ├── priceUtils.ts
 │   │   └── validationUtils.ts
 │   └── types/                      # TypeScript types
-│       ├── tenant.ts
 │       ├── vehicle.ts
 │       ├── booking.ts
 │       └── api.ts
@@ -298,7 +392,7 @@ frontend/
 ├── next.config.mjs
 ├── tailwind.config.ts
 ├── package.json
-└── Dockerfile
+└── Dockerfile                     # Multi-stage: next build → standalone
 ```
 
 ---
@@ -319,7 +413,24 @@ frontend/
 | Entity | PascalCase | `Booking` |
 | DTO | PascalCase + Suffix | `BookingRequest`, `BookingResponse` |
 
-### 4.2 Frontend (Next.js/TypeScript)
+### 4.2 Frontend - Admin (Angular/TypeScript)
+
+| Type | Convention | Example |
+|------|------------|---------|
+| Component class | PascalCase | `BookingListComponent` |
+| Component file | kebab-case | `booking-list.component.ts` |
+| Selector | `app-` prefix, kebab-case | `app-booking-list` |
+| Service | PascalCase + Service suffix | `BookingService` |
+| Service file | kebab-case | `booking.service.ts` |
+| Guard | PascalCase + Guard suffix | `AuthGuard`, `RoleGuard` |
+| Interceptor | PascalCase + Interceptor suffix | `JwtInterceptor` |
+| Pipe | PascalCase + Pipe suffix | `CurrencyVndPipe` |
+| Module/Route file | kebab-case | `booking.routes.ts` |
+| Interface/Type | PascalCase | `Booking`, `BookingDto` |
+| Constant | UPPER_SNAKE | `API_BASE_URL` |
+| Observable variable | `$` suffix | `bookings$: Observable<Booking[]>` |
+
+### 4.3 Frontend - Customer (Next.js/TypeScript)
 
 | Type | Convention | Example |
 |------|------------|---------|
@@ -375,7 +486,33 @@ public List<Vehicle> getVehicles(HttpServletRequest request) {
 // 6. Write unit tests for services
 ```
 
-### 5.2 Frontend Rules
+### 5.2 Frontend Rules (Admin - Angular)
+
+```typescript
+// 1. Use TypeScript strict mode
+// 2. Standalone components (no NgModule), signals cho local state
+// 3. Use RxJS cho async data flow, OnPush change detection
+@Component({
+  selector: 'app-booking-list',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, TableModule],
+  template: `...`
+})
+export class BookingListComponent {
+  private bookingService = inject(BookingService);
+  bookings$ = this.bookingService.getAll(); // Observable + async pipe
+}
+
+// 4. HTTP qua interceptors (JWT, Tenant, Error) - KHÔNG gọi fetch/HttpClient trực tiếp từ component
+// 5. API clients generated từ OpenAPI (orval) - không viết tay
+// 6. Lazy-load mọi feature module qua loadChildren / loadComponent
+// 7. Reactive Forms cho mọi form; dùng FormBuilder.nonGrouped
+// 8. State management: Signals (mặc định) + NgRx (chỉ khi state phức tạp, cross-feature)
+// 9. Unit tests với Jest + Testing Library (Angular)
+```
+
+### 5.3 Frontend Rules (Customer - Next.js)
 
 ```typescript
 // 1. Use TypeScript strict mode
