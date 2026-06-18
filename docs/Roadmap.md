@@ -2,276 +2,160 @@
 
 ## Mục lục
 1. [Tổng quan Timeline](#1-tổng-quan-timeline)
-2. [Phase 0: Preparation ✅](#2-phase-0-preparation)
-3. [Phase 1: Core Infrastructure](#3-phase-1-core-infrastructure-week-5-8)
-4. [Phase 2: MVP Features](#4-phase-2-mvp-features-week-9-12)
-5. [Phase 3: Polish & Testing](#5-phase-3-polish--testing-week-13-14)
-6. [Phase 4: MVP Launch](#6-phase-4-mvp-launch-week-15)
-7. [Task Breakdown cho Team 3 người](#7-task-breakdown-cho-team-3-người)
-8. [Milestones](#8-milestones)
-9. [Risk & Mitigation](#9-risk--mitigation)
-10. [Documents Checklist](#10-documents-checklist)
+2. [Phương pháp Phát triển (Development Strategy)](#2-phương-pháp-phát-triển-development-strategy)
+3. [Phase 0: Preparation & Bootcamp (Weeks 1-8)](#3-phase-0-preparation--bootcamp-weeks-1-8)
+4. [Phase 1: Foundations & Async Development (Weeks 9-16)](#4-phase-1-foundations--async-development-weeks-9-16)
+5. [Phase 2: MVP Features & Core Integration (Weeks 17-24)](#5-phase-2-mvp-features--core-integration-weeks-17-24)
+6. [Phase 3: Quality Gates, Testing & Hardening (Weeks 25-27)](#6-phase-3-quality-gates-testing--hardening-weeks-25-27)
+7. [Phase 4: Launch & Handover (Week 28)](#7-phase-4-launch--handover-week-28)
+8. [Phân bổ vai trò trong Team (Collaborative Model)](#8-phân-bổ-vai-trò-trong-team-collaborative-model)
+9. [Milestones & Quality Gates](#9-milestones--quality-gates)
+10. [Rủi ro & Biện pháp giảm thiểu (Risks & Mitigations)](#10-rủi-ro--biện-pháp-giảm-thiểu-risks--mitigations)
 
 ---
 
 ## 1. Tổng quan Timeline
 
+Do đặc thù team 3 người làm việc **part-time (~30-40% thời gian)**, phân bổ cho nhiều dự án song song và nhân sự phụ trách Backend (Spring Boot) chưa có kinh nghiệm thực tế, roadmap được kéo giãn lên **~7 tháng (28 tuần)**. 
+
+Lộ trình này áp dụng mô hình **Học tập cộng tác (Collaborative Learning)** và **Thiết kế API-First** để tối ưu hiệu suất làm việc song song của nhóm.
+
 ```
 Week 1-2     │ Architecture & Design Documents ✅
-Week 3-4     │ Tech Learning (Spring Boot + Angular + Next.js)
-Week 5-8     │ Phase 1: Core Infrastructure
-Week 9-12    │ Phase 2: MVP Features
-Week 13-14   │ Phase 3: Polish & Testing
-Week 15      │ MVP Launch
+Week 3-8     │ Tech Learning & Team Bootcamp (2 tháng - Cả 3 người cùng học) 🔄
+Week 9-16    │ Phase 1: Foundations & Async Development (2 tháng)
+Week 17-24   │ Phase 2: MVP Features & Core Integration (2 tháng)
+Week 25-27   │ Phase 3: Quality Gates, Testing & Hardening (3 tuần)
+Week 28      │ Phase 4: Launch & Handover (1 tuần)
 ─────────────────────────────────────────────────────────────────
-Total: ~4 tháng (full-time)
+Total: ~7 tháng (Part-time, song song các dự án khác)
 ```
 
 ---
 
-## 2. Phase 0: Preparation ✅
+## 2. Phương pháp Phát triển (Development Strategy)
 
-### Week 1-2: Architecture & Design (✅ Hoàn thành)
+Để đảm bảo tính khả thi trong bối cảnh nhân sự part-time và thiếu kinh nghiệm Backend, dự án áp dụng 3 chiến lược phát triển chuyên nghiệp:
 
-| Tuần | Công việc | Deliverables | Status |
-|------|-----------|--------------|--------|
-| 1 | Hoàn thiện SPEC.md | ✅ SPEC.md approved | ✅ Done |
-| 1 | API Design | ✅ API-Specification.md | ✅ Done |
-| 1 | Database Schema Design | ✅ Database-Schema.md | ✅ Done |
-| 2 | Architecture Diagram | ✅ Architecture-Diagram.md | ✅ Done |
-| 2 | Security Design | ✅ Security-Design.md | ✅ Done |
-| 2 | Project Structure | ✅ Project-Structure.md | ✅ Done |
-
-### Week 3-4: Tech Learning (🔄 Đang thực hiện)
-
-| Tuần | Công việc | Deliverables | Ghi chú |
-|------|-----------|--------------|---------|
-| 3 | Spring Boot 3.x fundamentals | Spring Core, IoC, DI | Có Java cơ bản thì nhanh hơn |
-| 3 | Spring Security + JWT | Auth flow, token handling | Quan trọng cho multi-tenant |
-| 3 | Spring Data JPA | Repository pattern, migrations | Database access |
-| 3 | Angular 17+ fundamentals | Standalone components, signals, RxJS, routing | Frontend Lead (Admin) |
-| 4 | Next.js 14 (App Router) | Server/Client Components, routing, data fetching | Frontend Lead (Customer) |
-| 4 | PostgreSQL deep dive | Multi-tenant patterns | Cần cho isolation |
-| 4 | Docker basics | Containerize app | DevOps/Shared |
-
-**Learning Resources:**
-- Spring: [Baeldung Spring Boot Course](https://baeldung.com/spring-boot) - ~20h
-- Angular: [Angular Docs](https://angular.dev/) + [Tour of Heroes](https://angular.dev/tutorial) - ~15h
-- Next.js: [Next.js Learn Course](https://nextjs.org/learn) - ~15h
-- PostgreSQL Multi-tenant: [PostgreSQL Documentation](https://www.postgresql.org/docs/) - ~5h
-- Docker: [Docker Official Tutorial](https://docs.docker.com/get-started/) - ~8h
-
-**Tracking:** [Learning-Progress.md](docs/Learning-Progress.md)
+1. **API-First Development:** Thống nhất chi tiết API Contract (Request/Response JSON, mã lỗi, kiểu dữ liệu) ngay từ đầu (Week 9). Điều này cho phép Frontend Lead dựng Mock Server (Sử dụng Mock Service Worker hoặc JSON Server) để tự lập trình và chạy thử giao diện một cách độc lập mà không cần chờ Backend Lead viết xong API thực tế.
+2. **Collaborative Bootcamp:** Xóa bỏ ranh giới "việc ai nấy làm" trong 2 tháng đầu. FE Lead và DevOps hỗ trợ đắc lực cho BE Lead trong việc nghiên cứu tài liệu, hiểu luồng nghiệp vụ và debug code ở các tầng như Bảo mật (Security) và Database (JPA/SQL).
+3. **Phân rã nghiệp vụ (Feature Slicing):** Cắt giảm các luồng tự động hóa phức tạp của các tính năng phụ ở giai đoạn MVP (ví dụ: Thay vì tự động điều phối xe thông minh ở Vehicle Transfer, ta làm luồng yêu cầu và phê duyệt bằng tay đơn giản, lưu vết logs lịch sử). Tập trung tài nguyên cho luồng đặt xe (Booking Flow) và an toàn dữ liệu Tenant (RLS).
 
 ---
 
-## 3. Phase 1: Core Infrastructure (Week 5-8)
+## 3. Phase 0: Preparation & Bootcamp (Weeks 1-8)
 
-| Week | Backend (Spring) | Frontend (Next.js) | Infrastructure |
-|------|------------------|--------------------|----------------|
-| 5 | Project setup, Docker compose | Project setup, Next.js config (App Router) | PostgreSQL, Redis |
-| 5 | Multi-tenant middleware | Auth context, API service | JWT infrastructure |
-| 6 | Super Admin APIs (Tenant listing & status, plans config) | SaaS Admin Portal UI (Tenants management) | - |
-| 6 | Tenant, Branch APIs | Tenant & Branch management UI | - |
-| 7 | Vehicle CRUD + Status | Vehicle list, detail UI | - |
-| 8 | Customer CRUD | Customer Website UI (Home, catalog, profile) | - |
+| Tuần | Nội dung | Mục tiêu đào tạo chéo | Deliverables | Status |
+|------|----------|-----------------------|--------------|--------|
+| **1-2** | Design & Architecture | Cả 3 người nắm rõ kiến trúc chung hệ thống | ✅ SPEC.md, API-Specification.md, Database-Schema.md, Security-Design.md | ✅ Done |
+| **3-4** | Java OOP, Spring Boot & Next.js 14 App Router | - BE Lead: Cú pháp Java OOP, Spring Core, DI/IoC.<br>- Cả team: Nắm cấu trúc Next.js App Router (Layouts, Routing) | - Dựng khung ứng dụng trống.<br>- Nắm vững nguyên lý Dependency Injection | 🔄 In Progress |
+| **5-6** | Spring Data JPA & DB & Next.js Data Fetching | - BE Lead: Hibernate Entity Mapping, JPA repository queries.<br>- Cả team: Cách gọi API từ Server Component Next.js | - Chạy thử các câu lệnh SQL tự động sinh từ JPA.<br>- Thiết lập DB schema cục bộ | 🔄 In Progress |
+| **7** | Spring Security, JWT & Next.js Middleware | - BE Lead: Bộ lọc Filters, JWT token creation/parsing.<br>- Cả team: Cookie handling, Auth checks | - Chạy thử luồng authenticate & authorize bằng Postman | 🔄 In Progress |
+| **8** | PostgreSQL RLS & Docker Compose | - BE Lead: Cấu hình context session trong DB.<br>- DevOps: Viết script RLS policy & Super Admin bypass | - Setup hoàn chỉnh Docker Compose môi trường Dev chạy PostgreSQL + Redis | 🔄 In Progress |
+
+---
+
+## 4. Phase 1: Foundations & Async Development (Weeks 9-16)
+
+Trong giai đoạn này, FE Lead làm việc trên API Mock Server, BE Lead viết API thực tế.
+
+| Week | Backend (Spring Boot) | Frontend (Next.js 14) | Infrastructure / DevOps |
+|------|-----------------------|-----------------------|-------------------------|
+| **9-10** | - Khởi tạo khung dự án Spring Boot.<br>- Viết Filter phân giải Tenant (`tenant_id` resolver) từ subdomain/header | - Khởi tạo khung dự án Next.js 14.<br>- **Thiết lập Mock API Server**.<br>- Dựng luồng Login/Register (UI) | - Setup Git repositories con độc lập.<br>- Cấu hình Docker cho Postgres & Redis |
+| **11-12**| - Viết APIs đăng ký/đăng nhập hệ thống.<br>- APIs quản lý Tenant cho Super Admin (`/api/v1/super-admin/tenants`) | - Dựng UI cho **SaaS Admin Portal** (Màn hình dashboard chung, kích hoạt tenant, cấu hình gói cước) | - Migrate DB script cho cột `tenant_id` nullable trên bảng `users`.<br>- Cấu hình chính sách Postgres RLS |
+| **13-14**| - Viết REST APIs: Chi nhánh (Branch APIs) & Loại xe/Xe (Vehicle CRUD APIs) | - Tích hợp Mock APIs để hoàn thiện UI **Admin Dashboard** (Màn quản lý chi nhánh, quản lý fleet xe) | - Setup CI/CD build test tự động cơ bản |
+| **15-16**| - Viết REST APIs: Quản lý khách hàng (Customer APIs) | - Hoàn thiện các trang: Quản lý khách hàng, Cấu hình bảng giá của Tenant | - Triển khai thuật toán mã hóa AES cho trường CCCD/GPLX của khách hàng |
 
 **Deliverables Phase 1:**
-- [ ] Backend skeleton chạy được
-- [ ] Frontend skeleton với routing Next.js App Router (Layout groups)
-- [ ] Multi-tenant middleware & RLS bypass (SUPER_ADMIN) hoạt động
-- [ ] CRUD APIs: Super Admin, Tenant, Branch, Vehicle, Customer
-- [ ] UI cơ bản: SaaS Admin Portal, Admin Dashboard, Customer Website (Public skeleton)
+- [ ] Khung code Backend & Frontend hoạt động ổn định.
+- [ ] Logic phân tách tenant (Multi-tenant middleware) ở Backend hoạt động.
+- [ ] Frontend hoàn thành toàn bộ khung giao diện CRUD (Tenant, Chi nhánh, Xe, Khách hàng) bằng Mock API.
 
 ---
 
-## 4. Phase 2: MVP Features (Week 9-12)
+## 5. Phase 2: MVP Features & Core Integration (Weeks 17-24)
 
-| Week | Backend | Frontend | Integrations |
-|------|---------|----------|--------------|
-| 9 | Booking API (create, update, cancel) | Customer Website (Booking flow UI) | - |
-| 10 | Pricing Engine (dynamic pricing) | Pricing display | - |
-| 10 | Payment API | SaaS Admin Portal (Billing approval) & Tenant Dashboard (Payment records) | VNPAY Gateway integration |
-| 11 | Vehicle Transfer API | Transfer request UI | - |
-| 11 | Notification Service | - | SMS/Email setup |
-| 12 | Reporting API (Tenant + Super Admin global revenue reports) | Reports dashboard (Tenant / Super Admin views) | - |
+Giai đoạn tích hợp APIs thực tế giữa Frontend và Backend, tập trung xử lý các nghiệp vụ phức tạp.
+
+| Week | Backend (Spring Boot) | Frontend (Next.js 14) | Integrations / DevOps |
+|------|-----------------------|-----------------------|-----------------------|
+| **17-18**| - Xây dựng **Booking API**.<br>- Áp dụng cơ chế **Database locking (Pessimistic Lock)** để chống double booking | - Tích hợp API thật.<br>- Hoàn thiện luồng đặt xe (Booking Flow UI) trên Customer Website | - Viết các test case kiểm thử độ chịu tải đặt trùng xe (race condition) |
+| **19-20**| - Phát triển **Pricing Engine** (Tính toán giá thuê xe theo ngày thường/cuối tuần/ngày lễ/mùa cao điểm) | - Đồng bộ giao diện tính toán & hiển thị giá chi tiết khi khách đặt xe | - Cấu hình bảng dữ liệu pricing_rules |
+| **21-22**| - APIs lưu vết giao dịch thanh toán.<br>- APIs duyệt yêu cầu gia hạn gói của Super Admin | - Giao diện thanh toán cọc.<br>- Giao diện đối soát cước của Super Admin | - **Tích hợp cổng VNPAY Sandbox** (BE kiểm tra chữ ký & IPN callback; FE chuyển hướng) |
+| **23-24**| - APIs yêu cầu luân chuyển xe (Vehicle Transfer).<br>- APIs xuất báo cáo doanh thu & giám sát hệ thống | - Trang quản lý yêu cầu transfer xe.<br>- Giao diện biểu đồ doanh thu (Tenant & Super Admin) | - Tích hợp SMTP mail server / SMS gateway mock (Gửi OTP, thông báo đặt xe thành công) |
 
 **Deliverables Phase 2:**
-- [ ] Booking flow hoàn chỉnh trên Customer Website
-- [ ] Dynamic pricing tính đúng theo thiết kế
-- [ ] Tích hợp thanh toán VNPAY & cổng duyệt thanh toán Super Admin
-- [ ] Luồng điều phối xe (Vehicle transfer flow) giữa các chi nhánh
-- [ ] Hệ thống thông báo tự động qua SMS/Email
-- [ ] Báo cáo doanh thu Tenant & Báo cáo tổng thể hệ thống SaaS (Super Admin)
+- [ ] Hoàn thành trọn vẹn luồng Đặt xe - Tính giá - Thanh toán VNPAY của khách hàng.
+- [ ] Khách hàng đăng nhập cổng Customer Portal xem lại lịch sử thuê xe thành công.
+- [ ] Super Admin thực hiện được luồng kiểm duyệt thanh toán cước thuê bao và xem biểu đồ doanh thu toàn sàn.
 
 ---
 
-## 5. Phase 3: Polish & Testing (Week 13-14)
+## 6. Phase 3: Quality Gates, Testing & Hardening (Weeks 25-27)
 
-| Week | Công việc | Deliverables |
-|------|-----------|--------------|
-| 13 | Unit tests (Backend: >70% coverage) | Test reports |
-| 13 | Integration tests | API tests |
-| 13 | Frontend Admin testing (Jest + Testing Library) | Angular component tests |
-| 13 | Frontend Customer testing (Vitest + Testing Library) | Next.js component tests |
-| 14 | Bug fixes | - |
-| 14 | Performance optimization | - |
-| 14 | Security audit | Security report |
-| 14 | Documentation | Setup guide, API docs |
+Tập trung kiểm soát chất lượng kỹ càng do code Backend được viết bởi lập trình viên mới.
+
+| Week | Công việc chi tiết | Tiêu chí đạt được (Quality Gate) |
+|------|--------------------|----------------------------------|
+| **25** | - Viết Unit tests & Integration tests.<br>- Thực hiện kiểm thử thủ công end-to-end các luồng nghiệp vụ lỗi | - Độ bao phủ code Backend đạt **>60% unit test coverage**.<br>- Không còn lỗi crash luồng đặt xe |
+| **26** | - Thực hiện **Tenant Isolation Audit**: Chạy thử các kịch bản hack IDOR (dùng token Tenant A để đọc xe Tenant B) | - **100% các bảng dữ liệu có RLS** được kiểm thử cô lập thành công, không có rò rỉ chéo dữ liệu |
+| **27** | - Sửa các lỗi bảo mật phát hiện từ audit.<br>- Đo hiệu năng hệ thống, viết index bổ sung cho các truy vấn DB chậm.<br>- Hoàn thiện tài liệu cấu hình vận hành (Setup Guide, API Docs Swagger) | - Tốc độ phản hồi các API CRUD đạt `< 200ms`.<br>- Tài liệu hướng dẫn cài đặt rõ ràng, dễ hiểu |
 
 ---
 
-## 6. Phase 4: MVP Launch (Week 15)
+## 7. Phase 4: Launch & Handover (Week 28)
 
 | Công việc | Deliverables |
 |-----------|--------------|
-| Deploy lên staging | staging.carrental-saas.com |
-| UAT với 1-2 khách hàng beta | Feedback |
-| Bug fixes từ feedback | - |
-| Deploy lên production | production.carrental-saas.com |
-| Onboarding guide | Video + docs |
+| Triển khai lên Staging (Sử dụng Docker Compose hoặc K8s thu nhỏ) | staging.carrental-saas.com |
+| Tiến hành UAT (User Acceptance Testing) với 1-2 nhà xe đối tác chạy thử | UAT feedback list |
+| Hotfix nhanh các lỗi phát sinh từ UAT | - |
+| Triển khai chính thức lên Production, hướng dẫn vận hành | production.carrental-saas.com |
 
 ---
 
-## 7. Task Breakdown cho Team 3 người
+## 8. Phân bổ vai trò trong Team (Collaborative Model)
 
-### Backend Lead (1 người)
+Do làm việc part-time, các thành viên sẽ hỗ trợ chặt chẽ để giảm tải và nâng cao năng lực cho nhau:
 
-```
-Week 1-2:  Thiết kế API + Database Schema ✅
-Week 3-4:  Học Spring Security + JPA + RLS patterns 🔄
-Week 5-8:  Implement: Tenant, Super Admin, Branch, Vehicle, Customer APIs (Phase 1)
-Week 9-12: Implement: Booking, Pricing Engine, VNPAY Integration, Transfer, Reports (Phase 2)
-Week 13-14: Testing, Bug fixes, Security audit
-Week 15:   Deploy, Support
-```
+### Backend Lead (Lập trình viên BE)
+* **Vai trò:** Lập trình chính phần Backend API, kết nối DB, RLS và cấu hình Security.
+* **Hỗ trợ nhận được:** 
+  * Được DevOps Lead hỗ trợ cấu hình script Docker DB, viết lệnh SQL migrations nâng cao và kiểm soát chính sách RLS.
+  * Được FE Lead hỗ trợ thiết kế cấu trúc API Request/Response DTO và hỗ trợ code phụ các API CRUD cơ bản.
 
-### Frontend Lead (Admin - Angular, 1 người)
+### Frontend Lead (Lập trình viên FE)
+* **Vai trò:** Thiết kế UI/UX, lập trình Next.js 14 App Router, tích hợp API.
+* **Hỗ trợ nhận được:** Được BE Lead hỗ trợ tài liệu đặc tả API chuẩn (Swagger/API-Spec) và cung cấp các kịch bản dữ liệu mock.
 
-```
-Week 1-2:  UI/UX Design, Route group structure ✅
-Week 3-4:  Học Next.js 14 (App Router) + TailwindCSS 🔄
-Week 5-8:  Implement Next.js folders (super-admin), (admin), (customer), (auth) & Page CRUDs (Phase 1)
-Week 9-12: Implement: Customer booking flow, Billing approval page, Payments, Reports (Phase 2)
-Week 13-14: Testing, Polish, Responsive design
-Week 15:   Deploy, Support
-```
-
-### DevOps/Shared (1 người)
-
-```
-Week 1-2:  Architecture diagram, Project structure ✅
-Week 3-4:  Học Docker, CI/CD basics 🔄
-Week 5-8:  Docker compose, Database migrations (nullable tenant_id, RLS bypass setup)
-Week 9-12: Monitoring, Logging, VNPAY merchant config, SMS/Email gateway integration
-Week 13-14: Performance optimization, Security audit
-Week 15:   Deploy, Documentation
-```
+### DevOps / Shared
+* **Vai trò:** Setup hạ tầng Docker, xây dựng luồng CI/CD, cấu hình cơ sở dữ liệu Postgres RLS, tích hợp các cổng dịch vụ (VNPAY, Mail gateway).
+* **Hỗ trợ nhận được:** Được BE Lead hỗ trợ cấu hình Session context trong ứng dụng Java kết nối sang Database.
 
 ---
 
-## 8. Milestones
+## 9. Milestones & Quality Gates
 
-| Milestone | Target | Criteria | Status |
-|-----------|--------|----------|--------|
-| **M1: Design Done** | Week 2 | SPEC.md, API Spec, DB Schema approved | ✅ Done |
-| **M2: Tech Learning Done** | Week 4 | Team có thể code base Spring + Next.js App Router | 🔄 In Progress |
-| **M3: Core Infrastructure** | Week 8 | SaaS Admin Portal, Admin Dashboard & Public Website CRUDs hoạt động | ☐ Pending |
-| **M4: MVP Features** | Week 12 | Customer booking flow, VNPAY integration & reports completed | ☐ Pending |
-| **M5: Testing Complete** | Week 14 | Tests passed, bugs fixed | ☐ Pending |
-| **M6: MVP Launch** | Week 15 | Production deployment | ☐ Pending |
+| Milestone | Target | Tiêu chuẩn chất lượng (Quality Gate) | Status |
+|-----------|--------|-------------------------------------|--------|
+| **M1: Design Approved** | Week 2 | SPEC, API Spec, DB Schema được duyệt hoàn toàn | ✅ Done |
+| **M2: Bootcamp Complete** | Week 8 | Cả 3 người vượt qua các bài học công nghệ của nhau | 🔄 In Progress |
+| **M3: Core CRUD Ready** | Week 16 | 100% APIs cơ bản hoạt động trên giao diện Mock và thật | ☐ Pending |
+| **M4: MVP Functional** | Week 24 | Luồng Đặt xe - Tính giá - Thanh toán tích hợp thông suốt | ☐ Pending |
+| **M5: Quality Gate Passed** | Week 27 | Vượt qua bài kiểm tra Tenant Isolation Audit & Unit test coverage >60% | ☐ Pending |
+| **M6: Go-Live** | Week 28 | Hệ thống production chạy ổn định, UAT thành công | ☐ Pending |
 
 ---
 
-## 9. Risk & Mitigation
+## 10. Rủi ro & Biện pháp giảm thiểu (Risks & Mitigations)
 
-| Risk | Likelihood | Impact | Mitigation |
+| Rủi ro | Khả năng | Tác động | Giải pháp giảm thiểu |
 |------|------------|--------|------------|
-| Spring learning curve cao | Medium | High | Bắt đầu học sớm Week 3, có mentor online |
-| Angular + Next.js dual stack | Medium | High | 2 Frontend Lead chia nhau; dùng OpenAPI để share types |
-| Multi-tenant isolation phức tạp | Medium | High | Thiết kế kỹ Week 1, review trước khi code |
-| Integration delays (SMS/Email) | Low | Medium | Implement sau, mock data trước |
-| Team coordination | Medium | Medium | Daily standup, shared docs |
+| BE Lead quá tải khi học Spring Boot từ đầu | High | High | - Dành trọn 6 tuần bootcamp chỉ để học, không giao task code.<br>- Áp dụng học tập cộng tác: DevOps và FE hỗ trợ thiết kế cấu trúc dữ liệu và giải quyết bug phức tạp. |
+| Rò rỉ dữ liệu chéo giữa các Tenant (IDOR) | Medium | Critical | - Sử dụng **PostgreSQL RLS** ở tầng DB thay vì lọc thủ công ở tầng code Java.<br>- Thiết lập **Tenant Isolation Audit** bắt buộc ở Week 26 trước khi bàn giao hệ thống. |
+| Xung đột tiến độ do làm part-time song song dự án khác | High | Medium | - Áp dụng **API-First**: FE và BE hoạt động độc lập qua Mock Server, không bị nghẽn (block) lẫn nhau.<br>- Chia nhỏ task theo tuần để dễ quản lý tiến độ. |
+| Trùng lặp đặt xe (Double Booking) | Medium | High | - Nghiên cứu thiết kế khóa cơ sở dữ liệu (Pessimistic Locking / SELECT FOR UPDATE) ngay ở tuần 17. |
 
 ---
 
-## 10. Documents Checklist
-
-### Phase 0 - Preparation ✅
-
-| Tài liệu | Priority | Status |
-|----------|----------|--------|
-| SPEC.md | P0 | ✅ Done |
-| API Specification | P0 | ✅ Done |
-| Database Schema | P0 | ✅ Done |
-| Project Structure | P0 | ✅ Done |
-| Architecture Diagram | P1 | ✅ Done |
-| Security Design | P1 | ✅ Done |
-| Learning Progress | P1 | ✅ Done |
-| Onboarding Guide | P1 | ✅ Done |
-| Subscription Plans | P2 | ✅ Done |
-
-### Phase 1 - Core Infrastructure
-
-| Tài liệu | Priority | Status |
-|----------|----------|--------|
-| Setup Guide | P1 | ☐ Pending |
-| Docker Compose | P1 | ☐ Pending |
-| API Documentation (Swagger) | P1 | ☐ Pending |
-
-### Phase 2 - MVP Features
-
-| Tài liệu | Priority | Status |
-|----------|----------|--------|
-| CI/CD Pipeline | P2 | ☐ Pending |
-| User Guide (Admin) | P2 | ☐ Pending |
-
-### Phase 3 - Testing
-
-| Tài liệu | Priority | Status |
-|----------|----------|--------|
-| Deployment Guide | P2 | ☐ Pending |
-| Testing Guide | P2 | ☐ Pending |
-
-### Phase 4 - Launch
-
-| Tài liệu | Priority | Status |
-|----------|----------|--------|
-| Tenant Onboarding Guide | P2 | ☐ Pending |
-| Admin User Manual | P2 | ☐ Pending |
-| End User Guide | P3 | ☐ Pending |
-
----
-
-## Appendix: Key Files Reference
-
-### Documentation (docs/)
-
-| File | Description |
-|------|-------------|
-| [SPEC.md](docs/plans/2026-06-12-spec.md) | Technical specification |
-| [API-Specification.md](docs/API-Specification.md) | API endpoints |
-| [Database-Schema.md](docs/Database-Schema.md) | Database design |
-| [Project-Structure.md](docs/Project-Structure.md) | Code organization |
-| [Architecture-Diagram.md](docs/Architecture-Diagram.md) | System architecture |
-| [Security-Design.md](docs/Security-Design.md) | Security design |
-| [Learning-Progress.md](docs/Learning-Progress.md) | Tech learning tracker |
-| [Onboarding-Guide.md](docs/onboarding/Onboarding-Guide.md) | New member guide |
-| [Subscription-Plans.md](docs/Subscription-Plans.md) | Pricing plans |
-| [Roadmap.md](docs/Roadmap.md) | This file |
-
-### Source Code Structure
-
-```
-car-rental-saas/
-├── backend/                  # Spring Boot (future)
-├── frontend-saas-admin/      # Angular - SaaS Admin Portal (future)
-├── frontend-admin/           # Angular - Admin Dashboard (future)
-├── frontend-customer/        # Next.js - Customer Website (future)
-├── docs/                     # This documentation
-└── docker-compose.yml        # Infrastructure
-```
-
----
-
-*Last updated: 2026-06-17*
+*Last updated: 2026-06-18*
