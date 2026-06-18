@@ -1,161 +1,268 @@
-# Roadmap & Timeline - Car Rental SaaS
+# BÁO CÁO LỘ TRÌNH PHÁT TRIỂN DỰ ÁN CAR RENTAL SAAS
+> **Đặc tả nghiệp vụ áp dụng:** [API-Specification.md](API-Specification.md)  
+> **Thời gian cập nhật:** 19/06/2026
 
-## Mục lục
-1. [Tổng quan Timeline](#1-tổng-quan-timeline)
-2. [Phương pháp Phát triển (Development Strategy)](#2-phương-pháp-phát-triển-development-strategy)
-3. [Phase 0: Preparation & Bootcamp (Weeks 1-8)](#3-phase-0-preparation--bootcamp-weeks-1-8)
-4. [Phase 1: Foundations & Async Development (Weeks 9-16)](#4-phase-1-foundations--async-development-weeks-9-16)
-5. [Phase 2: MVP Features & Core Integration (Weeks 17-24)](#5-phase-2-mvp-features--core-integration-weeks-17-24)
-6. [Phase 3: Quality Gates, Testing & Hardening (Weeks 25-27)](#6-phase-3-quality-gates-testing--hardening-weeks-25-27)
-7. [Phase 4: Launch & Handover (Week 28)](#7-phase-4-launch--handover-week-28)
-8. [Phân bổ vai trò trong Team (Collaborative Model)](#8-phân-bổ-vai-trò-trong-team-collaborative-model)
-9. [Milestones & Quality Gates](#9-milestones--quality-gates)
-10. [Rủi ro & Biện pháp giảm thiểu (Risks & Mitigations)](#10-rủi-ro--biện-pháp-giảm-thiểu-risks--mitigations)
+Lộ trình này được thiết lập nhằm phân bổ tối ưu nguồn lực cho một nhóm phát triển gồm 3 thành viên làm việc dưới hình thức **part-time (30-40% quỹ thời gian)**. Trong bối cảnh nhóm dự án **chưa có kinh nghiệm thực tế về công nghệ Backend (Java/Spring Boot)** nhưng đã **làm chủ các công nghệ Frontend**, lộ trình được cấu trúc thành **4 giai đoạn (Phase) cuốn chiếu** với tổng thời gian thực hiện chuẩn hóa là **24 tuần (đúng 6 tháng)**.
+
+Dự án áp dụng triệt để mô hình **API-First Development**. Việc thống nhất sớm hợp đồng API (API Contract) cho phép đội ngũ Frontend dựng Mock Server để phát triển giao diện độc lập và chạy thử các luồng nghiệp vụ mà không cần phụ thuộc vào tiến độ xây dựng API thật từ phía Backend.
 
 ---
 
-## 1. Tổng quan Timeline
+## 📊 Sơ đồ Lộ trình Tổng thể (High-Level Timeline)
 
-Do đặc thù team 3 người làm việc **part-time (~30-40% thời gian)**, phân bổ cho nhiều dự án song song và nhân sự phụ trách Backend (Spring Boot) chưa có kinh nghiệm thực tế, roadmap được kéo giãn lên **~7 tháng (28 tuần)**. 
+Để có cái nhìn tổng quan và theo dõi trực quan hơn, dưới đây là Sơ đồ tư duy (Mindmap) phân rã công việc và Biểu đồ Gantt (Gantt Chart) tiến độ thực hiện chi tiết theo tuần của dự án:
 
-Lộ trình này áp dụng mô hình **Học tập cộng tác (Collaborative Learning)** và **Thiết kế API-First** để tối ưu hiệu suất làm việc song song của nhóm.
+### 🧠 1. Sơ đồ tư duy phân rã công việc (Mindmap)
+![Sơ đồ tư duy Lộ trình dự án](./mindmap.png)
+
+### 📅 2. Biểu đồ Gantt tiến độ thực hiện (Gantt Chart)
+![Biểu đồ Gantt Lộ trình dự án](./roadmap.png)
 
 ```
-Week 1-2     │ Architecture & Design Documents ✅
-Week 3-8     │ Tech Learning & Team Bootcamp (2 tháng - Cả 3 người cùng học) 🔄
-Week 9-16    │ Phase 1: Foundations & Async Development (2 tháng)
-Week 17-24   │ Phase 2: MVP Features & Core Integration (2 tháng)
-Week 25-27   │ Phase 3: Quality Gates, Testing & Hardening (3 tuần)
-Week 28      │ Phase 4: Launch & Handover (1 tuần)
-─────────────────────────────────────────────────────────────────
-Total: ~7 tháng (Part-time, song song các dự án khác)
+                              [ 24 TUẦN / 6 THÁNG - PART-TIME ]
+ 
+   Phase 1: Bootcamp BE       Phase 2: Setup Base        Phase 3: Core Features     Phase 4: Customer Portal
+  ┌──────────────────────┐   ┌──────────────────────┐   ┌──────────────────────┐   ┌──────────────────────┐
+  │ • Java OOP / Spring  │   │ • Khởi tạo dự án     │   │ • Phát triển song    │   │ • Public Search APIs │
+  │ • Database & JPA     │   │ • Auth & Security    │   │   song BE + FE       │   │ • Đặt xe không Acc   │
+  │ • Spring Security    │   │ • Thiết kế DB Schema │   │ • 2 tuần / Service   │   │ • Customer Portal UI │
+  │ • RLS & Multi-tenant │   │ • Phân giải Tenant   │   │ • 8 Dịch vụ cốt lõi  │   │ • Thanh toán chuyển  │
+  └──────────┬───────────┘   └──────────┬───────────┘   └──────────┬───────────┘   └──────────┬───────────┘
+             ▼                          ▼                          ▼                          ▼
+         Tuần 1 - 4                 Tuần 5 - 6                 Tuần 7 - 22                Tuần 23 - 24
 ```
 
 ---
 
-## 2. Phương pháp Phát triển (Development Strategy)
+## 📌 NỘI DUNG CHI TIẾT CÁC GIAI ĐOẠN
 
-Để đảm bảo tính khả thi trong bối cảnh nhân sự part-time và thiếu kinh nghiệm Backend, dự án áp dụng 3 chiến lược phát triển chuyên nghiệp:
+### 📚 Phase 1: Học tập & Nghiên cứu Công nghệ Backend (Weeks 1 - 4)
+* **Mục tiêu:** Đồng bộ hóa kiến thức nền tảng về Java, Spring Boot, Cơ sở dữ liệu và các giải pháp kiến trúc Backend cho toàn bộ thành viên dự án, nhằm tận dụng tối đa khả năng cộng tác chéo và hỗ trợ lẫn nhau trong các giai đoạn sau.
+* **Thời gian:** 4 tuần (1 tháng).
 
-1. **API-First Development:** Thống nhất chi tiết API Contract (Request/Response JSON, mã lỗi, kiểu dữ liệu) ngay từ đầu (Week 9). Điều này cho phép Frontend Lead dựng Mock Server (Sử dụng Mock Service Worker hoặc JSON Server) để tự lập trình và chạy thử giao diện một cách độc lập mà không cần chờ Backend Lead viết xong API thực tế.
-2. **Collaborative Bootcamp:** Xóa bỏ ranh giới "việc ai nấy làm" trong 2 tháng đầu. FE Lead và DevOps hỗ trợ đắc lực cho BE Lead trong việc nghiên cứu tài liệu, hiểu luồng nghiệp vụ và debug code ở các tầng như Bảo mật (Security) và Database (JPA/SQL).
-3. **Phân rã nghiệp vụ (Feature Slicing):** Cắt giảm các luồng tự động hóa phức tạp của các tính năng phụ ở giai đoạn MVP (ví dụ: Thay vì tự động điều phối xe thông minh ở Vehicle Transfer, ta làm luồng yêu cầu và phê duyệt bằng tay đơn giản, lưu vết logs lịch sử). Tập trung tài nguyên cho luồng đặt xe (Booking Flow) và an toàn dữ liệu Tenant (RLS).
+#### 📖 Nội dung học tập và thực hành chi tiết:
+1. **Tuần 1: Lập trình Java Core, Hướng đối tượng & Spring Boot Core**
+   - Nắm vững cú pháp Java Core, các cấu trúc dữ liệu nâng cao (Collections Framework, Stream API, Generics).
+   - Hiểu sâu các nguyên lý thiết kế hướng đối tượng (OOP: Kế thừa, Đa hình, Đóng gói, Trừu tượng).
+   - Nghiên cứu cơ chế cốt lõi của Spring Boot: Dependency Injection (DI) & Inversion of Control (IoC), Spring Beans, Application Context.
+   - Thiết kế RESTful API tiêu chuẩn sử dụng các Annotation chính (`@RestController`, `@RequestMapping`, `@RequestBody`, `@PathVariable`, `@RequestParam`).
+2. **Tuần 2: Thiết kế Cơ sở dữ liệu & Spring Data JPA**
+   - Thiết kế cơ sở dữ liệu quan hệ (PostgreSQL), tối ưu hóa liên kết (khóa ngoại, quan hệ 1-N, N-N) và cơ chế đánh chỉ mục (Indexing).
+   - Cấu hình Hibernate/JPA: Thực hiện ánh xạ thực thể (Entity Mapping) qua các annotation quan hệ (`@OneToMany`, `@ManyToOne`, `@ManyToMany`, `@JoinColumn`).
+   - Sử dụng Spring Data JPA Repository: Custom query methods, JPQL, Native SQL, cơ chế phân trang (Pagination) và sắp xếp (Sorting).
+3. **Tuần 3: Spring Security & Cơ chế Xác thực JWT**
+   - Tìm hiểu cơ chế hoạt động của Spring Security Filter Chain.
+   - Triển khai luồng Token-based Authentication: Tạo, ký và giải mã JSON Web Token (JWT) để định danh người dùng.
+   - Thiết lập cơ chế phân quyền dựa trên vai trò (RBAC - Role-Based Access Control) thông qua cấu hình bảo mật hệ thống và Annotation `@PreAuthorize`.
+4. **Tuần 4: Kiến trúc Multi-Tenant & PostgreSQL Row Level Security (RLS)**
+   - Tìm hiểu các mô hình lưu trữ đa ứng dụng (Multi-tenant) đặc trưng cho mô hình SaaS.
+   - Nghiên cứu giải pháp cô lập dữ liệu an toàn ở tầng Database sử dụng **PostgreSQL Row Level Security (RLS)**.
+   - Cấu hình session context trong Spring Boot để gán mã `tenant_id` động xuống PostgreSQL theo từng request kết nối.
+   - Xây dựng Docker Compose hoàn chỉnh chạy môi trường phát triển (PostgreSQL, Redis).
 
----
-
-## 3. Phase 0: Preparation & Bootcamp (Weeks 1-8)
-
-| Tuần | Nội dung | Mục tiêu đào tạo chéo | Deliverables | Status |
-|------|----------|-----------------------|--------------|--------|
-| **1-2** | Design & Architecture | Cả 3 người nắm rõ kiến trúc chung hệ thống | ✅ SPEC.md, API-Specification.md, Database-Schema.md, Security-Design.md | ✅ Done |
-| **3-4** | Java OOP, Spring Boot & Next.js 14 App Router | - BE Lead: Cú pháp Java OOP, Spring Core, DI/IoC.<br>- Cả team: Nắm cấu trúc Next.js App Router (Layouts, Routing) | - Dựng khung ứng dụng trống.<br>- Nắm vững nguyên lý Dependency Injection | 🔄 In Progress |
-| **5-6** | Spring Data JPA & DB & Next.js Data Fetching | - BE Lead: Hibernate Entity Mapping, JPA repository queries.<br>- Cả team: Cách gọi API từ Server Component Next.js | - Chạy thử các câu lệnh SQL tự động sinh từ JPA.<br>- Thiết lập DB schema cục bộ | 🔄 In Progress |
-| **7** | Spring Security, JWT & Next.js Middleware | - BE Lead: Bộ lọc Filters, JWT token creation/parsing.<br>- Cả team: Cookie handling, Auth checks | - Chạy thử luồng authenticate & authorize bằng Postman | 🔄 In Progress |
-| **8** | PostgreSQL RLS & Docker Compose | - BE Lead: Cấu hình context session trong DB.<br>- DevOps: Viết script RLS policy & Super Admin bypass | - Setup hoàn chỉnh Docker Compose môi trường Dev chạy PostgreSQL + Redis | 🔄 In Progress |
-
----
-
-## 4. Phase 1: Foundations & Async Development (Weeks 9-16)
-
-Trong giai đoạn này, FE Lead làm việc trên API Mock Server, BE Lead viết API thực tế.
-
-| Week | Backend (Spring Boot) | Frontend (Next.js 14) | Infrastructure / DevOps |
-|------|-----------------------|-----------------------|-------------------------|
-| **9-10** | - Khởi tạo khung dự án Spring Boot.<br>- Viết Filter phân giải Tenant (`tenant_id` resolver) từ subdomain/header | - Khởi tạo khung dự án Next.js 14.<br>- **Thiết lập Mock API Server**.<br>- Dựng luồng Login/Register (UI) | - Setup Git repositories con độc lập.<br>- Cấu hình Docker cho Postgres & Redis |
-| **11-12**| - Viết APIs đăng ký/đăng nhập hệ thống.<br>- APIs quản lý Tenant cho Super Admin (`/api/v1/super-admin/tenants`) | - Dựng UI cho **SaaS Admin Portal** (Màn hình dashboard chung, kích hoạt tenant, cấu hình gói cước) | - Migrate DB script cho cột `tenant_id` nullable trên bảng `users`.<br>- Cấu hình chính sách Postgres RLS |
-| **13-14**| - Viết REST APIs: Chi nhánh (Branch APIs) & Loại xe/Xe (Vehicle CRUD APIs) | - Tích hợp Mock APIs để hoàn thiện UI **Admin Dashboard** (Màn quản lý chi nhánh, quản lý fleet xe) | - Setup CI/CD build test tự động cơ bản |
-| **15-16**| - Viết REST APIs: Quản lý khách hàng (Customer APIs) | - Hoàn thiện các trang: Quản lý khách hàng, Cấu hình bảng giá của Tenant | - Triển khai thuật toán mã hóa AES cho trường CCCD/GPLX của khách hàng |
-
-**Deliverables Phase 1:**
-- [ ] Khung code Backend & Frontend hoạt động ổn định.
-- [ ] Logic phân tách tenant (Multi-tenant middleware) ở Backend hoạt động.
-- [ ] Frontend hoàn thành toàn bộ khung giao diện CRUD (Tenant, Chi nhánh, Xe, Khách hàng) bằng Mock API.
+#### 📦 Kết quả đầu ra (Deliverables Phase 1):
+- [ ] 100% thành viên vượt qua bài kiểm tra coding thực hành nội bộ (Tự xây dựng một ứng dụng REST API Spring Boot hoàn chỉnh kết nối database PostgreSQL, tích hợp bảo mật JWT).
+- [ ] Thiết lập thành công môi trường Docker Compose dùng chung cho toàn đội ngũ phát triển.
 
 ---
 
-## 5. Phase 2: MVP Features & Core Integration (Weeks 17-24)
+### 🏗️ Phase 2: Khởi tạo Base Dự án & Thiết kế Cơ sở dữ liệu (Weeks 5 - 6)
+* **Mục tiêu:** Xây dựng khung kiến trúc chuẩn (Boilerplate) cho cả Backend và Frontend, hoàn thiện thiết kế lược đồ cơ sở dữ liệu, triển khai hệ thống xác thực tập trung và cơ chế cô lập dữ liệu nhà xe (Tenant Isolation).
+* **Thời gian:** 2 tuần (0.5 tháng).
 
-Giai đoạn tích hợp APIs thực tế giữa Frontend và Backend, tập trung xử lý các nghiệp vụ phức tạp.
+```
+                            SƠ ĐỒ XÁC THỰC & PHÂN GIẢI TENANT
+                          
+  Client Request          Next.js Middleware             Spring Boot Backend           PostgreSQL DB
+ ┌──────────────┐       ┌────────────────────┐         ┌─────────────────────┐      ┌─────────────────┐
+ │ Subdomain /  │ ───>  │ • Check JWT        │  ───>   │ • TenantInterceptor │ ───> │ • Set tenant_id │
+ │ Headers      │       │ • Route Guarding   │         │ • Resolve Tenant ID │      │ • Apply RLS     │
+ └──────────────┘       └────────────────────┘         └─────────────────────┘      └─────────────────┘
+```
 
-| Week | Backend (Spring Boot) | Frontend (Next.js 14) | Integrations / DevOps |
-|------|-----------------------|-----------------------|-----------------------|
-| **17-18**| - Xây dựng **Booking API**.<br>- Áp dụng cơ chế **Database locking (Pessimistic Lock)** để chống double booking | - Tích hợp API thật.<br>- Hoàn thiện luồng đặt xe (Booking Flow UI) trên Customer Website | - Viết các test case kiểm thử độ chịu tải đặt trùng xe (race condition) |
-| **19-20**| - Phát triển **Pricing Engine** (Tính toán giá thuê xe theo ngày thường/cuối tuần/ngày lễ/mùa cao điểm) | - Đồng bộ giao diện tính toán & hiển thị giá chi tiết khi khách đặt xe | - Cấu hình bảng dữ liệu pricing_rules |
-| **21-22**| - APIs lưu vết giao dịch thanh toán.<br>- APIs duyệt yêu cầu gia hạn gói của Super Admin | - Giao diện thanh toán cọc.<br>- Giao diện đối soát cước của Super Admin | - **Tích hợp cổng VNPAY Sandbox** (BE kiểm tra chữ ký & IPN callback; FE chuyển hướng) |
-| **23-24**| - APIs yêu cầu luân chuyển xe (Vehicle Transfer).<br>- APIs xuất báo cáo doanh thu & giám sát hệ thống | - Trang quản lý yêu cầu transfer xe.<br>- Giao diện biểu đồ doanh thu (Tenant & Super Admin) | - Tích hợp SMTP mail server / SMS gateway mock (Gửi OTP, thông báo đặt xe thành công) |
+#### ⚙️ Nhiệm vụ chi tiết:
+1. **Khởi tạo và cấu hình Project Base:**
+   - **Backend (Spring Boot 3.x, Java 17):** Khởi tạo khung dự án, cấu hình quản lý lỗi tập trung (Global Exception Handler), tích hợp tài liệu tự động Swagger/OpenAPI.
+   - **Frontend (Next.js 14, App Router, TailwindCSS):** Cấu hình cấu trúc thư mục dự án Next.js, tích hợp UI Component Library (Shadcn UI / Ant Design), cấu hình Axios/Fetch client với interceptors để tự động đính kèm JWT Token và `X-Tenant-ID`.
+2. **Triển khai Cơ chế Xác thực & Phân quyền (Authentication & Authorization):**
+   - Xây dựng hoàn chỉnh các API Endpoint xác thực bảo mật:
+     - `POST /auth/login` (Hỗ trợ đăng nhập cho cả đối tượng Quản trị hệ thống - Super Admin và Nhân viên nhà xe - Tenant User).
+     - `POST /auth/register` (Quy trình đăng ký Tenant mới - tạo đồng thời bản ghi Tenant và tài khoản Quản trị nhà xe - Tenant Admin).
+     - `POST /auth/refresh` (Cơ chế gia hạn access token tự động sử dụng refresh token).
+   - Thiết lập cấu trúc phân vai trò hệ thống: `SUPER_ADMIN`, `TENANT_ADMIN`, `STAFF`, `CUSTOMER`.
+   - Phía Frontend: Implement AuthContext toàn cục và Next.js Middleware để thực hiện Route Guarding (chặn và điều hướng truy cập trái phép).
+3. **Hiện thực hóa Multi-Tenant Engine:**
+   - Cấu hình lớp `TenantContext` sử dụng ThreadLocal trong Spring Boot để lưu trữ an toàn Tenant ID theo từng luồng request xử lý.
+   - Xây dựng Interceptor bắt header `X-Tenant-ID` hoặc phân tích domain/subdomain từ request để set vào `TenantContext`.
+   - Thiết lập công cụ di chuyển dữ liệu DB Migration (Flyway hoặc Liquibase), bắt buộc cột `tenant_id` trên tất cả các bảng dữ liệu liên quan đến nghiệp vụ nhà xe.
+   - Kích hoạt chính sách PostgreSQL RLS (Row Level Security):
+     - Tự động áp dụng bộ lọc `tenant_id = current_setting('app.current_tenant_id')` cho mọi truy vấn (SELECT/INSERT/UPDATE/DELETE).
+     - Cấu hình chính sách Bypass RLS đặc quyền dành riêng cho tài khoản quản trị hệ thống (`SUPER_ADMIN`).
 
-**Deliverables Phase 2:**
-- [ ] Hoàn thành trọn vẹn luồng Đặt xe - Tính giá - Thanh toán VNPAY của khách hàng.
-- [ ] Khách hàng đăng nhập cổng Customer Portal xem lại lịch sử thuê xe thành công.
-- [ ] Super Admin thực hiện được luồng kiểm duyệt thanh toán cước thuê bao và xem biểu đồ doanh thu toàn sàn.
-
----
-
-## 6. Phase 3: Quality Gates, Testing & Hardening (Weeks 25-27)
-
-Tập trung kiểm soát chất lượng kỹ càng do code Backend được viết bởi lập trình viên mới.
-
-| Week | Công việc chi tiết | Tiêu chí đạt được (Quality Gate) |
-|------|--------------------|----------------------------------|
-| **25** | - Viết Unit tests & Integration tests.<br>- Thực hiện kiểm thử thủ công end-to-end các luồng nghiệp vụ lỗi | - Độ bao phủ code Backend đạt **>60% unit test coverage**.<br>- Không còn lỗi crash luồng đặt xe |
-| **26** | - Thực hiện **Tenant Isolation Audit**: Chạy thử các kịch bản hack IDOR (dùng token Tenant A để đọc xe Tenant B) | - **100% các bảng dữ liệu có RLS** được kiểm thử cô lập thành công, không có rò rỉ chéo dữ liệu |
-| **27** | - Sửa các lỗi bảo mật phát hiện từ audit.<br>- Đo hiệu năng hệ thống, viết index bổ sung cho các truy vấn DB chậm.<br>- Hoàn thiện tài liệu cấu hình vận hành (Setup Guide, API Docs Swagger) | - Tốc độ phản hồi các API CRUD đạt `< 200ms`.<br>- Tài liệu hướng dẫn cài đặt rõ ràng, dễ hiểu |
-
----
-
-## 7. Phase 4: Launch & Handover (Week 28)
-
-| Công việc | Deliverables |
-|-----------|--------------|
-| Triển khai lên Staging (Sử dụng Docker Compose hoặc K8s thu nhỏ) | staging.carrental-saas.com |
-| Tiến hành UAT (User Acceptance Testing) với 1-2 nhà xe đối tác chạy thử | UAT feedback list |
-| Hotfix nhanh các lỗi phát sinh từ UAT | - |
-| Triển khai chính thức lên Production, hướng dẫn vận hành | production.carrental-saas.com |
-
----
-
-## 8. Phân bổ vai trò trong Team (Collaborative Model)
-
-Do làm việc part-time, các thành viên sẽ hỗ trợ chặt chẽ để giảm tải và nâng cao năng lực cho nhau:
-
-### Backend Lead (Lập trình viên BE)
-* **Vai trò:** Lập trình chính phần Backend API, kết nối DB, RLS và cấu hình Security.
-* **Hỗ trợ nhận được:** 
-  * Được DevOps Lead hỗ trợ cấu hình script Docker DB, viết lệnh SQL migrations nâng cao và kiểm soát chính sách RLS.
-  * Được FE Lead hỗ trợ thiết kế cấu trúc API Request/Response DTO và hỗ trợ code phụ các API CRUD cơ bản.
-
-### Frontend Lead (Lập trình viên FE)
-* **Vai trò:** Thiết kế UI/UX, lập trình Next.js 14 App Router, tích hợp API.
-* **Hỗ trợ nhận được:** Được BE Lead hỗ trợ tài liệu đặc tả API chuẩn (Swagger/API-Spec) và cung cấp các kịch bản dữ liệu mock.
-
-### DevOps / Shared
-* **Vai trò:** Setup hạ tầng Docker, xây dựng luồng CI/CD, cấu hình cơ sở dữ liệu Postgres RLS, tích hợp các cổng dịch vụ (VNPAY, Mail gateway).
-* **Hỗ trợ nhận được:** Được BE Lead hỗ trợ cấu hình Session context trong ứng dụng Java kết nối sang Database.
+#### 📦 Kết quả đầu ra (Deliverables Phase 2):
+- [ ] Giao diện Đăng nhập/Đăng ký trên Frontend kết nối và xử lý dữ liệu thực tế thành công với Backend.
+- [ ] Token JWT mã hóa và truyền tải chính xác thông tin định danh vai trò (Role) và mã định danh nhà xe (Tenant ID).
+- [ ] Kịch bản kiểm thử (Test Case) tự động chứng minh tính cô lập hoàn toàn của dữ liệu ở tầng cơ sở dữ liệu (Tenant A tuyệt đối không thể đọc hay can thiệp dữ liệu của Tenant B).
 
 ---
 
-## 9. Milestones & Quality Gates
+### 💻 Phase 3: Phát triển Các Phân hệ Nghiệp vụ Cốt lõi (Weeks 7 - 22)
+* **Mục tiêu:** Phát triển toàn bộ các API Backend nghiệp vụ và tích hợp giao diện tương ứng cho hai phân hệ lớn: **SaaS Admin Portal** (Dành cho Quản trị hệ thống) và **Tenant Dashboard** (Dành cho Quản trị & Nhân viên nhà xe).
+* **Quy trình triển khai:** Áp dụng phương thức phát triển cuốn chiếu **2 tuần / Phân hệ**. BE phát triển API kết hợp viết tài liệu, FE dựng giao diện sử dụng dữ liệu Mock trong tuần đầu tiên và tiến hành tích hợp thật trong tuần thứ hai.
 
-| Milestone | Target | Tiêu chuẩn chất lượng (Quality Gate) | Status |
-|-----------|--------|-------------------------------------|--------|
-| **M1: Design Approved** | Week 2 | SPEC, API Spec, DB Schema được duyệt hoàn toàn | ✅ Done |
-| **M2: Bootcamp Complete** | Week 8 | Cả 3 người vượt qua các bài học công nghệ của nhau | 🔄 In Progress |
-| **M3: Core CRUD Ready** | Week 16 | 100% APIs cơ bản hoạt động trên giao diện Mock và thật | ☐ Pending |
-| **M4: MVP Functional** | Week 24 | Luồng Đặt xe - Tính giá - Thanh toán tích hợp thông suốt | ☐ Pending |
-| **M5: Quality Gate Passed** | Week 27 | Vượt qua bài kiểm tra Tenant Isolation Audit & Unit test coverage >60% | ☐ Pending |
-| **M6: Go-Live** | Week 28 | Hệ thống production chạy ổn định, UAT thành công | ☐ Pending |
+```
+  ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+  │                           QUY TRÌNH PHÁT TRIỂN 2 TUẦN / SERVICE                            │
+  ├─────────────────────────────────────────┬───────────────────────────────────────────────────┤
+  │                 Tuần 1                  │                      Tuần 2                       │
+  ├─────────────────────────────────────────┼───────────────────────────────────────────────────┤
+  │ BE: Code các thực thể & logic nghiệp vụ │ BE: Viết Unit/Integration Tests, tối ưu truy vấn  │
+  │ FE: Dựng layout UI, Mock API Endpoint   │ FE: Tích hợp API thật, xử lý validate và lỗi      │
+  └─────────────────────────────────────────┴───────────────────────────────────────────────────┘
+```
+
+#### 🗓️ Nội dung chi tiết 8 Phân hệ Nghiệp vụ (2 tuần/mô-đun):
+
+#### 1. Phân hệ 1: Quản trị Đối tác (Super Admin & Tenant APIs) (Weeks 7 - 8)
+* **API tham chiếu:** **[3. Super Admin APIs](API-Specification.md#3-super-admin-apis)** & **[4. Tenant APIs](API-Specification.md#4-tenant-apis)**
+* **Nhiệm vụ Backend:**
+  - `GET /super-admin/tenants` (Truy vấn danh sách nhà xe đối tác, hỗ trợ tìm kiếm và phân trang).
+  - `PATCH /super-admin/tenants/{tenantId}/status` (Thay đổi trạng thái kích hoạt/khóa tài khoản Tenant).
+  - `POST /super-admin/subscriptions/billing-approval` (Kiểm duyệt và phê duyệt giao dịch gia hạn gói cước của đối tác).
+  - `GET /super-admin/dashboard/stats` (Thống kê doanh thu toàn hệ thống).
+  - `GET /tenants/me` & `PUT /tenants/me` (Cập nhật hồ sơ của Tenant).
+* **Nhiệm vụ Frontend:**
+  - **SaaS Admin Portal:** Trang dashboard quản trị tổng thể, quản lý danh sách Tenant, phê duyệt giao dịch gói cước và biểu đồ doanh thu.
+  - **Tenant Dashboard:** Màn hình Settings nhà xe (Tên nhà xe, logo, thông tin liên hệ).
+
+#### 2. Phân hệ 2: Quản lý Chi nhánh (Branch APIs) (Weeks 9 - 10)
+* **API tham chiếu:** **[5. Branch APIs](API-Specification.md#5-branch-apis)** (Mã mục lục 4. Branch APIs trong markdown)
+* **Nhiệm vụ Backend:**
+  - `GET /branches` (Truy vấn danh sách chi nhánh trực thuộc Tenant, lọc theo chi nhánh trung tâm).
+  - `POST /branches` (Tạo mới chi nhánh).
+  - `GET /branches/{branchId}` & `PUT /branches/{branchId}` (Xem chi tiết và cập nhật thông tin chi nhánh).
+  - `DELETE /branches/{branchId}` (Xóa chi nhánh, đi kèm kiểm tra ràng buộc nghiệp vụ).
+* **Nhiệm vụ Frontend (Tenant Dashboard):**
+  - Giao diện quản lý danh sách chi nhánh (dạng bảng kết hợp bản đồ/thẻ) và biểu mẫu thêm mới/chỉnh sửa thông tin chi nhánh.
+
+#### 3. Phân hệ 3: Quản lý Đội xe & Điều phối Xe (Vehicle & Fleet Management) (Weeks 11 - 12)
+* **API tham chiếu:** **[6. Vehicle APIs](API-Specification.md#6-vehicle-apis)** & **[12. Vehicle Transfer APIs](API-Specification.md#12-vehicle-transfer-apis)**
+* **Nhiệm vụ Backend:**
+  - `GET /vehicles` (Lọc danh sách xe theo chi nhánh, loại xe, trạng thái - `available`, `rented`, `maintenance`, `transferred`).
+  - Triển khai bộ API CRUD xe: `POST /vehicles`, `GET /vehicles/{vehicleId}`, `PUT /vehicles/{vehicleId}`, `DELETE /vehicles/{vehicleId}`.
+  - `PATCH /vehicles/{vehicleId}/status` (Cập nhật trạng thái bảo dưỡng).
+  - Xây dựng luồng luân chuyển xe giữa các chi nhánh: `POST /transfers`, `GET /transfers`, `PATCH /transfers/{transferId}/status`.
+* **Nhiệm vụ Frontend (Tenant Dashboard):**
+  - Màn hình Fleet Management: Quản lý danh mục loại xe, thông tin chi tiết từng xe kèm hình ảnh ngoại quan. Giao diện điều phối xe giữa các chi nhánh.
+
+#### 4. Phân hệ 4: Quản lý Khách hàng & Lịch sử Thuê xe (Customer Management) (Weeks 13 - 14)
+* **API tham chiếu:** **[7. Customer APIs](API-Specification.md#7-customer-apis)**
+* **Nhiệm vụ Backend:**
+  - `GET /customers`, `POST /customers`, `GET /customers/{customerId}` (CRUD thông tin khách hàng).
+  - `GET /customers/{customerId}/rentals` (Danh sách lịch sử thuê xe).
+  - *Bảo mật:* Mã hóa tự động AES đối với thông tin nhạy cảm của khách hàng (`idCard` - CCCD và `driverLicense` - Bằng lái xe) trong database.
+* **Nhiệm vụ Frontend (Tenant Dashboard):**
+  - Giao diện danh sách khách hàng và hồ sơ chi tiết. Biểu mẫu hỗ trợ upload/preview ảnh chụp CCCD/Bằng lái xe.
+
+#### 5. Phân hệ 5: Bộ máy Tính giá Tự động (Pricing Engine & Rules) (Weeks 15 - 16)
+* **API tham chiếu:** **[10. Pricing APIs](API-Specification.md#10-pricing-apis)**
+* **Nhiệm vụ Backend:**
+  - `GET /pricing-rules` & `POST /pricing-rules` (Quản lý các quy tắc định giá: nhân hệ số ngày cuối tuần, ngày lễ).
+  - Phát triển **Pricing Engine**: Endpoint `POST /pricing/calculate` tự động tính toán, phân rã giá trị đơn hàng theo từng ngày thực tế và đưa ra tổng tiền dự kiến.
+* **Nhiệm vụ Frontend (Tenant Dashboard):**
+  - Giao diện thiết lập bảng giá thuê gốc cho từng loại xe và cấu hình quy tắc giá động trực quan.
+
+#### 6. Phân hệ 6: Quy trình Đặt xe & Vận hành Thuê xe (Booking & Rental Operations) (Weeks 17 - 18)
+* **API tham chiếu:** **[8. Booking APIs](API-Specification.md#8-booking-apis)**
+* **Nhiệm vụ Backend:**
+  - `GET /bookings`, `POST /bookings`, `PATCH /bookings/{bookingId}/status`, `POST /bookings/{bookingId}/cancel`.
+  - Triển khai quy trình giao/nhận xe tại quầy: `POST /bookings/{bookingId}/start` (Km đi, xăng đi) và `POST /bookings/{bookingId}/complete` (Km về, xăng về, tự động tính phụ phí trễ giờ, hỏng hóc).
+  - *Race Condition:* Áp dụng khóa bi quan (**Pessimistic Locking** - `SELECT FOR UPDATE` trên bảng xe) để tránh double booking.
+* **Nhiệm vụ Frontend (Tenant Dashboard):**
+  - Trang quản lý Booking (Kanban Board/Table), giao diện làm thủ tục bàn giao và nhận lại xe trực quan cho nhân viên.
+
+#### 7. Phân hệ 7: Quản lý Giao dịch & Hóa đơn (Payment & Billing) (Weeks 19 - 20)
+* **API tham chiếu:** **[9. Payment APIs](API-Specification.md#9-payment-apis)**
+* **Nhiệm vụ Backend:**
+  - `GET /payments`, `POST /payments` (Ghi nhận thông tin thanh toán: cash, bank_transfer, e_wallet).
+  - Thiết lập nghiệp vụ đối soát và duyệt giao dịch chuyển khoản thủ công.
+* **Nhiệm vụ Frontend (Tenant Dashboard):**
+  - Giao diện quản lý hóa đơn. Tích hợp tạo mã VietQR động tự động điền số tài khoản, số tiền và nội dung chuyển khoản cọc.
+
+#### 8. Phân hệ 8: Báo cáo Thống kê & Phân tích Doanh thu (Reports & Analytics) (Weeks 21 - 22)
+* **API tham chiếu:** **[11. Report APIs](API-Specification.md#11-report-apis)**
+* **Nhiệm vụ Backend:**
+  - `GET /reports/revenue` (Doanh thu lọc theo chi nhánh, ngày/tháng).
+  - `GET /reports/fleet` (Báo cáo hiệu suất sử dụng xe `%`, số xe bảo dưỡng).
+  - `GET /reports/customers` (Top khách hàng chi tiêu lớn).
+* **Nhiệm vụ Frontend:**
+  - **SaaS Admin Portal:** Xem biểu đồ doanh thu toàn hệ thống.
+  - **Tenant Dashboard:** Trang chủ Dashboard phân tích dữ liệu kinh doanh thông minh với các biểu đồ trực quan.
 
 ---
 
-## 10. Rủi ro & Biện pháp giảm thiểu (Risks & Mitigations)
+### 🌐 Phase 4: Website Công cộng & Customer Portal (Weeks 23 - 24)
+* **Mục tiêu:** Phát triển giao diện Website công cộng hỗ trợ tìm kiếm xe còn trống và đặt xe trực tuyến không cần đăng ký tài khoản (Guest checkout); đồng thời xây dựng trang cá nhân của khách hàng (Customer Portal) phục vụ tra cứu lịch sử hành trình.
+* **Thời gian:** 2 tuần (0.5 tháng).
 
-| Rủi ro | Khả năng | Tác động | Giải pháp giảm thiểu |
-|------|------------|--------|------------|
-| BE Lead quá tải khi học Spring Boot từ đầu | High | High | - Dành trọn 6 tuần bootcamp chỉ để học, không giao task code.<br>- Áp dụng học tập cộng tác: DevOps và FE hỗ trợ thiết kế cấu trúc dữ liệu và giải quyết bug phức tạp. |
-| Rò rỉ dữ liệu chéo giữa các Tenant (IDOR) | Medium | Critical | - Sử dụng **PostgreSQL RLS** ở tầng DB thay vì lọc thủ công ở tầng code Java.<br>- Thiết lập **Tenant Isolation Audit** bắt buộc ở Week 26 trước khi bàn giao hệ thống. |
-| Xung đột tiến độ do làm part-time song song dự án khác | High | Medium | - Áp dụng **API-First**: FE và BE hoạt động độc lập qua Mock Server, không bị nghẽn (block) lẫn nhau.<br>- Chia nhỏ task theo tuần để dễ quản lý tiến độ. |
-| Trùng lặp đặt xe (Double Booking) | Medium | High | - Nghiên cứu thiết kế khóa cơ sở dữ liệu (Pessimistic Locking / SELECT FOR UPDATE) ngay ở tuần 17. |
+#### ⚙️ Nhiệm vụ chi tiết:
+1. **Xây dựng nhóm Public APIs (Backend):**
+   - Triển khai các API công khai `/api/v1/public/**`:
+     - `GET /public/vehicles` (Tìm xe trống theo chi nhánh, thời gian thuê).
+     - `GET /public/pricing` (Xem trước bảng phân tích giá).
+     - `POST /public/bookings` (Đăng ký đặt xe nhanh - Guest checkout).
+   - Triển khai nhóm API Customer Portal:
+     - `POST /public/customer/login` & `GET /public/customer/me/bookings`.
+2. **Xây dựng Giao diện Phân hệ Khách hàng (Frontend):**
+   - **Giao diện Customer Website (Trang công cộng):** Form tìm kiếm xe, danh sách xe trống, trang chi tiết xe và luồng Checkout chuyển khoản cọc trực tuyến.
+   - **Giao diện Customer Portal (Trang cá nhân):** Đăng ký/Đăng nhập, Dashboard cá nhân xem lịch sử chuyến đi và hóa đơn.
+
+#### 📦 Kết quả đầu ra (Deliverables Phase 4):
+- [ ] Luồng đặt xe khép kín hoàn chỉnh từ ngoài Internet: Tìm xe -> Đặt xe thành công -> Nhận thông tin hướng dẫn cọc.
+- [ ] Backend ghi nhận đơn đặt xe trực tuyến và tự động gửi thông tin cập nhật tức thì đến hệ thống Tenant Dashboard.
 
 ---
 
-*Last updated: 2026-06-18*
+## 🛠️ PHÂN BỔ VAI TRÒ & PHƯƠNG THỨC HỢP TÁC (COLLABORATION MODEL)
+
+```
+                       ┌─────────────────────────┐
+                       │       DevOps/Shared     │
+                       └────────────┬────────────┘
+                                    │ (Cấu hình Postgres RLS, CI/CD, Docker)
+                                    ▼
+  ┌────────────────────────┐  Học tập chéo   ┌────────────────────────┐
+  │     Frontend (FE)      │ <─────────────> │      Backend (BE)      │
+  └──────────┬─────────────┘                 └─────────────┬──────────┘
+             │                                             │
+             │ (Thiết kế API Contract DTO)                 │ (Implement API thật,
+             ▼                                             ▼  xử lý logic DB)
+       Mock API Server                             REST APIs Production
+```
+
+### 1. Backend (Chịu trách nhiệm chính BE)
+- Code các Java Entity, Service logic xử lý nghiệp vụ, viết cấu hình Spring Security, xử lý database transaction.
+- Nhận hỗ trợ từ DevOps cấu hình RLS và FE hỗ trợ thiết kế cấu trúc JSON Request/Response phù hợp.
+
+### 2. Frontend (Chịu trách nhiệm chính FE)
+- Thiết kế kiến trúc Next.js App Router, quản lý State, dựng các form Validate dữ liệu, tích hợp các API nghiệp vụ.
+- Nhận tài liệu API Swagger đầy đủ và dữ liệu Mock chuẩn ngay từ đầu mỗi tuần từ BE.
+
+### 3. DevOps / Shared Member (Hạ tầng & Cơ sở dữ liệu)
+- Setup Postgres DB, Redis Cache, Docker Compose. Viết các chính sách bảo mật tầng dữ liệu Postgres RLS. Thiết lập CI/CD và chạy thử nghiệm tải hệ thống.
+
+---
+
+## 🏁 CÁC MỐC MILESTONES & TIÊU CHÍ CHẤT LƯỢNG (QUALITY GATES)
+
+| Mốc Milestone | Tuần hoàn thành | Nội dung yêu cầu đạt được | Tiêu chuẩn chất lượng (Quality Gate) |
+| :--- | :---: | :--- | :--- |
+| **M1: Bootcamp Complete** | Tuần 4 | Tất cả thành viên nắm vững Java/Spring Boot/JPA cơ bản. | 100% thành viên vượt qua bài kiểm tra coding thực hành (Tự code API CRUD bảo mật JWT). |
+| **M2: Base System Ready** | Tuần 6 | Hoàn thiện khung Boilerplate cho cả BE & FE, thiết lập xong DB Schema, Security & Tenant Resolution. | Chạy thử nghiệm thành công cơ chế cô lập dữ liệu PostgreSQL RLS; 100% tài khoản đăng nhập phân giải chính xác Tenant. |
+| **M3: Core CRUD Ready** | Tuần 14 | Phát triển thành công API và giao diện quản lý cơ bản (Tenant, Chi nhánh, Xe, Khách hàng). | Tất cả giao diện kết nối API thật hoạt động mượt mà, thời gian phản hồi của API đạt `< 200ms`. |
+| **M4: Core Flow Integrated**| Tuần 18 | Hoàn thiện và tích hợp thông suốt luồng Đặt xe - Tính giá - Thanh toán chuyển khoản thủ công. | Đơn đặt hàng được xử lý đồng bộ; Kiểm thử tải race condition chứng minh không xảy ra double booking xe. |
+| **M5: Quality Gate & Audit**| Tuần 22 | Hoàn thiện phân hệ Báo cáo thống kê, viết Unit Test Backend và đánh giá bảo mật. | - Độ phủ unit test Backend đạt **>60%**.<br>- Vượt qua kỳ đánh giá **Tenant Isolation Audit** (Không bị lỗi IDOR lộ dữ liệu tenant khác). |
+| **M6: Customer Go-Live** | Tuần 24 | Hoàn thiện giao diện Customer Website công cộng và cổng Customer Portal, đóng gói bàn giao hệ thống. | - Chạy thử nghiệm thực tế (UAT) luồng đặt xe công cộng không lỗi.<br>- Triển khai thành công ứng dụng lên môi trường Production ổn định. |
+
+---
+*Tài liệu này được biên soạn độc quyền phục vụ báo cáo sơ bộ tiến độ dự án Car Rental SaaS.*
