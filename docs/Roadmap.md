@@ -4,24 +4,20 @@
 
 Lộ trình này được thiết lập nhằm phân bổ tối ưu nguồn lực cho một nhóm phát triển gồm 3 thành viên làm việc dưới hình thức **part-time (30-40% quỹ thời gian)**. Trong bối cảnh nhóm dự án **chưa có kinh nghiệm thực tế về công nghệ Backend (Java/Spring Boot)** nhưng đã **làm chủ các công nghệ Frontend**, lộ trình được cấu trúc thành **4 giai đoạn (Phase) cuốn chiếu** với tổng thời gian thực hiện chuẩn hóa là **23 tuần (gần 6 tháng)**.
 
-Dự án áp dụng triệt để mô hình **API-First Development**. Việc thống nhất sớm hợp đồng API (API Contract) cho phép đội ngũ Frontend dựng Mock Server để phát triển giao diện độc lập và chạy thử các luồng nghiệp vụ mà không cần phụ thuộc vào tiến độ xây dựng API thật từ phía Backend.
-
 ---
 
 ## 📊 Sơ đồ Lộ trình Tổng thể (High-Level Timeline)
 
-Để có cái nhìn tổng quan và theo dõi trực quan hơn, dưới đây là Sơ đồ tư duy (Mindmap) phân rã công việc và Biểu đồ Gantt (Gantt Chart) tiến độ thực hiện chi tiết theo tuần của dự án:
-
-### 🧠 1. Sơ đồ tư duy phân rã công việc (Mindmap)
+### 🧠 1. Cây chức năng (Mindmap)
 ![Sơ đồ tư duy Lộ trình dự án](./mindmap.png)
 
-### 📅 2. Biểu đồ Gantt tiến độ thực hiện (Gantt Chart)
+### 📅 2. Biểu đồ tiến độ thực hiện (Gantt Chart)
 ![Biểu đồ Gantt Lộ trình dự án](./roadmap.png)
 
 ```
                               [ 23 TUẦN / GẦN 6 THÁNG - PART-TIME ]
  
-   Phase 1: Bootcamp BE       Phase 2: Setup Base        Phase 3: Core Features     Phase 4: Customer Portal
+   Phase 1: Learn SpringBoot       Phase 2: Setup Base        Phase 3: Core Features     Phase 4: Customer Portal
   ┌──────────────────────┐   ┌──────────────────────┐   ┌──────────────────────┐   ┌──────────────────────┐
   │ • Java OOP / Spring  │   │ • Khởi tạo dự án     │   │ • Phát triển song    │   │ • Public Search APIs │
   │ • Database & JPA     │   │ • Auth & Security    │   │   song BE + FE       │   │ • Đặt xe không Acc   │
