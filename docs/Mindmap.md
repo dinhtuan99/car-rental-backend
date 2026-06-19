@@ -24,9 +24,7 @@ mindmap
       ::icon(fa fa-cogs)
       Boilerplate BE & FE
       Auth & Role-Based Authz
-      Tenant Resolution Engine
       DB Migrations Setup
-      RLS Policy Activation
     Phase 3: Core Features
       ::icon(fa fa-layer-group)
       1. SaaS Admin & Tenant
@@ -49,26 +47,25 @@ mindmap
 
 ## 📅 2. Biểu đồ Gantt Tiến độ (Gantt Chart Timeline)
 
-Đoạn mã này hiển thị chi tiết tiến độ thực hiện theo từng tuần của 4 giai đoạn phát triển trong vòng **6 tháng (24 tuần)**, hiển thị trục thời gian chuẩn từ **Tuần 01 đến Tuần 24**:
+Đoạn mã này hiển thị chi tiết tiến độ thực hiện theo từng tuần của 4 giai đoạn phát triển trong vòng **23 tuần (gần 6 tháng)**, hiển thị trục thời gian chuẩn từ **Tuần 01 đến Tuần 23**:
 
 ```mermaid
 gantt
-    title Lộ trình Phát triển Car Rental SaaS (6 Tháng - 24 Tuần)
+    title Lộ trình Phát triển Car Rental SaaS (23 Tuần)
     dateFormat  YYYY-MM-DD
     axisFormat  Tuần %V
     todayMarker off
     
-    section Phase 1: Bootcamp (W1-W4)
+    section Phase 1: Bootcamp (W1-W3)
     Java Core, OOP & Spring Boot Core   : active, p1_1, 2024-01-01, 1w
     Spring Data JPA & PostgreSQL        : active, p1_2, after p1_1, 1w
-    Spring Security & JWT               : active, p1_3, after p1_2, 1w
-    PostgreSQL RLS & Docker Setup       : active, p1_4, after p1_3, 1w
+    Spring Security, JWT & RLS          : active, p1_3, after p1_2, 1w
     
-    section Phase 2: Setup Base (W5-W6)
-    Khởi tạo Boilerplate BE & FE        : p2_1, after p1_4, 1w
-    Auth, Tenant Resolution & RLS       : p2_2, after p2_1, 1w
+    section Phase 2: Setup Base (W4-W5)
+    Khởi tạo Boilerplate BE & FE        : p2_1, after p1_3, 1w
+    Auth & DB Migrations Setup          : p2_2, after p2_1, 1w
     
-    section Phase 3: Core Features (W7-W22)
+    section Phase 3: Core Features (W6-W21)
     S1 - SaaS Admin & Tenant Onboarding : p3_1, after p2_2, 2w
     S2 - Branch Management              : p3_2, after p3_1, 2w
     S3 - Fleet & Vehicle Transfer       : p3_3, after p3_2, 2w
@@ -78,9 +75,8 @@ gantt
     S7 - Payment & Quản lý Hóa đơn      : p3_7, after p3_6, 2w
     S8 - Báo cáo Thống kê & Dashboard   : p3_8, after p3_7, 2w
     
-    section Phase 4: Customer Portal (W23-W24)
-    Public Search & Booking API         : p4_1, after p3_8, 1w
-    Guest Checkout & Portal UI          : p4_2, after p4_1, 1w
+    section Phase 4: Customer Portal (W22-W23)
+    Customer Portal                     : p4_1, after p3_8, 2w
 ```
 
 ---
