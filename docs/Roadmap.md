@@ -15,8 +15,6 @@ Lộ trình này được thiết lập nhằm phân bổ tối ưu nguồn lự
 ![Biểu đồ Gantt Lộ trình dự án](./roadmap.png)
 
 ```
-                              [ 23 TUẦN / GẦN 6 THÁNG - PART-TIME ]
- 
    Phase 1: Learn SpringBoot       Phase 2: Setup Base        Phase 3: Core Features     Phase 4: Customer Portal
   ┌──────────────────────┐   ┌──────────────────────┐   ┌──────────────────────┐   ┌──────────────────────┐
   │ • Java OOP / Spring  │   │ • Khởi tạo dự án     │   │ • Phát triển song    │   │ • Public Search APIs │
