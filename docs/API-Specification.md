@@ -678,10 +678,10 @@ POST /pricing-rules
 {
   "vehicleTypeId": "uuid",
   "dayType": "weekend",
-  "season": "normal",
   "multiplier": 1.2
 }
 ```
+> **MVP:** Chỉ hỗ trợ `weekday` (1.0) và `weekend` (1.2). Season/holiday multipliers → Phase 2.
 
 ### 9.3 Calculate Price
 
@@ -793,6 +793,8 @@ GET /reports/customers
 ---
 
 ## 12. Vehicle Transfer APIs
+
+> **Lùi Phase 2.** MVP không cần module điều phối xe liên chi nhánh. API spec dưới đây giữ làm reference cho Phase 2.
 
 ### 12.1 List Transfers
 

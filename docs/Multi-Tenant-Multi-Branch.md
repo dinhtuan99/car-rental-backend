@@ -150,6 +150,8 @@ BRANCH (Chi nhánh)
 
 ### 3.5 Vehicle Transfer Flow (Multi-branch)
 
+> **Lưu ý MVP:** Vehicle Transfer được lùi sang Phase 2. MVP phục vụ nhà xe nhỏ (1-2 chi nhánh, <50 xe) — họ tự gọi điện điều phối. Module này chỉ có giá trị với chuỗi 50+ xe, 3+ chi nhánh.
+
 ```
 SCENARIO: Chi nhánh Quận 1 hết xe, khách cần thuê
 

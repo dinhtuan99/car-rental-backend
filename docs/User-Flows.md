@@ -70,8 +70,8 @@
 3. TIẾP NHẬN BOOKING
  ├── Xem danh sách booking mới
  ├── Xác nhận booking (kiểm tra xe available)
- ├── Nếu không có xe → Request transfer từ Central
- └── Gửi xác nhận cho khách (SMS/Email)
+ ├── Request transfer từ Central (Phase 2)
+ └── Gửi xác nhận cho khách (Email)
 
 4. GIAO XE
  ├── Check-in xe khi khách đến
@@ -129,14 +129,14 @@ CENTRAL MANAGER:
  └── Xem chi tiết thông tin, dung lượng sử dụng của từng tenant
 
 3. QUẢN LÝ SUBSCRIPTION PLANS & BILLING
- ├── Cấu hình các gói dịch vụ (FREE, BASIC, PRO, ENTERPRISE)
+ ├── Cấu hình các gói dịch vụ (FREE, PAID)
  ├── Duyệt các yêu cầu thanh toán / gia hạn gói dịch vụ từ các tenants
  └── Tra cứu lịch sử thanh toán toàn hệ thống
 
 4. CẤU HÌNH HỆ THỐNG & GIÁM SÁT
- ├── Cấu hình cổng thanh toán dùng chung (VNPAY, Momo, Bank Transfer...)
+ ├── Cấu hình cổng thanh toán dùng chung
  ├── Giám sát logs hệ thống (System logs, Audit logs bảo mật)
- └── Cấu hình template thông báo (SMS, Email OTP...)
+ └── Cấu hình template thông báo (Email...)
 ```
 
 ---
@@ -176,8 +176,7 @@ CENTRAL MANAGER:
 
 4. NHẬN XÁC NHẬN
  ├── Email: Chi tiết booking + QR code
- ├── SMS: "Mã booking của bạn: CR-2024-XXXX"
- └── Thông tin chi nhánh + Google Maps link
+ ├── Thông tin chi nhánh + Google Maps link
 
 5. ĐẾN CHI NHÁNH
  ├── Show QR code / Mã booking
@@ -203,6 +202,8 @@ CENTRAL MANAGER:
 ---
 
 ## 4. Vehicle Transfer Flow
+
+> **Lưu ý:** Tính năng điều phối xe (Vehicle Transfer) được lùi sang Phase 2. MVP tập trung vào nhà xe nhỏ (1-2 chi nhánh, <50 xe) — họ tự gọi điện điều phối, không cần module này.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐

@@ -1,10 +1,13 @@
 # Database Schema - Car Rental SaaS
 
+> **Cập nhật:** 24/06/2026 — Đơn giản hóa pricing_rules, đánh dấu vehicle_transfers là Phase 2.
+
 ## Mục lục
 1. [ER Diagram](#1-er-diagram)
 2. [Tables](#2-tables)
 3. [Indexes](#3-indexes)
 4. [Multi-tenant Strategy](#4-multi-tenant-strategy)
+5. [Phase 2 Additions](#5-phase-2-additions)
 
 ---
 
@@ -19,10 +22,10 @@
 │ domain       │   │   │ name         │   │   │ name         │
 │ plan_tier    │   │   │ address      │   │   │ phone        │
 │ created_at   │   │   │ phone        │   │   │ email        │
-└──────────────┘   │   │ is_central   │   │   │ created_at   │
-                  │   │ created_at   │   │   └──────────────┘
-                  │   └──────────────┘   │          │
-                  │          │          │          │
+└──────────────┘   │   │ is_central   │   │   │ id_card (enc)│
+                  │   │ created_at   │   │   │ driver_lic   │
+                  │   └──────────────┘   │   │ created_at   │
+                  │          │          │   └──────────────┘
                   │          │          │          │
                   │    ┌─────┴─────┐    │          │
                   │    │           │    │          │
@@ -44,20 +47,19 @@
                                   └─────────────┘
                                          │
                                          │
-                                  ┌──────┴──────┐
-                                  │            │
-                                  ▼            ▼
-                          ┌────────────┐ ┌────────────┐
-                          │pricing_rules│ │transfers  │
-                          ├────────────┤ ├───────────┤
-                          │ id (PK)    │ │ id (PK)   │
-                          │ tenant_id  │ │ tenant_id │
-                          │ vehicle_type│ │ vehicle_id│
-                          │ day_type   │ │ from_branch│
-                          │ season     │ │ to_branch │
-                          │ multiplier │ │ status    │
-                          └────────────┘ │ created_at│
-                                        └───────────┘
+                                         ▼
+                                  ┌────────────┐
+                                  │pricing_rules│
+                                  ├────────────┤
+                                  │ id (PK)    │
+                                  │ tenant_id  │
+                                  │ vehicle_type│
+                                  │ day_type   │  ← weekday / weekend
+                                  │ multiplier │  ← 1.0 / 1.2
+                                  │ is_active  │
+                                  └────────────┘
+
+  Phase 2 bổ sung: vehicle_transfers (điều phối xe)
 ```
 
 ---
@@ -239,7 +241,7 @@ CREATE INDEX idx_payments_booking_id ON payments(booking_id);
 CREATE INDEX idx_payments_method ON payments(tenant_id, method);
 ```
 
-### 2.8 pricing_rules
+### 2.8 pricing_rules (đơn giản hóa MVP)
 
 ```sql
 CREATE TABLE pricing_rules (
@@ -247,12 +249,8 @@ CREATE TABLE pricing_rules (
     tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
     vehicle_type_id UUID NOT NULL REFERENCES vehicle_types(id),
     day_type VARCHAR(20) NOT NULL
-        CHECK (day_type IN ('weekday', 'weekend', 'holiday')),
-    season VARCHAR(20) NOT NULL DEFAULT 'normal'
-        CHECK (season IN ('normal', 'peak')),
+        CHECK (day_type IN ('weekday', 'weekend')),
     multiplier DECIMAL(4, 2) NOT NULL DEFAULT 1.00,
-    start_date DATE,
-    end_date DATE,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -262,31 +260,11 @@ CREATE INDEX idx_pricing_rules_tenant_id ON pricing_rules(tenant_id);
 CREATE INDEX idx_pricing_rules_type_day ON pricing_rules(tenant_id, vehicle_type_id, day_type);
 ```
 
-### 2.9 vehicle_transfers
+> **MVP:** Chỉ hỗ trợ weekday (1.0) và weekend (1.2). Season/Holiday multipliers → Phase 2.
 
-```sql
-CREATE TABLE vehicle_transfers (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
-    vehicle_id UUID NOT NULL REFERENCES vehicles(id),
-    from_branch_id UUID REFERENCES branches(id),
-    to_branch_id UUID NOT NULL REFERENCES branches(id),
-    status VARCHAR(20) NOT NULL DEFAULT 'pending'
-        CHECK (status IN ('pending', 'in_transit', 'completed', 'cancelled')),
-    reason TEXT,
-    requested_by UUID,
-    approved_by UUID,
-    transferred_at TIMESTAMP WITH TIME ZONE,
-    completed_at TIMESTAMP WITH TIME ZONE,
-    notes TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
+### 2.9 vehicle_transfers — Lùi Phase 2
 
-CREATE INDEX idx_vehicle_transfers_tenant_id ON vehicle_transfers(tenant_id);
-CREATE INDEX idx_vehicle_transfers_vehicle_id ON vehicle_transfers(vehicle_id);
-CREATE INDEX idx_vehicle_transfers_status ON vehicle_transfers(tenant_id, status);
-```
+> Bảng `vehicle_transfers` (điều phối xe giữa các chi nhánh) sẽ được thêm vào Phase 2 khi hệ thống phục vụ các chuỗi 50+ xe có nhu cầu điều phối liên chi nhánh. MVP không cần bảng này.
 
 ### 2.10 users (for staff/admin)
 
@@ -342,10 +320,9 @@ CREATE INDEX idx_users_email ON users(email);
 | payments | idx_payments_method | tenant_id, method | |
 | pricing_rules | idx_pricing_rules_tenant_id | tenant_id | |
 | pricing_rules | idx_pricing_rules_type_day | tenant_id, vehicle_type_id, day_type | |
-| vehicle_transfers | idx_vehicle_transfers_tenant_id | tenant_id | |
-| vehicle_transfers | idx_vehicle_transfers_vehicle_id | vehicle_id | |
-| vehicle_transfers | idx_vehicle_transfers_status | tenant_id, status | |
 | users | idx_users_tenant_id | tenant_id | |
+
+> `vehicle_transfers` — lùi Phase 2.
 | users | idx_users_email | email | UNIQUE |
 
 ---
@@ -428,3 +405,16 @@ Phase 3: Database-per-tenant (Future)
     └── Maximum isolation
     └── Good for enterprise/critical tenants
 ```
+
+---
+
+## 5. Phase 2 Additions
+
+Các bảng sẽ được thêm ở Phase 2 khi scale lên phục vụ chuỗi lớn:
+
+| Bảng | Mục đích | Trigger |
+|------|----------|---------|
+| `vehicle_transfers` | Điều phối xe liên chi nhánh | Tenant có >50 xe, >3 chi nhánh |
+| `pricing_rules` (mở rộng) | Thêm season, holiday multipliers | Tenant yêu cầu định giá theo mùa/lễ |
+| `notification_logs` | Lịch sử SMS/Email/Push | Khi tích hợp đa kênh thông báo |
+| `driver_records` | Quản lý tài xế (xe có lái) | Khi mở rộng sang vertical xe có lái |
