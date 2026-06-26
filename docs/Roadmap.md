@@ -1,8 +1,8 @@
 # LỘ TRÌNH PHÁT TRIỂN CAR RENTAL SAAS 2.0
 
-> **Cập nhật:** 24/06/2026 — Tái cấu trúc dựa trên phân tích thị trường & ưu tiên tính năng.
-> **Tham chiếu phân tích:** [docs/analysis/](analysis/)
-> **Đặc tả API:** [API-Specification.md](API-Specification.md)
+**Cập nhật:** 24/06/2026 — Tái cấu trúc dựa trên phân tích thị trường & ưu tiên tính năng.
+**Tham chiếu phân tích:** [docs/analysis/](analysis/)
+**Đặc tả API:** [API-Specification.md](API-Specification.md)
 
 ---
 
@@ -13,9 +13,9 @@ Lộ trình 21 tuần chia làm **4 Phase**, mỗi phase kết thúc = có sản
 ### Nguyên tắc thiết kế
 
 1. **Mỗi phase có thứ chạy được** — Demo được cho khách hàng, không phải "làm dần bao giờ xong"
-2. **Public + Admin song song** — Không tách "admin trước, public sau"
+2. **Public + Admin đồng thời** — Không tách "admin trước, public sau"
 3. **Key features được đầu tư nhiều nhất** — Availability, Tenant Isolation, Counter Ops
-4. **Gate chất lượng cứng** — Không đạt → không qua phase tiếp
+4. **Gate chất lượng bắt buộc** — Không đạt → không qua phase tiếp
 
 ### Tổng quan Timeline
 
@@ -36,7 +36,7 @@ Lộ trình 21 tuần chia làm **4 Phase**, mỗi phase kết thúc = có sản
 
 ## PHASE A: NỀN MÓNG (Weeks 1-6)
 
-**Mục tiêu:** Xây dựng nền tảng kỹ thuật vững chắc — auth, multi-tenant, DB schema. Sẵn sàng cho nghiệp vụ.
+**Mục tiêu:** Xây dựng nền tảng kỹ thuật cốt lõi — auth, multi-tenant, DB schema. Sẵn sàng cho nghiệp vụ.
 
 **Câu hỏi cần trả lời:** "Hệ thống đã cô lập được dữ liệu giữa các nhà xe chưa?"
 
@@ -60,8 +60,8 @@ Lộ trình 21 tuần chia làm **4 Phase**, mỗi phase kết thúc = có sản
 
 | # | Deliverable | Tiêu chuẩn đạt |
 |---|-------------|-----------------|
-| A1 | Login/Register flow hoàn chỉnh (FE + BE) | Đăng nhập → nhận JWT → redirect đúng role |
-| A2 | DB Schema hoàn chỉnh + Migration scripts | Tất cả bảng có tenant_id, RLS enabled |
+| A1 | Login/Register flow (FE + BE) | Đăng nhập → nhận JWT → redirect đúng role |
+| A2 | DB Schema đầy đủ + Migration scripts | Tất cả bảng có tenant_id, RLS enabled |
 | A3 | Tenant Isolation Test (tự động) | Tenant A không đọc được data Tenant B |
 | A4 | Docker Compose one-command setup | `docker compose up` chạy toàn bộ stack |
 | A5 | Swagger API docs đầy đủ | FE mock được tất cả endpoint |
@@ -166,8 +166,8 @@ Lộ trình 21 tuần chia làm **4 Phase**, mỗi phase kết thúc = có sản
 
 | # | Deliverable | Tiêu chuẩn đạt |
 |---|-------------|-----------------|
-| C1 | Public Website hoàn chỉnh | Khách tìm → đặt → nhận email < 5 phút |
-| C2 | Guest → Member flow | Tỷ lệ chuyển đổi > 15% |
+| C1 | Public Website hoàn thiện | Khách tìm → đặt → nhận email < 5 phút |
+| C2 | Guest → Member flow | Tỷ lệ chuyển đổi > 15% [MT] |
 | C3 | Customer Portal | Load lịch sử < 1s, rebook 1 chạm |
 | C4 | Multi-tenant Domain | 2 tenant, 2 domain khác nhau, data cô lập |
 
@@ -233,7 +233,7 @@ Lộ trình 21 tuần chia làm **4 Phase**, mỗi phase kết thúc = có sản
 | **M3: Fleet Live** | W8 | Quản lý xe + xem xe trống | **Demo 2-3 nhà xe, lấy feedback** |
 | **M4: Counter Ops** | W12 | Booking + giao/nhận xe | **Cho 1 nhà xe dùng thử nội bộ** |
 | **M5: Payment Done** | W14 | Thanh toán + báo cáo | Sẵn sàng thu tiền thật |
-| **M6: Public Web** | W18 | Web công cộng hoàn chỉnh | **Mở đăng ký dùng thử (free trial)** |
+| **M6: Public Web** | W18 | Web công cộng hoàn thiện | **Mở đăng ký dùng thử (free trial)** |
 | **M7: GO-LIVE** | W21 | Production system | **Bắt đầu thu phí tenant đầu tiên** |
 
 ---
@@ -265,7 +265,9 @@ Lộ trình 21 tuần chia làm **4 Phase**, mỗi phase kết thúc = có sản
 
 ## Kế Hoạch Sau MVP (Phase 2+)
 
-Sau khi ổn định với 50+ tenant trả phí:
+**Công nghệ chi tiết:** [Post-MVP-Technologies.md](Post-MVP-Technologies.md)
+
+Sau khi ổn định với 50+ tenant trả phí [ƯT]:
 
 | Ưu tiên | Mở rộng | Thời gian dự kiến |
 |---------|---------|--------------------|

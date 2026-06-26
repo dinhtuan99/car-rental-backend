@@ -116,7 +116,7 @@ CUSTOMER JOURNEY
 
 | Lối mòn cũ | Vấn đề | Xu hướng hiện đại |
 |------------|--------|-------------------|
-| **Monolithic architecture** | Khó scale, deploy chậm | Microservices, Container |
+| **Monolithic architecture** (bối cảnh enterprise) | Khó scale, deploy chậm khi hệ thống lớn | Microservices, Container (xem [Định hướng công nghệ](04-technology-direction.md): MVP dùng Monolith trước, scale-up mới tách Microservices) |
 | **On-premise server** | Backup thủ công, downtime | Cloud-native (AWS/GCP) |
 | **REST API truyền thống** | Over-fetching, round-trips nhiều | REST với BFF pattern |
 | **Session-based auth** | Khó scale, CSRF vulnerability | JWT + Refresh token + OAuth |
@@ -163,7 +163,7 @@ CUSTOMER JOURNEY
 | Backend | Spring Boot 3.x, Go, Node.js | PHP, Plain Java, .NET legacy |
 | Frontend (Admin) | Angular 17+ | jQuery, AngularJS, Ember |
 | Frontend (Customer/Public) | Next.js 14, React 18, Vue 3 | jQuery, AngularJS, Ember |
-| Database | PostgreSQL (cloud), MongoDB | MySQL (on-prem), Access |
+| Database | PostgreSQL (cloud) | MySQL (on-prem), Access, MongoDB (dự án này chọn PostgreSQL) |
 | Auth | JWT + OAuth 2.0 | Session + Cookies |
 | API | REST + GraphQL (optional) | SOAP |
 | Deploy | Docker, Kubernetes, Serverless | VPS manual |
@@ -263,7 +263,7 @@ TRADITIONAL CAR RENTAL SaaS
 ────────────────────────────────────────────────────────────────
 VS
 ────────────────────────────────────────────────────────────────
-MODERN CAR RENTAL SaaS (CỦA CHÚNG TA)
+MODERN CAR RENTAL SaaS
 ────────────────────────────────────────────────────────────────
 ✅ AI Dynamic Pricing                    → Tối đa doanh thu
 ✅ Real-time Fleet Tracking             → Visibility 100%

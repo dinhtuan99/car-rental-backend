@@ -1,9 +1,9 @@
 # Car Rental SaaS - Project Information
 
-> **Cập nhật:** 24/06/2026 — Sync với phân tích thị trường & roadmap tái cấu trúc.
+**Cập nhật:** 24/06/2026 — Sync với phân tích thị trường & roadmap tái cấu trúc.
 
 ## Yêu cầu
-Xây dựng hệ thống quản lý, cho thuê xe du lịch tới khách hàng lẻ. Yêu cầu đi theo hướng SaaS (B2B SaaS). Hệ thống theo mô hình kiến trúc Multi-tenant, mô hình nghiệp vụ Multi-branch. Sản phẩm phải phù hợp với xu hướng hiện tại.
+Xây dựng hệ thống quản lý, cho thuê xe du lịch tới khách hàng lẻ. Định hướng SaaS (B2B SaaS). Hệ thống theo mô hình kiến trúc Multi-tenant, mô hình nghiệp vụ Multi-branch. Sản phẩm cần phù hợp với xu hướng hiện tại.
 
 **Định hướng thị trường Phase 1:** Cho thuê xe tự lái (self-drive rental) — xe máy & ô tô tại các điểm du lịch. Phase 2 mở rộng sang xe có lái. [Phân tích chi tiết](analysis/03-business-model-comparison.md)
 
@@ -91,9 +91,9 @@ Hệ thống quản lý và cho thuê xe tới khách hàng lẻ, hỗ trợ mul
 | Plan | Giá/tháng | Giới hạn |
 |------|-----------|----------|
 | **FREE** | 0đ | 1 Branch, 10 Vehicles, 30 Bookings, 30 ngày dùng thử |
-| **PAID** | 1,500,000đ | 5 Branches, 100 Vehicles, 500 Bookings |
+| **PAID** | 1,500,000đ [MT] | 5 Branches, 100 Vehicles, 500 Bookings |
 
-> Chi tiết: [Subscription-Plans.md](Subscription-Plans.md)
+Chi tiết: [Subscription-Plans.md](Subscription-Plans.md)
 
 ### 5.4 Pricing Engine (đơn giản hóa)
 
@@ -150,7 +150,7 @@ Ví dụ (xe base_price = 500,000đ/ngày):
 | Phase C: MVP Public | Week 15-18 | Web công cộng + Guest checkout + Customer Portal |
 | Phase D: Go-Live | Week 19-21 | Test, Audit, Production Deploy |
 
-> Chi tiết: [Roadmap.md](Roadmap.md)
+Chi tiết: [Roadmap.md](Roadmap.md)
 
 ---
 

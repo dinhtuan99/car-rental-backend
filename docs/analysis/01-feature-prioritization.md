@@ -1,7 +1,7 @@
 # Phân Tích Cắt Gọt & Ưu Tiên Tính Năng
 
-> **Ngày:** 24/06/2026
-> **Mục tiêu:** Rà soát toàn bộ tính năng trong mindmap, xác định cái nào thực sự cần, cái nào hiếm dùng trong điều kiện thực tế, và đâu là key feature sống còn của sản phẩm.
+**Ngày:** 24/06/2026
+**Mục tiêu:** Rà soát toàn bộ tính năng trong mindmap, xác định cái nào cần, cái nào ít dùng trong thực tế, và đâu là key feature của sản phẩm.
 
 ---
 
@@ -22,7 +22,7 @@ Phân tích dựa trên đối tượng chính: **nhà xe vừa & nhỏ tại VN
 | 7 | **Booking & Pessimistic Locking** | P0 | CAO — Đây là lý do nhà xe cần phần mềm | **GIỮ P0, TĂNG CƯỜNG** | Đây là **key feature #1**. Xem chi tiết mục 2 bên dưới. |
 | 8 | **Payment & VietQR** | P1 | CAO — Chuyển khoản là phương thức chính tại VN | **GIỮ P1** | VietQR là điểm khác biệt cạnh tranh. Chi phí implement thấp (dùng API ngân hàng hoặc VietQR generator), nhưng giá trị marketing cao. |
 | 9 | **Report & Dashboard Analytics** | P1 | TRUNG BÌNH — Nhà xe nhỏ chỉ cần biết "hôm nay thu bao nhiêu" | **GIỮ P1, giảm mạnh scope** | MVP chỉ cần 3 báo cáo: (1) Doanh thu theo ngày, (2) Số xe đang thuê, (3) Danh sách booking hôm nay. Dashboard "thông minh", biểu đồ xu hướng, top khách hàng → Phase 2. |
-| 10 | **Customer Portal (Public Web)** | Trong Phase 4 | CAO — Khách vãng lai là 70-80% nguồn thu | **ĐƯA LÊN P0, làm song song với admin** | Đây là **sai lầm lớn nhất** trong roadmap hiện tại. Xem phân tích chi tiết ở doc 02. |
+| 10 | **Customer Portal (Public Web)** | Trong Phase 4 | CAO — Khách vãng lai chiếm ~73% lượt đặt, ~62% doanh thu [KS] | **ĐƯA LÊN P0, làm đồng thời với admin** | Đây là điểm cần điều chỉnh lớn nhất trong roadmap hiện tại. Xem phân tích chi tiết ở doc 02. |
 | 11 | **Notification (SMS/Email)** | P2 | THẤP với SMS, TRUNG BÌNH với Email | **CẮT SMS, GIỮ Email cơ bản** | SMS tốn ~800đ/tin, nhà xe nhỏ không chịu chi phí này. Email xác nhận booking là đủ. Push notification để khi có app mobile. |
 | 12 | **Subscription Plans 4 bậc** | P0 | THẤP cho MVP — Chưa có khách thì phân mảnh gói để làm gì? | **Giảm còn 2 bậc** | MVP: FREE (dùng thử 30 ngày, giới hạn 1 branch + 10 xe) + PAID (không giới hạn). Phân mảnh gói cước (BASIC/PRO/ENTERPRISE) là bài toán scaling, không phải MVP. |
 
@@ -44,17 +44,17 @@ Tổng cắt được: ~4-5 tuần (từ 16 tuần Phase 3 xuống còn 11-12 tu
 
 ---
 
-## 2. Key Features — Đâu là "Linh Hồn" Sản Phẩm?
+## 2. Key Features — Đâu là Tính Năng Cốt Lõi?
 
-Không phải mọi tính năng đều quan trọng như nhau. Với sản phẩm này, **3 tính năng sau quyết định thành bại**:
+Không phải mọi tính năng đều quan trọng như nhau. Với sản phẩm này, **3 tính năng sau mang tính then chốt**:
 
 ### 2.1 KEY #1: Real-time Fleet Availability (Tồn kho xe thời gian thực)
 
 ```
-Đây là TRÁI TIM của sản phẩm.
+Đây là tính năng cốt lõi của sản phẩm.
 ```
 
-**Vì sao quan trọng:** Mọi thứ khác (booking, pricing, payment) đều vô nghĩa nếu inventory không chính xác. Khách vào web thấy "có xe" nhưng ra quầy hết xe → mất uy tín vĩnh viễn.
+**Vì sao quan trọng:** Các tính năng khác (booking, pricing, payment) không có giá trị nếu inventory không chính xác. Khách vào web thấy "có xe" nhưng ra quầy hết xe thì sẽ mất uy tín với khách hàng.
 
 **Yêu cầu kỹ thuật cốt lõi:**
 - Cache Redis cho availability query (tránh query DB mỗi lần khách xem)
@@ -64,13 +64,13 @@ Không phải mọi tính năng đều quan trọng như nhau. Với sản phẩ
 
 **Tiêu chuẩn chất lượng:**
 - Thời gian check availability < 200ms
-- 0 double-booking (không khoan nhượng)
+- 0 double-booking (yêu cầu bắt buộc)
 - Tự động refresh trạng thái sau mỗi booking/cancel
 
 ### 2.2 KEY #2: Tenant Isolation & 5-Minute Onboarding
 
 ```
-Đây là SẢN PHẨM. Không phải tính năng.
+Đây là sản phẩm, không phải tính năng.
 ```
 
 **Vì sao quan trọng:** Nhà xe không mua "phần mềm quản lý xe", họ mua "cái web riêng để khách đặt xe". Họ chỉ quan tâm 2 thứ:
@@ -91,7 +91,7 @@ Không phải mọi tính năng đều quan trọng như nhau. Với sản phẩ
 ### 2.3 KEY #3: Quick Counter Operations (Giao/Nhận xe tại quầy)
 
 ```
-Đây là thứ nhân viên nhà xe dùng 50 lần/ngày.
+Đây là thứ nhân viên nhà xe dùng nhiều lần trong ngày.
 ```
 
 **Vì sao quan trọng:** Trong khi public web là "mặt tiền", thì quy trình giao/nhận xe tại quầy là thứ nhân viên dùng nhiều nhất. Nếu nó chậm hoặc khó dùng, họ sẽ quay lại dùng sổ giấy.
@@ -128,9 +128,9 @@ Không phải mọi tính năng đều quan trọng như nhau. Với sản phẩ
 
 | Góc phần tư | Tính năng | Hành động |
 |-------------|-----------|-----------|
-| **Quan trọng + Khẩn cấp** | Fleet Availability + Counter Ops | Làm đầu tiên, làm tốt nhất |
+| **Quan trọng + Khẩn cấp** | Fleet Availability + Counter Ops | Làm đầu tiên, làm hiệu quả nhất |
 | **Quan trọng + Ít khẩn cấp** | Tenant Isolation + Onboarding | Làm nền móng trước khi code nghiệp vụ |
-| **Ít quan trọng + Khẩn cấp** | Guest Booking (Public Web) | Làm song song, không đợi hết admin mới làm |
+| **Ít quan trọng + Khẩn cấp** | Guest Booking (Public Web) | Làm đồng thời, không đợi hết admin mới làm |
 | **Ít quan trọng + Ít khẩn cấp** | Report, Notification, Transfer | Lùi Phase 2 hoặc cắt |
 
 ---
@@ -151,7 +151,7 @@ Phân tích nhanh đối thủ:
 Đắt ▲
     │  Nanosoft (full-feature, đắt)
     │
-    │  ★ CHÚNG TA (vừa đủ, giá hợp lý)
+    │  ★ Car Rental SaaS (vừa đủ, giá hợp lý)
     │  - Multi-tenant gốc (không phải add-on)
     │  - Public web riêng cho từng tenant
     │  - Real-time inventory chính xác
@@ -162,7 +162,7 @@ Phân tích nhanh đối thủ:
     Ít tính năng ──────────────────────► Nhiều tính năng
 ```
 
-**Tuyên ngôn sản phẩm:** "Phần mềm cho thuê xe ĐƠN GIẢN NHẤT — đủ dùng, không thừa, giá hợp lý."
+**Định vị sản phẩm:** Phần mềm cho thuê xe đơn giản — đủ dùng, không thừa, giá hợp lý.
 
 ---
 

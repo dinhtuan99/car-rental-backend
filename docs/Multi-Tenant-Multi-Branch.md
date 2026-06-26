@@ -23,7 +23,7 @@
 ### 2.1 Định nghĩa
 
 ```
-Multi-tenant là CÁCH XÂY DỰNG PHẦN MỀM để phục vụ NHIỀU khách hàng trên
+Multi-tenant là cách xây dựng phần mềm để phục vụ nhiều khách hàng trên
 1 hệ thống duy nhất.
 ```
 
@@ -79,7 +79,7 @@ SELECT * FROM vehicles WHERE tenant_id = 'B'  -- Tenant B thấy xe B
 │  └─────────┘  └─────────┘  └─────────┘  └─────────┘         │
 │                                                              │
 │  MỖI TENANT LÀ 1 CÔNG TY THUÊ XE ĐỘC LẬP                     │
-│  - Data hoàn toàn TÁCH BIỆT                                   │
+│  - Data TÁCH BIỆT                                   │
 │  - Branding riêng (logo, màu sắc)                             │
 │  - Giá riêng                                                  │
 │  - Nhân viên riêng                                            │
@@ -93,8 +93,8 @@ SELECT * FROM vehicles WHERE tenant_id = 'B'  -- Tenant B thấy xe B
 ### 3.1 Định nghĩa
 
 ```
-Multi-branch là CÁCH TỔ CHỨC KINH DOANH của mỗi công ty thuê xe,
-trong đó họ có thể có NHIỀU CHI NHÁNH hoạt động độc lập hoặc
+Multi-branch là cách tổ chức kinh doanh của mỗi công ty thuê xe,
+trong đó họ có thể có nhiều chi nhánh hoạt động độc lập hoặc
 phối hợp với nhau.
 ```
 
@@ -124,7 +124,7 @@ Tenant B: "Xe Điện Sài Gòn" quyết định:
 ├── 2 kho trung tâm (Đông và Tây Sài Gòn)
 └── Tự do chuyển xe giữa các chi nhánh
 
-→ CÙNG 1 PHẦN MỀM, nhưng MỖI CÔNG TY tổ chức KHÁC NHAU
+→ Cùng 1 phần mềm, nhưng mỗi công ty tổ chức khác nhau
 ```
 
 ### 3.4 Mối quan hệ Branch-Vehicle-Customer
@@ -150,7 +150,7 @@ BRANCH (Chi nhánh)
 
 ### 3.5 Vehicle Transfer Flow (Multi-branch)
 
-> **Lưu ý MVP:** Vehicle Transfer được lùi sang Phase 2. MVP phục vụ nhà xe nhỏ (1-2 chi nhánh, <50 xe) — họ tự gọi điện điều phối. Module này chỉ có giá trị với chuỗi 50+ xe, 3+ chi nhánh.
+**Lưu ý MVP:** Vehicle Transfer được lùi sang Phase 2. MVP phục vụ nhà xe nhỏ (1-2 chi nhánh, <50 xe) — họ tự gọi điện điều phối. Module này chỉ có giá trị với chuỗi 50+ xe, 3+ chi nhánh.
 
 ```
 SCENARIO: Chi nhánh Quận 1 hết xe, khách cần thuê
@@ -159,7 +159,7 @@ SCENARIO: Chi nhánh Quận 1 hết xe, khách cần thuê
    │
    ▼
 2. BRANCH A1 kiểm tra fleet
-   └── Xe available = 0 → Hết xe!
+   └── Xe available = 0 → Hết xe.
    │
    ▼
 3. BRANCH A1 request TRANSFER từ Central
@@ -326,7 +326,7 @@ Branch A1 không thấy xe của Branch A2 (multi-branch, cùng tenant)
 **Trong thực tế:**
 - **Tenant** = Công ty cho thuê xe (khách hàng SaaS của bạn)
 - **Branch** = Chi nhánh của công ty đó
-- Bạn (nhà cung cấp SaaS) chỉ cần quản lý 1 hệ thống, nhưng phục vụ được NHIỀU công ty
+- Bạn (nhà cung cấp SaaS) chỉ cần quản lý 1 hệ thống, nhưng phục vụ được nhiều công ty
 - Mỗi công ty tự quản lý các chi nhánh của mình
 
 ---

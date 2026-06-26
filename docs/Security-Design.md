@@ -156,7 +156,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/public/**").permitAll()
                 .requestMatchers("/api/v1/super-admin/**").hasRole("SUPER_ADMIN")
-                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/v1/admin/**").hasRole("TENANT_ADMIN")
+                .requestMatchers("/api/v1/customer/**").hasRole("CUSTOMER")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -201,6 +202,7 @@ public class SecurityConfig {
 | CENTRAL_MANAGER | R | RW (all) | RW | R | RW | - | - |
 | BRANCH_MANAGER | R | RW (own) | RW | R | R | - | - |
 | STAFF | R | R (own) | RW (limited) | R | - | - | - |
+| CUSTOMER | - | - | R (own) | RW (own) | - | R (profile) | - |
 
 ### 3.3 Method-Level Security
 
@@ -253,7 +255,7 @@ public class BookingService {
 │  │  1. Extract token from Authorization header                        │    │
 │  │  2. Validate token signature & expiration                           │    │
 │  │  3. Extract tenant_id from token claims                             │    │
-│  │  4. If tenant_id != null, set TenantContext.setCurrentTenant(id)   │    │
+│  │  4. If tenant_id .= null, set TenantContext.setCurrentTenant(id)   │    │
 │  │     Else if role == 'SUPER_ADMIN', TenantContext.setTenantId(null)   │    │
 │  └─────────────────────────────────────────────────────────────────────┘    │
 │                              │                                              │
@@ -463,6 +465,8 @@ public class SecurityHeadersFilter extends OncePerRequestFilter {
 ```
 
 ### 6.2 Rate Limiting
+
+**MVP:** In-memory rate limiter (ConcurrentHashMap). **Production/Phase 2:** Chuyển sang Redis-based rate limiter để hỗ trợ multi-instance deployment.
 
 ```java
 @Component

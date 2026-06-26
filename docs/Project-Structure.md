@@ -196,7 +196,7 @@ backend/src/main/java/com/carrental/
 │   ├── BookingRepository.java
 │   ├── PaymentRepository.java
 │   ├── PricingRuleRepository.java
-│   └── VehicleTransferRepository.java
+│   └── VehicleTransferRepository.java *(Phase 2)*
 │
 ├── model/                          # JPA Entities
 │   ├── Tenant.java
@@ -207,7 +207,7 @@ backend/src/main/java/com/carrental/
 │   ├── Booking.java
 │   ├── Payment.java
 │   ├── PricingRule.java
-│   └── VehicleTransfer.java
+│   └── VehicleTransfer.java *(Phase 2)*
 │
 ├── dto/                            # Data Transfer Objects
 │   ├── request/                    # Request DTOs
@@ -240,7 +240,7 @@ backend/src/main/java/com/carrental/
 
 ## 3. Frontend Structure (Angular + Next.js)
 
-Hệ thống có **3 frontend apps** thuộc 2 stack:
+Hệ thống gồm **3 frontend apps** trên 2 stack:
 
 | App | Folder | Stack |
 |-----|--------|-------|
@@ -250,7 +250,7 @@ Hệ thống có **3 frontend apps** thuộc 2 stack:
 
 ### 3.1 Admin Frontend (Angular)
 
-Cấu trúc dùng chung cho cả `frontend-saas-admin/` và `frontend-admin/`. Khác biệt chính nằm ở folder `features/`.
+Cấu trúc này dùng chung cho `frontend-saas-admin/` và `frontend-admin/`. Điểm khác biệt chính nằm ở folder `features/`.
 
 ```
 frontend-admin/                    # (tương tự cho frontend-saas-admin/)
@@ -313,12 +313,12 @@ frontend-admin/                    # (tương tự cho frontend-saas-admin/)
 └── README.md
 ```
 
-Cho **SaaS Admin Portal** (`frontend-saas-admin/`), `features/` chứa:
+Với **SaaS Admin Portal** (`frontend-saas-admin/`), `features/` chứa:
 - `tenants/` - Quản lý tenants
 - `subscriptions/` - Plans, billing
 - `billing/` - Invoices, payment ops
-- `platform-reports/` - Doanh thu platform
-- `settings/` - Cấu hình global
+- `platform-reports/` - Doanh thu nền tảng
+- `settings/` - Cấu hình toàn cục
 
 ### 3.2 Customer Frontend (Next.js)
 

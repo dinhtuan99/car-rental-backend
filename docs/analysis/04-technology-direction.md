@@ -1,7 +1,7 @@
 # Định Hướng Công Nghệ — Vì Sao Chọn Như Vậy?
 
-> **Ngày:** 24/06/2026
-> **Mục tiêu:** Giải thích lý do đằng sau mỗi lựa chọn công nghệ trong stack Car Rental SaaS. Mỗi quyết định đều có đánh đổi — tài liệu này làm rõ tại sao ta chấp nhận đánh đổi đó.
+**Ngày:** 24/06/2026
+**Mục tiêu:** Giải thích lý do đằng sau mỗi lựa chọn công nghệ trong stack Car Rental SaaS. Mỗi quyết định đều có đánh đổi — tài liệu này làm rõ tại sao ta chấp nhận đánh đổi đó.
 
 ---
 
@@ -54,7 +54,7 @@
 
 ### 2.2 Lý Do Chọn Java / Spring Boot
 
-**Lý do #1: Multi-tenant transaction là bài toán KHÓ**
+**Lý do #1: Multi-tenant transaction là bài toán phức tạp**
 Hệ thống SaaS multi-tenant với RLS ở tầng database yêu cầu:
 - Quản lý transaction context xuyên suốt request (ThreadLocal tenant context)
 - Interceptor bắt tenant_id từ subdomain/header và set vào DB session
@@ -67,7 +67,7 @@ Spring Boot làm tất cả những việc này out-of-the-box. Node.js với Ty
 Không framework nào có hệ sinh thái security đầy đủ và battle-tested như Spring Security. Method-level security (`@PreAuthorize`), filter chain, OAuth2 resource server — tất cả đều có sẵn.
 
 **Lý do #3: Team có chuyên gia backend (anh Tưởng)**
-Yếu tố con người quyết định 80% thành công công nghệ. Có người dẫn dắt về Spring Boot là lợi thế lớn, giảm rủi ro mắc lỗi kiến trúc.
+Yếu tố con người ảnh hưởng lớn đến thành công công nghệ. Có người dẫn dắt về Spring Boot là lợi thế lớn, giảm rủi ro mắc lỗi kiến trúc.
 
 **Lý do #4: Refactor từ Monolith → Microservices dễ hơn**
 Khi scale, Spring Boot monolith chuẩn (modular package) có thể tách thành microservices bằng cách extract module + thêm API gateway. Hệ sinh thái Spring Cloud hỗ trợ toàn bộ quá trình này.
@@ -116,7 +116,7 @@ CREATE POLICY super_admin_bypass ON vehicles
     USING (current_setting('app.current_tenant_id', true) IS NULL);
 ```
 
-**Điểm mạnh:** Nếu app code quên filter tenant_id, DB VẪN chặn. Đây là defense-in-depth — an toàn hơn hẳn chỉ filter ở tầng application.
+**Điểm mạnh:** Nếu app code quên filter tenant_id, DB VẪN chặn. Đây là defense-in-depth — an toàn hơn so với chỉ filter ở tầng application.
 
 ### 3.3 Đánh Đổi
 
@@ -202,7 +202,7 @@ Kafka phù hợp hơn vì:
 ### 6.1 Angular 17+ cho Admin Portal & Tenant Dashboard
 
 **Lý do chọn Angular:**
-- Dashboard nặng về form, bảng, CRUD — Angular reactive forms + RxJS là mạnh nhất
+- Dashboard nặng về form, bảng, CRUD — Angular reactive forms + RxJS là đáng tin cậy nhất
 - Dependency injection của Angular giúp quản lý service layer (API client, auth interceptor) sạch sẽ
 - Team Frontend Admin đã làm chủ Angular
 - Angular Material / Ant Design cho Angular cung cấp UI component đầy đủ
@@ -249,12 +249,12 @@ MVP (0→100 tenants):        Scale-up (100→1000):         Enterprise (1000+):
 
 ---
 
-## 8. Những Thứ Cố Tình KHÔNG Dùng
+## 8. Những Công Nghệ Không Sử Dụng Trong MVP
 
 | Công nghệ | Lý do không dùng |
 |-----------|-----------------|
 | **GraphQL** | Overkill cho CRUD API. REST + Swagger đủ tốt, team FE đã quen REST. |
-| **Microservices (MVP)** | 3 người part-time vận hành 10+ services = ác mộng. Modular monolith trước. |
+| **Microservices (MVP)** | 3 người part-time vận hành 10+ services = không khả thi. Modular monolith trước. |
 | **NoSQL (MongoDB)** | Nghiệp vụ cho thuê xe có quan hệ chặt chẽ (xe → booking → khách → hóa đơn). RDBMS phù hợp hơn. |
 | **gRPC** | Không cần throughput cực cao. REST/JSON dễ debug, dễ tích hợp FE. |
 | **Serverless (Lambda)** | Cold start + multi-tenant context propagation phức tạp. Server truyền thống phù hợp hơn. |
@@ -269,13 +269,13 @@ MVP (0→100 tenants):        Scale-up (100→1000):         Enterprise (1000+):
    └── Chọn thứ đã được kiểm chứng, không chọn vì "hot"
 
 2. TEAM SKILL > PERFECT TECH
-   └── Công nghệ tốt nhất = công nghệ team DÙNG ĐƯỢC
+   └── Công nghệ hiệu quả nhất = công nghệ team sử dụng được
 
 3. SIMPLE FIRST, SCALE LATER
    └── Monolith trước, microservices sau. Docker Compose trước, K8s sau.
 
 4. BUY vs BUILD
-   └── Database isolation? DÙNG Postgres RLS (built-in), đừng tự build.
+   └── Database isolation?  Dùng Postgres RLS (built-in), không tự build.
 
 5. ENOUGH IS ENOUGH
    └── Đừng optimize cho 1000 tenant khi đang có 0 tenant.

@@ -272,7 +272,7 @@ src/app/
 
 ### 4.2 Customer Frontend (Next.js)
 
-Cấu trúc App Router (đã giữ nguyên cấu trúc đã thiết kế):
+Cấu trúc App Router:
 
 ```
 app/

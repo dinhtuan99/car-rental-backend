@@ -84,8 +84,7 @@ POST /auth/login
   "success": true,
   "data": {
     "accessToken": "eyJhbGciOiJIUzI1NiIs...",
-    "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
-    "expiresIn": 3600,
+    "expiresIn": 900,
     "tenant": {
       "id": "uuid",
       "name": "RentCar VN",
@@ -107,8 +106,7 @@ POST /auth/login
   "success": true,
   "data": {
     "accessToken": "eyJhbGciOiJIUzI1NiIs...",
-    "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
-    "expiresIn": 3600,
+    "expiresIn": 900,
     "tenant": null,
     "user": {
       "id": "uuid",
@@ -143,12 +141,9 @@ POST /auth/register
 POST /auth/refresh
 ```
 
-**Request:**
-```json
-{
-  "refreshToken": "eyJhbGciOiJIUzI1NiIs..."
-}
-```
+**Cơ chế:** Refresh token được lưu trong HttpOnly Cookie, không trả về trong JSON response). Client gọi endpoint này, cookie tự động được gửi kèm. Backend trả access token mới trong response body.
+
+**Request:** Cookie `refresh_token` do browser tự động gửi kèm.
 
 ---
 
@@ -236,7 +231,7 @@ GET /super-admin/dashboard/stats
 
 ## 4. Tenant APIs
 
-### 3.1 Get Tenant Info
+### 4.1 Get Tenant Info
 
 ```
 GET /tenants/me
@@ -258,7 +253,7 @@ GET /tenants/me
 }
 ```
 
-### 3.2 Update Tenant
+### 4.2 Update Tenant
 
 ```
 PUT /tenants/me
@@ -275,7 +270,7 @@ PUT /tenants/me
 
 ---
 
-## 4. Branch APIs
+## 5. Branch APIs
 
 ### 4.1 List Branches
 
@@ -347,7 +342,7 @@ DELETE /branches/{branchId}
 
 ---
 
-## 5. Vehicle APIs
+## 6. Vehicle APIs
 
 ### 5.1 List Vehicles
 
@@ -441,7 +436,7 @@ DELETE /vehicles/{vehicleId}
 
 ---
 
-## 6. Customer APIs
+## 7. Customer APIs
 
 ### 6.1 List Customers
 
@@ -485,7 +480,7 @@ GET /customers/{customerId}/rentals
 
 ---
 
-## 7. Booking APIs
+## 8. Booking APIs
 
 ### 7.1 List Bookings
 
@@ -621,7 +616,7 @@ POST /bookings/{bookingId}/complete
 
 ---
 
-## 8. Payment APIs
+## 9. Payment APIs
 
 ### 8.1 List Payments
 
@@ -659,7 +654,7 @@ GET /payments/{paymentId}
 
 ---
 
-## 9. Pricing APIs
+## 10. Pricing APIs
 
 ### 9.1 List Pricing Rules
 
@@ -681,7 +676,7 @@ POST /pricing-rules
   "multiplier": 1.2
 }
 ```
-> **MVP:** Chỉ hỗ trợ `weekday` (1.0) và `weekend` (1.2). Season/holiday multipliers → Phase 2.
+**MVP:** Chỉ hỗ trợ `weekday` (1.0) và `weekend` (1.2). Season/holiday multipliers sẽ có ở Phase 2.
 
 ### 9.3 Calculate Price
 
@@ -729,7 +724,7 @@ POST /pricing/calculate
 
 ---
 
-## 10. Report APIs
+## 11. Report APIs
 
 ### 10.1 Revenue Report
 
@@ -794,7 +789,7 @@ GET /reports/customers
 
 ## 12. Vehicle Transfer APIs
 
-> **Lùi Phase 2.** MVP không cần module điều phối xe liên chi nhánh. API spec dưới đây giữ làm reference cho Phase 2.
+**Lùi Phase 2.** MVP không cần module điều phối xe liên chi nhánh. API spec bên dưới giữ làm tham khảo cho Phase 2.
 
 ### 12.1 List Transfers
 

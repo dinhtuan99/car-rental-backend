@@ -1,7 +1,7 @@
-# Sơ đồ Trực quan Lộ trình Dự án (Mindmap & Gantt Chart)
+# Sơ đồ trực quan Lộ trình Dự án (Mindmap & Gantt Chart)
 
-> **Cập nhật:** 24/06/2026 — Tái cấu trúc theo phân tích thị trường & ưu tiên tính năng.
-> **Tham chiếu:** [Phân tích chi tiết](analysis/)
+**Cập nhật:** 24/06/2026 — Tái cấu trúc theo phân tích thị trường & ưu tiên tính năng.
+**Tham chiếu:** [Phân tích chi tiết](analysis/)
 
 ---
 
@@ -78,7 +78,7 @@ gantt
     todayMarker off
 
     section Phase A: Nền móng (W1-W6)
-    Bootcamp Java & Spring Boot          : active, pA_1, 2024-01-01, 3w
+    Bootcamp Java & Spring Boot          : active, pA_1, 2026-06-08, 3w
     Base System Auth & Tenant            : active, pA_2, after pA_1, 3w
 
     section Phase B: MVP Core (W7-W14)
@@ -106,7 +106,7 @@ gantt
 | **Có sản phẩm chạy được** | Tuần 23 | Tuần 8 (xe + branch), Tuần 14 (full nội bộ) |
 | **Public Booking** | Tuần 22-23 (cuối) | Từ tuần 7, hoàn thiện tuần 18 |
 | **Số module nghiệp vụ** | 8 (gồm Vehicle Transfer) | 6 (cắt Transfer, giảm Pricing, giảm Report) |
-| **Quality Gate** | 5 mốc mơ hồ | 4 gate cứng, có test case cụ thể |
+| **Quality Gate** | 5 mốc chưa rõ ràng | 4 gate cứng, có test case cụ thể |
 | **Demo được** | Sau 5 tháng | Sau 2 tháng (Phase A), 3 tháng (Phase B) |
 
 ### Tính năng bị cắt / giảm scope
@@ -144,6 +144,6 @@ gantt
 5. Sử dụng cú pháp sau để hiển thị trong Markdown:
 
 ```markdown
-![Sơ đồ tư duy](assets/mindmap-v2.png)
-![Biểu đồ Gantt](assets/gantt-v2.png)
+.[Sơ đồ tư duy](assets/mindmap-v2.png)
+.[Biểu đồ Gantt](assets/gantt-v2.png)
 ```

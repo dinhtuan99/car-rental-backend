@@ -1,7 +1,7 @@
 # Phân Tích 2 Loại Hình Cho Thuê — Chọn Thị Trường Nào Cho SaaS?
 
-> **Ngày:** 24/06/2026
-> **Mục tiêu:** Phân tích đặc điểm, quy mô thị trường, và mức độ phù hợp của 2 loại hình cho thuê xe (có lái vs tự lái) để xác định hướng đi cho sản phẩm SaaS.
+**Ngày:** 24/06/2026
+**Mục tiêu:** Phân tích đặc điểm, quy mô thị trường, và mức độ phù hợp của 2 loại hình cho thuê xe (có lái vs tự lái) để xác định hướng đi cho sản phẩm SaaS.
 
 ---
 
@@ -104,7 +104,7 @@ SOM (3 năm): ~300-500
 
 ### 4.1 Vấn đề pháp lý của Xe Tự Lái tại VN
 
-Đây là yếu tố QUAN TRỌNG NHẤT cần hiểu rõ:
+Đây là yếu tố quan trọng cần hiểu rõ:
 
 ```
 VẤN ĐỀ BẰNG LÁI CHO KHÁCH NƯỚC NGOÀI:
@@ -145,7 +145,7 @@ QUẢN LÝ TOUR/LỊCH TRÌNH:
 
 HỆ QUẢ:
 ─────────
-• Phần mềm cho loại hình này PHỨC TẠP HƠN nhiều
+• Phần mềm cho loại hình này phức tạp hơn nhiều
 • Cần thêm module: Driver, Tour, Dispatch, Payroll
 • MVP sẽ lâu hơn, cần nhiều domain knowledge hơn
 ```

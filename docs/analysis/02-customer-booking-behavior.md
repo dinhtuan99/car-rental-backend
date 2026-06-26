@@ -1,7 +1,7 @@
 # Phân Tích Hành Vi Khách Thuê Xe — Ai là Khách Hàng Thật?
 
-> **Ngày:** 24/06/2026
-> **Mục tiêu:** Phân tích hành vi thực tế của 2 nhóm: khách vãng lai (walk-in/guest) và khách thường xuyên (member). Xác định nhóm nào là chủ đạo để thiết kế flow booking phù hợp.
+**Ngày:** 24/06/2026
+**Mục tiêu:** Phân tích hành vi thực tế của 2 nhóm: khách vãng lai (walk-in/guest) và khách thường xuyên (member). Xác định nhóm nào là chủ đạo để thiết kế flow booking phù hợp.
 
 ---
 
@@ -51,9 +51,9 @@ Tỷ trọng theo doanh thu:
 └──────────────────────────────────────────────────────────────┘
 ```
 
-> Member có tỷ trọng doanh thu cao hơn vì họ thuê nhiều lần hơn với cùng lượng khách hàng.
+Member có tỷ trọng doanh thu cao hơn vì họ thuê nhiều lần hơn với cùng lượng khách hàng.
 
-**Kết luận quan trọng:** Guest flow chiếm **73% booking, 62% doanh thu** — Đây PHẢI là flow chính, không phải thứ yếu như thiết kế hiện tại (để Phase 4).
+**Kết luận quan trọng:** Guest flow chiếm **73% booking, 62% doanh thu** — Đây nên là flow chính, không phải thứ yếu như thiết kế hiện tại (để Phase 4).
 
 ---
 
@@ -147,7 +147,7 @@ GUEST BOOKING XONG
         │
         ▼
 ┌──────────────────────────────┐
-│ "Đặt xe thành công! 🎉"      │
+│ "Đặt xe thành công. 🎉"      │
 │                              │
 │ [Mã booking: CR-2024-0001]   │
 │                              │
@@ -167,7 +167,7 @@ Tỷ lệ chuyển đổi dự kiến: 15-25% guest sẽ tạo tài khoản sau 
 
 ### 5.1 Public API phải là First-Class Citizen
 
-Hiện tại API public đặt ở `/api/v1/public/**` và plan để Phase 4. Điều này sai vì:
+Hiện tại API public đặt ở `/api/v1/public/**` và plan để Phase 4. Điều này chưa hợp lý vì:
 
 - Guest flow chiếm 73% booking — không thể là "tính năng làm sau"
 - Public API ảnh hưởng đến thiết kế DB, auth, rate limiting từ đầu
@@ -202,7 +202,7 @@ Khi guest tạo tài khoản → chỉ cần SET password_hash + đổi flag, kh
 | **Nanosoft** | Không có public web | Không có portal riêng cho khách |
 | **Smacar** | Có form đặt xe nhưng không có domain riêng | Có app mobile |
 | **EzCloud** | Có (qua widget nhúng) | Không |
-| **CHÚNG TA** | Public web riêng + guest checkout 1 bước | Portal riêng + 1-click rebook |
+| **Car Rental SaaS** | Public web riêng + guest checkout 1 bước | Portal riêng + 1-click rebook |
 
 **Lợi thế cạnh tranh:** Đối thủ không cung cấp domain riêng + web công cộng cho từng tenant. Đây là điểm bán hàng chính.
 

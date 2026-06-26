@@ -94,6 +94,8 @@
 
 ### 2.2 Central Manager Flow
 
+**Lưu ý:** Vehicle Transfer (điều phối xe) và Central Manager role được lùi sang Phase 2. MVP tập trung vào nhà xe nhỏ (1-2 chi nhánh, <50 xe).
+
 ```
 CENTRAL MANAGER:
 ────────────────────────────
@@ -160,7 +162,7 @@ CENTRAL MANAGER:
  ├── Xem chi tiết giá:
  │   ├── Giá ngày thường: 500k
  │   ├── Giá cuối tuần: 600k
- │   └── Giá ngày lễ: 750k
+ │   └── Giá ngày lễ: 750k *(Phase 2 — MVP chỉ dùng basePrice × dayMultiplier)*
  ├── Điền thông tin khách hàng:
  │   ├── Họ tên
  │   ├── SĐT
@@ -203,7 +205,7 @@ CENTRAL MANAGER:
 
 ## 4. Vehicle Transfer Flow
 
-> **Lưu ý:** Tính năng điều phối xe (Vehicle Transfer) được lùi sang Phase 2. MVP tập trung vào nhà xe nhỏ (1-2 chi nhánh, <50 xe) — họ tự gọi điện điều phối, không cần module này.
+**Lưu ý:** Tính năng điều phối xe (Vehicle Transfer) được lùi sang Phase 2. MVP tập trung vào nhà xe nhỏ (1-2 chi nhánh, <50 xe) — họ tự gọi điện điều phối, không cần module này.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐

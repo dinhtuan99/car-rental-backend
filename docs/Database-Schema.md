@@ -1,6 +1,6 @@
 # Database Schema - Car Rental SaaS
 
-> **Cập nhật:** 24/06/2026 — Đơn giản hóa pricing_rules, đánh dấu vehicle_transfers là Phase 2.
+**Cập nhật:** 24/06/2026 — Đơn giản hóa pricing_rules, chuyển vehicle_transfers sang Phase 2.
 
 ## Mục lục
 1. [ER Diagram](#1-er-diagram)
@@ -260,11 +260,11 @@ CREATE INDEX idx_pricing_rules_tenant_id ON pricing_rules(tenant_id);
 CREATE INDEX idx_pricing_rules_type_day ON pricing_rules(tenant_id, vehicle_type_id, day_type);
 ```
 
-> **MVP:** Chỉ hỗ trợ weekday (1.0) và weekend (1.2). Season/Holiday multipliers → Phase 2.
+**MVP:** Chỉ hỗ trợ weekday (1.0) và weekend (1.2). Season/Holiday multipliers → Phase 2.
 
-### 2.9 vehicle_transfers — Lùi Phase 2
+### 2.9 vehicle_transfers — Dời sang Phase 2
 
-> Bảng `vehicle_transfers` (điều phối xe giữa các chi nhánh) sẽ được thêm vào Phase 2 khi hệ thống phục vụ các chuỗi 50+ xe có nhu cầu điều phối liên chi nhánh. MVP không cần bảng này.
+Bảng `vehicle_transfers` (điều phối xe giữa các chi nhánh) được thêm vào Phase 2 khi hệ thống phục vụ các chuỗi 50+ xe có nhu cầu điều phối liên chi nhánh. MVP chưa cần bảng này.
 
 ### 2.10 users (for staff/admin)
 
@@ -321,9 +321,9 @@ CREATE INDEX idx_users_email ON users(email);
 | pricing_rules | idx_pricing_rules_tenant_id | tenant_id | |
 | pricing_rules | idx_pricing_rules_type_day | tenant_id, vehicle_type_id, day_type | |
 | users | idx_users_tenant_id | tenant_id | |
-
-> `vehicle_transfers` — lùi Phase 2.
 | users | idx_users_email | email | UNIQUE |
+
+`vehicle_transfers` — dời sang Phase 2, chưa tạo indexes.
 
 ---
 
@@ -410,7 +410,7 @@ Phase 3: Database-per-tenant (Future)
 
 ## 5. Phase 2 Additions
 
-Các bảng sẽ được thêm ở Phase 2 khi scale lên phục vụ chuỗi lớn:
+Các bảng sẽ được thêm ở Phase 2 khi mở rộng phục vụ chuỗi lớn:
 
 | Bảng | Mục đích | Trigger |
 |------|----------|---------|
