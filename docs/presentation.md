@@ -73,15 +73,48 @@ Module tenant quản lý việc tách biệt dữ liệu và cấp web riêng ch
 
 ### Key #3: Giao/Nhận Xe Tại Quầy Nhanh (Module: Booking & Counter Ops)
 
-Module booking quản lý toàn bộ vòng đời đơn hàng, tập trung vào thao tác tại quầy.
+Module booking quản lý toàn bộ vòng đời đơn hàng. Trọng tâm là tối ưu 2 thao tác nhân viên làm nhiều nhất trong ngày: **giao xe** (lúc khách đến lấy) và **nhận xe** (lúc khách trả).
 
-| Yêu cầu | Cách làm | Thuộc module |
-|----------|----------|---------------|
-| Giao xe ≤ 3 bước | Chọn booking → xác nhận thông tin → ghi km/xăng đầu → hoàn tất | Booking |
-| Nhận xe + tính tiền tự động | Quét mã booking → nhập km/xăng về → hệ thống tự tính (gồm phụ phí trễ/hư hỏng) → chọn PTTT | Booking |
-| Chống quên update trạng thái | Status workflow: `pending → confirmed → in_progress → completed → cancelled` | Booking |
+#### Flow Giao Xe (Pick-up) — 3 bước, dưới 2 phút
 
-**Vì sao quan trọng:** `[DB]` Nhân viên nhà xe dùng thao tác giao/nhận xe nhiều lần mỗi ngày (với shop 20-30 xe, ước tính 10-30 lượt/ngày mùa thấp điểm, 30-60 lượt/ngày mùa cao điểm). Nếu thao tác chậm hơn ghi sổ, họ sẽ quay lại dùng sổ giấy.
+```
+Bước 1: Chọn booking         Bước 2: Xác nhận + kiểm tra      Bước 3: Hoàn tất
+┌──────────────────┐       ┌──────────────────────────┐       ┌──────────────────┐
+│ Nhân viên tìm    │       │ • Check CCCD/GPLX gốc    │       │ In phiếu giao xe │
+│ booking (theo    │──→    │ • Ghi km lúc giao        │──→    │ (có chữ ký số)   │
+│ tên/SĐT/mã book) │       │ • Ghi mức xăng lúc giao  │       │ Xe → in_progress │
+│                  │       │ • Khách ký xác nhận      │       │                  │
+└──────────────────┘       └──────────────────────────┘       └──────────────────┘
+```
+
+#### Flow Nhận Xe (Return) — tự động tính tiền, không cần bấm máy tính tay
+
+```
+Bước 1: Quét mã             Bước 2: Nhập số cuối        Bước 3: Hệ thống tự tính       Bước 4: Thanh toán
+┌──────────────────┐       ┌──────────────────┐       ┌──────────────────────────┐    ┌──────────────────┐
+│ Quét mã QR trên  │       │ • Km lúc trả     │       │ Tiền thuê =              │    │ Chọn PTTT:       │
+│ phiếu giao xe    │──→    │ • Mức xăng lúc trả│──→   │ basePrice × số ngày      │──→ │ • Tiền mặt       │
+│ → hiện ra booking│       └──────────────────┘       │ + phụ phí trả trễ (nếu có)│    │ • Chuyển khoản   │
+└──────────────────┘                                  │ + phụ phí hư hỏng (nếu có)│    │ • VietQR         │
+                                                      │ + phụ phí vượt km (nếu có)│    └──────────────────┘
+                                                      │ − cọc (nếu có)            │
+                                                      └──────────────────────────┘
+```
+
+**Các khoản phụ phí hệ thống tự động áp dụng:**
+- **Trả trễ:** Quá giờ trả → phụ phí theo giờ (vd: 50k/giờ), do nhà xe cấu hình
+- **Vượt km:** Vượt giới hạn km trong gói thuê → phụ phí theo km (vd: 5k/km)
+- **Hư hỏng:** Nhân viên chọn mức hư hỏng (nhẹ/vừa/nặng) → hệ thống áp mức phí tương ứng
+
+#### Chống Quên & Chống Nhầm
+
+| Cơ chế | Cách hoạt động |
+|--------|----------------|
+| Status workflow bắt buộc | `pending → confirmed → in_progress → completed` — không được nhảy bước, không được bỏ trống |
+| Cảnh báo xe quá hạn trả | Scheduled job quét mỗi 5 phút, highlight booking `in_progress` đã quá `return_time` |
+| Gắn booking với xe cụ thể | 1 xe chỉ có 1 booking `in_progress` tại một thời điểm — DB constraint đảm bảo |
+
+**Vì sao quan trọng:** `[DB]` Nhân viên nhà xe thực hiện giao/nhận xe 10-30 lượt/ngày (mùa thấp điểm) đến 30-60 lượt/ngày (mùa cao điểm) với shop 20-30 xe. Nếu mỗi lần nhận xe mà nhân viên phải bấm máy tính tay để cộng trừ các khoản → vừa chậm, vừa dễ sai. Hệ thống tự tính toàn bộ, nhân viên chỉ cần nhập 2 con số (km về, xăng về) → nhanh hơn ghi sổ, khách không phải đợi lâu.
 
 ### Key #4: Khách Đặt Xe Không Cần Tài Khoản (Module: Customer Website)
 
